@@ -36,7 +36,7 @@ aleatorio funcAleatoria()
 
 double funcSenoidal(double amp, double periodo, double tempo){
 
-    return (amp/2)*sin(2*PI*periodo*tempo) + amp/2;
+    return (amp/2)*sin(2*PI*1/periodo*tempo) + amp/2;
     //periodo em radianos
     if((fmod(tempo, periodo)) < periodo/2){
         return (amp/2)*sin(2*PI*periodo*tempo) + amp/2;

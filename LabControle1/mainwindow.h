@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <quanser.h>
+#include <thread>
 #include <QTime>
 
 namespace Ui {
@@ -25,9 +27,12 @@ private slots:
 
 
     void timerEvent(QTimerEvent *);
+    void Controle();
 
 private:
+    Quanser* quanser;
     Ui::MainWindow *ui;
+    std::thread* controle;
 };
 
 #endif // MAINWINDOW_H

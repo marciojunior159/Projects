@@ -9,6 +9,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    //quanser= new Quanser("10.13.97.69", 20072);
+
     ui->setupUi(this);
     ui->comboBox->addItem("Degrau");
     ui->comboBox->addItem("Senoidal");
@@ -25,7 +27,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //ui->customPlot->xAxis->setRange(-5, 5);
     ui->customPlot->yAxis->setRange(-5, 5);
 
-
+    controle= new std::thread(&MainWindow::Controle, this);
     startTimer(10);
 
 }
@@ -68,12 +70,26 @@ void MainWindow::on_comboBox_activated(const QString &arg1)
     //if("Title" == "Degrau"){ui->spinBox_2->setEnabled(false);}if("Title" == "Senoidal"){ui->spinBox_2->setEnabled(true);}
 }
 
-float t=0;
+float t=0, lt=0;
+#include <time.h>
+#include <QDebug>
+
 void MainWindow::timerEvent(QTimerEvent *e)
 {
-   ui->customPlot->graph(0)->addData(t, funcQuadrada(3, 5, t));
-   //ui->customPlot->graph(0)->removeDataBefore(key- 60);
-   ui->customPlot->xAxis->setRange(t + 0.25, 10, Qt::AlignRight);
-   ui->customPlot->replot();
-   t+=0.01;
+    ui->customPlot->replot();
+}
+
+void MainWindow::Controle()
+{
+    while(1)
+    {
+        //double val= 3.1;
+        //quanser->writeDA(val);
+        ui->customPlot->graph(0)->addData(t, funcSenoidal(3, 2, t));
+        //ui->customPlot->graph(0)->removeDataBefore(key- 60);
+        ui->customPlot->xAxis->setRange(t + 0.25, 10, Qt::AlignRight);
+
+        usleep(1*10E3);
+        t+=0.01;
+    }
 }

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>663</width>
-    <height>464</height>
+    <width>666</width>
+    <height>482</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -46,116 +46,108 @@
       <x>20</x>
       <y>320</y>
       <width>331</width>
-      <height>81</height>
+      <height>101</height>
      </rect>
     </property>
     <property name="title">
      <string>Canais de Saida</string>
     </property>
-    <widget class="QRadioButton" name="radioButton_3">
+    <widget class="QWidget" name="">
      <property name="geometry">
       <rect>
        <x>30</x>
        <y>20</y>
-       <width>71</width>
-       <height>20</height>
+       <width>87</width>
+       <height>74</height>
       </rect>
      </property>
-     <property name="text">
-      <string>Canal 0</string>
-     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QCheckBox" name="checkBox">
+        <property name="text">
+         <string>Canal 0</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBox_2">
+        <property name="text">
+         <string>Canal 1</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBox_3">
+        <property name="text">
+         <string>Canal 2</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
-    <widget class="QRadioButton" name="radioButton_4">
-     <property name="geometry">
-      <rect>
-       <x>30</x>
-       <y>40</y>
-       <width>71</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Canal 1</string>
-     </property>
-    </widget>
-    <widget class="QRadioButton" name="radioButton_6">
+    <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
        <x>130</x>
        <y>20</y>
-       <width>71</width>
-       <height>20</height>
+       <width>87</width>
+       <height>74</height>
       </rect>
      </property>
-     <property name="text">
-      <string>Canal 3</string>
-     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QCheckBox" name="checkBox_4">
+        <property name="text">
+         <string>Canal 3</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBox_5">
+        <property name="text">
+         <string>Canal 4</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBox_6">
+        <property name="text">
+         <string>Canal 5</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
-    <widget class="QRadioButton" name="radioButton_7">
+    <widget class="QWidget" name="">
      <property name="geometry">
       <rect>
-       <x>130</x>
-       <y>40</y>
-       <width>71</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Canal 4</string>
-     </property>
-    </widget>
-    <widget class="QRadioButton" name="radioButton_9">
-     <property name="geometry">
-      <rect>
-       <x>220</x>
+       <x>230</x>
        <y>20</y>
-       <width>71</width>
-       <height>20</height>
+       <width>73</width>
+       <height>48</height>
       </rect>
      </property>
-     <property name="text">
-      <string>Canal 6</string>
-     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <widget class="QCheckBox" name="checkBox_7">
+        <property name="text">
+         <string>Canal 6</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBox_8">
+        <property name="text">
+         <string>Canal 7</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
-    <widget class="QRadioButton" name="radioButton_10">
-     <property name="geometry">
-      <rect>
-       <x>220</x>
-       <y>40</y>
-       <width>71</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>canal 7</string>
-     </property>
-    </widget>
-    <widget class="QRadioButton" name="radioButton_8">
-     <property name="geometry">
-      <rect>
-       <x>130</x>
-       <y>60</y>
-       <width>71</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Canal 5</string>
-     </property>
-    </widget>
-    <widget class="QRadioButton" name="radioButton_5">
-     <property name="geometry">
-      <rect>
-       <x>30</x>
-       <y>60</y>
-       <width>71</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Canal 2</string>
-     </property>
-    </widget>
+    <zorder>checkBox_2</zorder>
+    <zorder></zorder>
+    <zorder>layoutWidget</zorder>
+    <zorder></zorder>
    </widget>
    <widget class="QLabel" name="label_4">
     <property name="geometry">
@@ -337,8 +329,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>663</width>
-     <height>22</height>
+     <width>666</width>
+     <height>19</height>
     </rect>
    </property>
   </widget>

@@ -1,8 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QMessageBox>
-#include <QSettings>
-#include <string>
 #include "funcoes.h"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -59,13 +57,28 @@ void MainWindow::on_radioButton_2_clicked()
 
 void MainWindow::on_comboBox_activated(const QString &arg1)
 {
-    /*
-    string sinal;
-    //QMessageBox::QPrivateSignal(this, "Title",);
-    sinal = QSettings::value("settings/comboText","").toString();
-    ui->comboBox->setCurrentText(sinal);
-    */
-    //if("Title" == "Degrau"){ui->spinBox_2->setEnabled(false);}if("Title" == "Senoidal"){ui->spinBox_2->setEnabled(true);}
+    QString sinal = ui->comboBox->currentText();
+
+    if(sinal == "Degrau")
+    {
+        ui->spinBox_2->setEnabled(false);
+    }
+    else if(sinal == "Senoidal")
+    {
+        ui->spinBox_2->setEnabled(true);
+    }
+    else if(sinal == "Onda quadrada")
+    {
+        ui->spinBox_2->setEnabled(true);
+    }
+    else if(sinal == "Dente de serra")
+    {
+        ui->spinBox_2->setEnabled(true);
+    }
+    else if(sinal == "Aleatorio")
+    {
+        ui->spinBox_2->setEnabled(false);
+    }
 }
 
 float t=0;

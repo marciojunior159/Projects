@@ -1,7 +1,13 @@
+#include "funcoes.h"
+
 #include <iostream>
 #include <math.h>
+#include <time.h>
+#include <cstdlib>
 
 using namespace std;
+
+#define PI 3.1415
 
 double funcDegrau(double amp, double tempo)
 {
@@ -11,17 +17,12 @@ double funcDegrau(double amp, double tempo)
     return 0;
 }
 
-double funcSerra(double tempo, double amplitude, double periodo)
+double funcSerra(double amplitude, double periodo, double tempo)
 {
     double novoTempo = fmod(tempo, periodo);
 
     return amplitude/periodo*novoTempo;
 }
-
-struct aleatorio {
-  double amplitude;
-  double intervalo;
-};
 
 aleatorio funcAleatoria()
 {
@@ -33,4 +34,24 @@ aleatorio funcAleatoria()
     return resultado;
 }
 
+double funcSenoidal(double amp, double periodo, double tempo){
+
+    return (amp/2)*sin(2*PI*periodo*tempo) + amp/2;
+    //periodo em radianos
+    if((fmod(tempo, periodo)) < periodo/2){
+        return (amp/2)*sin(2*PI*periodo*tempo) + amp/2;
+    }else{
+        return 0;
+    }
+}
+
+double funcQuadrada(double amp, double periodo, double tempo){
+
+    if( fmod(tempo,periodo) < periodo/2){
+        return amp;
+    }else{
+        return 0;
+    }
+
+}
 //Nao esquecer das travas

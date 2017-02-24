@@ -90,3 +90,51 @@ void MainWindow::timerEvent(QTimerEvent *e)
    ui->customPlot->replot();
    t+=0.01;
 }
+
+bool canal0 = false;
+bool canal1 = false;
+bool canal2 = false;
+bool canal3 = false;
+bool canal4 = false;
+bool canal5 = false;
+bool canal6 = false;
+bool canal7 = false;
+
+void MainWindow::on_checkBox_clicked()
+{
+    canal0 = ui->checkBox->isChecked();
+}
+
+void MainWindow::on_checkBox_2_clicked()
+{
+    canal1 = ui->checkBox_2->isChecked();
+}
+
+void MainWindow::on_checkBox_3_clicked()
+{
+    canal2 = ui->checkBox_3->isChecked();
+}
+void MainWindow::on_checkBox_4_clicked()
+{
+    canal3 = ui->checkBox_4->isChecked();
+}
+
+void MainWindow::on_checkBox_5_clicked()
+{
+    canal4 = ui->checkBox_5->isChecked();
+}
+
+void MainWindow::on_checkBox_6_clicked()
+{
+    canal5 = ui->checkBox_6->isChecked();
+}
+
+void MainWindow::on_checkBox_7_clicked()
+{
+    canal6 = ui->checkBox_7->isChecked();
+}
+
+void MainWindow::on_checkBox_8_clicked()
+{
+    canal7 = ui->checkBox_8->isChecked();
+}

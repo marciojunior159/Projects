@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QTime>
 
 namespace Ui {
 class MainWindow;
@@ -22,8 +23,12 @@ private slots:
 
     void on_comboBox_activated(const QString &arg1);
 
+
+    void timerEvent(QTimerEvent *);
+
 private:
     Ui::MainWindow *ui;
+    QVector<double> x, y;
 };
 
 #endif // MAINWINDOW_H

@@ -15,7 +15,17 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
+private slots:
+    void on_radioButton_clicked();
+
+    void on_radioButton_2_clicked();
+
+    void on_comboBox_activated(const QString &arg1);
+
+
     void timerEvent(QTimerEvent *);
+
 private:
     Ui::MainWindow *ui;
     QVector<double> x, y;

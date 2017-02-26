@@ -9,12 +9,14 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     //quanser= new Quanser("10.13.97.69", 20072);
 
+    fuc= "WAIT";
+    tempo= 0;
     ui->setupUi(this);
-    ui->comboBox->addItem("Degrau");
-    ui->comboBox->addItem("Senoidal");
-    ui->comboBox->addItem("Onda quadrada");
-    ui->comboBox->addItem("Dente de serra");
-    ui->comboBox->addItem("Aleatorio");
+    ui->comboBoxSinal->addItem("Degrau");
+    ui->comboBoxSinal->addItem("Senoidal");
+    ui->comboBoxSinal->addItem("Onda quadrada");
+    ui->comboBoxSinal->addItem("Dente de serra");
+    ui->comboBoxSinal->addItem("Aleatorio");
       
     ui->customPlot->addGraph();
 
@@ -36,56 +38,56 @@ MainWindow::~MainWindow()
 }
 
 
-void MainWindow::on_radioButton_clicked()
+void MainWindow::on_radioButtonMalhaAberta_clicked()
 {
-    if(ui->radioButton->isChecked())
+    fuc= ui->comboBoxSinal->currentText().toStdString();
+    if(ui->radioButtonMalhaAberta->isChecked())
     {
-        ui->doubleSpinBox->setEnabled(true);
-        ui->doubleSpinBox_2->setEnabled(false);
-        ui->comboBox->setEnabled(true);
-        ui->spinBox->setEnabled(true);
+        ui->SpinBoxTensao->setEnabled(true);
+        ui->SpinBoxNivel->setEnabled(false);
+        ui->spinBoxCanal->setEnabled(true);
+        ui->comboBoxSinal->setEnabled(true);
     }
 }
 
-void MainWindow::on_radioButton_2_clicked()
+void MainWindow::on_radioButtonMalhaFechada_clicked()
 {
-    if(ui->radioButton_2->isChecked())
+    fuc= ui->comboBoxSinal->currentText().toStdString();
+    if(ui->radioButtonMalhaFechada->isChecked())
     {
-        ui->doubleSpinBox->setEnabled(false);
-        ui->doubleSpinBox_2->setEnabled(true);
-        ui->comboBox->setEnabled(true);
+        ui->SpinBoxTensao->setEnabled(false);
+        ui->SpinBoxNivel->setEnabled(true);
+        ui->spinBoxCanal->setEnabled(true);
+        ui->comboBoxSinal->setEnabled(true);
     }
 }
 
-void MainWindow::on_comboBox_activated(const QString &arg1)
+void MainWindow::on_comboBoxSinal_activated(const QString &arg1)
 {
-    QString sinal = ui->comboBox->currentText();
+    QString sinal = ui->comboBoxSinal->currentText();
 
+    fuc= sinal.toStdString();
     if(sinal == "Degrau")
     {
-        ui->spinBox_2->setEnabled(false);
+        ui->SpinBoxPeriodo->setEnabled(false);
     }
     else if(sinal == "Senoidal")
     {
-        ui->spinBox_2->setEnabled(true);
+        ui->SpinBoxPeriodo->setEnabled(true);
     }
     else if(sinal == "Onda quadrada")
     {
-        ui->spinBox_2->setEnabled(true);
+        ui->SpinBoxPeriodo->setEnabled(true);
     }
     else if(sinal == "Dente de serra")
     {
-        ui->spinBox_2->setEnabled(true);
+        ui->SpinBoxPeriodo->setEnabled(true);
     }
     else if(sinal == "Aleatorio")
     {
-        ui->spinBox_2->setEnabled(false);
+        ui->SpinBoxPeriodo->setEnabled(false);
     }
 }
-
-float t=0, lt=0;
-#include <time.h>
-#include <QDebug>
 
 void MainWindow::timerEvent(QTimerEvent *e)
 {
@@ -98,12 +100,35 @@ void MainWindow::Controle()
     {
         //double val= 3.1;
         //quanser->writeDA(val);
-        ui->customPlot->graph(0)->addData(t, funcSenoidal(3, 2, t));
-        //ui->customPlot->graph(0)->removeDataBefore(key- 60);
-        ui->customPlot->xAxis->setRange(t + 0.25, 10, Qt::AlignRight);
 
+        double A= ui->SpinBoxTensao->value();
+        double T= ui->SpinBoxPeriodo->value();
+        if(fuc == "Degrau")
+        {
+            ui->customPlot->graph(0)->addData(tempo, funcDegrau(A, tempo));
+        }
+        else if(fuc == "Senoidal")
+        {
+            ui->customPlot->graph(0)->addData(tempo, funcSenoidal(A, T, tempo));
+        }
+        else if(fuc == "Onda quadrada")
+        {
+            ui->customPlot->graph(0)->addData(tempo, funcQuadrada(A, T, tempo));
+        }
+        else if(fuc == "Dente de serra")
+        {
+            ui->customPlot->graph(0)->addData(tempo, funcSerra(A, T, tempo));
+        }
+        else if(fuc == "Aleatorio")
+        {
+            aleatorio z= funcAleatoria();
+            // intervalo
+            ui->customPlot->graph(0)->addData(tempo, z.amplitude);
+        }
+        ui->customPlot->graph(0)->removeDataBefore(tempo-12);
+        ui->customPlot->xAxis->setRange(tempo + 0.25, 10, Qt::AlignRight);
         usleep(1*10E3);
-        t+=0.01;
+        tempo+=0.01;
     }
 }
 

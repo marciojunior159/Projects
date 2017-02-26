@@ -8,6 +8,8 @@
 using namespace std;
 
 #define PI 3.1415
+double periodoAle = 0;
+double amplitudeAle = 0;
 
 double funcDegrau(double amp, double tempo)
 {
@@ -24,14 +26,14 @@ double funcSerra(double amplitude, double periodo, double tempo)
     return amplitude/periodo*novoTempo;
 }
 
-aleatorio funcAleatoria()
+double funcAleatoria(double tempo)
 {
-    struct aleatorio resultado;
+    if( tempo > periodoAle){
+        periodoAle = (rand() % 100 + 0)/10.0;
+        amplitudeAle = (rand() % 4000 + 0)/ 1000;
+    }
 
-    resultado.amplitude = (rand() % 4000 + 0)/ 1000;
-    resultado.intervalo = (rand() % 100 + 0)/10.0;
-
-    return resultado;
+    return funcQuadrada(amplitudeAle, periodoAle, tempo);
 }
 
 double funcSenoidal(double amp, double periodo, double tempo){

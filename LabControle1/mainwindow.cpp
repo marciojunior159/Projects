@@ -126,9 +126,7 @@ void MainWindow::Controle()
         }
         else if(fuc == "Aleatorio")
         {
-            aleatorio z= funcAleatoria();
-            // intervalo
-            ui->customPlot->graph(0)->addData(tempo, z.amplitude);
+            ui->customPlot->graph(0)->addData(tempo, funcAleatoria(tempo));
         }
         ui->customPlot->graph(0)->removeDataBefore(tempo-12);
         ui->customPlot->xAxis->setRange(tempo + 0.25, 10, Qt::AlignRight);

@@ -190,6 +190,12 @@
        <height>31</height>
       </rect>
      </property>
+     <property name="maximum">
+      <double>30.000000000000000</double>
+     </property>
+     <property name="singleStep">
+      <double>0.010000000000000</double>
+     </property>
     </widget>
     <widget class="QDoubleSpinBox" name="SpinBoxTensao">
      <property name="enabled">
@@ -202,6 +208,15 @@
        <width>69</width>
        <height>31</height>
       </rect>
+     </property>
+     <property name="minimum">
+      <double>-4.000000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>4.000000000000000</double>
+     </property>
+     <property name="singleStep">
+      <double>0.010000000000000</double>
      </property>
     </widget>
     <widget class="QLabel" name="label_2">
@@ -254,6 +269,9 @@
        <width>48</width>
        <height>31</height>
       </rect>
+     </property>
+     <property name="maximum">
+      <number>7</number>
      </property>
     </widget>
     <widget class="QLabel" name="label_5">
@@ -332,7 +350,7 @@
      <x>0</x>
      <y>0</y>
      <width>666</width>
-     <height>22</height>
+     <height>19</height>
     </rect>
    </property>
   </widget>

@@ -70,22 +70,27 @@ void MainWindow::on_comboBoxSinal_activated(const QString &arg1)
     if(sinal == "Degrau")
     {
         ui->SpinBoxPeriodo->setEnabled(false);
+        ui->SpinBoxTensao->setEnabled(true);
     }
     else if(sinal == "Senoidal")
     {
         ui->SpinBoxPeriodo->setEnabled(true);
+        ui->SpinBoxTensao->setEnabled(true);
     }
     else if(sinal == "Onda quadrada")
     {
         ui->SpinBoxPeriodo->setEnabled(true);
+        ui->SpinBoxTensao->setEnabled(true);
     }
     else if(sinal == "Dente de serra")
     {
         ui->SpinBoxPeriodo->setEnabled(true);
+        ui->SpinBoxTensao->setEnabled(true);
     }
     else if(sinal == "Aleatorio")
     {
         ui->SpinBoxPeriodo->setEnabled(false);
+        ui->SpinBoxTensao->setEnabled(false);
     }
 }
 

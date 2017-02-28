@@ -9,5 +9,6 @@ double funcSenoidal(double A, double T, double t);
 double funcQuadrada(double A, double T, double t);
 
 double funcAlturaTensao(double alt);
+double funcSensor(double leituras);
 
 #endif // FUNCOES_H

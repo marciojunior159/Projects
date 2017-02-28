@@ -8,6 +8,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     //quanser= new Quanser("10.13.97.69", 20072);
+    quanser= new Quanser("127.0.0.1", 20072);
 
     fuc= "WAIT";
     tempo= 0;
@@ -110,35 +111,38 @@ void MainWindow::Controle()
     {
         double A= ui->SpinBoxTensao->value();
         double T= ui->SpinBoxPeriodo->value();
+        int canal= ui->spinBoxCanal->value();
+        double val=0;
+
         if(fuc == "Degrau")
         {
-            ui->customPlot->graph(0)->addData(tempo, funcDegrau(A, tempo));
+            val= funcDegrau(A, tempo);
         }
         else if(fuc == "Senoidal")
         {
-            ui->customPlot->graph(0)->addData(tempo, funcSenoidal(A, T, tempo));
+            val= funcSenoidal(A, T, tempo);
         }
         else if(fuc == "Onda quadrada")
         {
-            ui->customPlot->graph(0)->addData(tempo, funcQuadrada(A, T, tempo));
+            val= funcQuadrada(A, T, tempo);
         }
         else if(fuc == "Dente de serra")
         {
-            ui->customPlot->graph(0)->addData(tempo, funcSerra(A, T, tempo));
+            val= funcSerra(A, T, tempo);
         }
-        else if(fuc == "Aleatorio")
+        else if(fuc == "Aleatorio") // intervalo
         {
-            // intervalo
-            ui->customPlot->graph(0)->addData(tempo, funcAleatoria(tempo));
+            val= funcAleatoria(tempo);
         }
 
+        qDebug() << "Teste " << quanser->readAD(0) << " " << quanser->readAD(1)
+              << " " << quanser->readAD(2) << " " << quanser->readAD(3) << endl;
 
-        //double val= 3.1;
-        //quanser->writeDA(val);
-
+        ui->customPlot->graph(0)->addData(tempo, val);
+        quanser->writeDA(canal, val);
 
         usleep(10.0*10E3);
-        qDebug() << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now()-now).count() << "ms\n";
+        //qDebug() << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now()-now).count() << "ms\n";
         now = std::chrono::high_resolution_clock::now();
         tempo+=0.1;
     }
@@ -146,12 +150,11 @@ void MainWindow::Controle()
 
 void MainWindow::Recebe()
 {
-    //quanser->readAD(0);
-    //quanser->readAD(1);
-    //quanser->readAD(2);
-    //quanser->readAD(3);
+    while(1)
+    {
 
-    usleep(10E4);
+       usleep(10E4);
+    }
 }
 
 bool canal0 = false;

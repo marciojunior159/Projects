@@ -8,6 +8,7 @@
 using namespace std;
 
 #define PI 3.1415
+
 double periodoAle = 0;
 double amplitudeAle = 0;
 
@@ -28,12 +29,12 @@ double funcSerra(double amplitude, double periodo, double tempo)
 
 double funcAleatoria(double tempo)
 {
-    if( tempo > periodoAle){
-        periodoAle = (rand() % 100 + 0)/10.0;
-        amplitudeAle = (rand() % 4000 + 0)/ 1000;
+    if(tempo>periodoAle)
+    {
+        amplitudeAle = (rand() % 8000 )/ 1000.0 - 4.0;
+        periodoAle = (rand() % 100 )/50.0+tempo + 0.1;
     }
-
-    return funcQuadrada(amplitudeAle, periodoAle, tempo);
+    return amplitudeAle;
 }
 
 double funcSenoidal(double amp, double periodo, double tempo){

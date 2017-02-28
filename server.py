@@ -10,15 +10,20 @@ serverSocket.listen(1) # socket pronto para "ouvir" conexoes
 print "Servidor TCP esperando conexoes na porta %d ..." % (serverPort)
 connectionSocket, addr = serverSocket.accept() # aceita as conexoes dos clientes
 
+lastRecv= "0,0 \n"
+
 while 1:
     sentence = connectionSocket.recv(1024) # recebe dados do cliente
     if sentence == "":
         break
     if "READ" in sentence:
         print sentence
-        connectionSocket.send("2.3\n")
+        connectionSocket.send(lastRecv)
     else:
         print sentence
+        lastRecv= sentence.split(' ')[2]+" \n"
+        lastRecv= lastRecv.replace(".", ",")
+        print lastRecv
         connectionSocket.send("ACK\n")
 
 

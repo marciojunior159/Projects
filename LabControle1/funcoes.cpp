@@ -57,4 +57,11 @@ double funcQuadrada(double amp, double periodo, double tempo){
     }
 
 }
+
+double funcAlturaTensao(double alt){
+
+    //aproximação linear
+    return (alt + 11)/12;
+}
+
 //Nao esquecer das travas

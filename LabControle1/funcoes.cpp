@@ -9,6 +9,9 @@ using namespace std;
 
 #define PI 3.1415
 
+double periodoAle = 0;
+double amplitudeAle = 0;
+
 double funcDegrau(double amp, double tempo)
 {
     if(tempo>=0)
@@ -24,15 +27,14 @@ double funcSerra(double amplitude, double periodo, double tempo)
     return amplitude/periodo*novoTempo;
 }
 
-aleatorio last_resultado= {0,0};
 double funcAleatoria(double tempo)
 {
-    if(tempo>last_resultado.intervalo)
+    if(tempo>periodoAle)
     {
-        last_resultado.amplitude = (rand() % 8000 )/ 1000.0 - 4.0;
-        last_resultado.intervalo = (rand() % 100 )/50.0+tempo + 0.1;
+        amplitudeAle = (rand() % 8000 )/ 1000.0 - 4.0;
+        periodoAle = (rand() % 100 )/50.0+tempo + 0.1;
     }
-    return last_resultado.amplitude;
+    return amplitudeAle;
 }
 
 double funcSenoidal(double amp, double periodo, double tempo){

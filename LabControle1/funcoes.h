@@ -3,10 +3,6 @@
 
 double funcDegrau(double A, double t);
 double funcSerra(double A, double T, double t);
-struct aleatorio {
-  double amplitude;
-  double intervalo;
-};
 
 double funcAleatoria(double t);
 double funcSenoidal(double A, double T, double t);

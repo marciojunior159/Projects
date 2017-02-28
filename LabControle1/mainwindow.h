@@ -22,6 +22,7 @@ private slots:
 
     void timerEvent(QTimerEvent *);
     void Controle();
+    void Recebe();
 
     void on_checkBox_clicked();
     void on_checkBox_2_clicked();
@@ -38,7 +39,7 @@ private slots:
 private:
     Quanser* quanser;
     Ui::MainWindow *ui;
-    std::thread* controle;
+    std::thread* controle, *recebe;
     string fuc;
     float tempo;
 };

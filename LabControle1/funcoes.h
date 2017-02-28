@@ -8,7 +8,7 @@ struct aleatorio {
   double intervalo;
 };
 
-aleatorio funcAleatoria();
+double funcAleatoria(double t);
 double funcSenoidal(double A, double T, double t);
 double funcQuadrada(double A, double T, double t);
 

@@ -28,7 +28,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->customPlot->yAxis->setRange(-5, 5);
 
     controle= new std::thread(&MainWindow::Controle, this);
-    startTimer(10);
+    recebe= new std::thread(&MainWindow::Recebe, this);
+    startTimer(0);
 
 }
 
@@ -92,15 +93,16 @@ void MainWindow::on_comboBoxSinal_activated(const QString &arg1)
 void MainWindow::timerEvent(QTimerEvent *e)
 {
     ui->customPlot->replot();
+    ui->customPlot->graph(0)->removeDataBefore(tempo-12);
+    ui->customPlot->xAxis->setRange(tempo + 0.25, 10, Qt::AlignRight);
 }
 
+#include <chrono>
+auto now = std::chrono::high_resolution_clock::now();
 void MainWindow::Controle()
 {
     while(1)
     {
-        //double val= 3.1;
-        //quanser->writeDA(val);
-
         double A= ui->SpinBoxTensao->value();
         double T= ui->SpinBoxPeriodo->value();
         if(fuc == "Degrau")
@@ -121,15 +123,30 @@ void MainWindow::Controle()
         }
         else if(fuc == "Aleatorio")
         {
-            aleatorio z= funcAleatoria();
             // intervalo
-            ui->customPlot->graph(0)->addData(tempo, z.amplitude);
+            ui->customPlot->graph(0)->addData(tempo, funcAleatoria(tempo));
         }
-        ui->customPlot->graph(0)->removeDataBefore(tempo-12);
-        ui->customPlot->xAxis->setRange(tempo + 0.25, 10, Qt::AlignRight);
-        usleep(1*10E3);
-        tempo+=0.01;
+
+
+        //double val= 3.1;
+        //quanser->writeDA(val);
+
+
+        usleep(10.0*10E3);
+        qDebug() << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now()-now).count() << "ms\n";
+        now = std::chrono::high_resolution_clock::now();
+        tempo+=0.1;
     }
+}
+
+void MainWindow::Recebe()
+{
+    //quanser->readAD(0);
+    //quanser->readAD(1);
+    //quanser->readAD(2);
+    //quanser->readAD(3);
+
+    usleep(10E4);
 }
 
 bool canal0 = false;

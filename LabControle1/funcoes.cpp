@@ -24,14 +24,15 @@ double funcSerra(double amplitude, double periodo, double tempo)
     return amplitude/periodo*novoTempo;
 }
 
-aleatorio funcAleatoria()
+aleatorio last_resultado= {0,0};
+double funcAleatoria(double tempo)
 {
-    struct aleatorio resultado;
-
-    resultado.amplitude = (rand() % 4000 + 0)/ 1000;
-    resultado.intervalo = (rand() % 100 + 0)/10.0;
-
-    return resultado;
+    if(tempo>last_resultado.intervalo)
+    {
+        last_resultado.amplitude = (rand() % 8000 )/ 1000.0 - 4.0;
+        last_resultado.intervalo = (rand() % 100 )/50.0+tempo + 0.1;
+    }
+    return last_resultado.amplitude;
 }
 
 double funcSenoidal(double amp, double periodo, double tempo){

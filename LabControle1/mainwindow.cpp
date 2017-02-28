@@ -74,8 +74,8 @@ void MainWindow::on_radioButtonMalhaAberta_clicked()
 {
     if(ui->radioButtonMalhaAberta->isChecked())
     {
-        ui->SpinBoxTensao->setEnabled(true);
-        ui->SpinBoxNivel->setEnabled(false);
+        ui->labelTensaoNivel->setText("Tensão");
+        ui->SpinBoxTensaoNivel->setEnabled(true);
         ui->spinBoxCanal->setEnabled(true);
         ui->comboBoxSinal->setEnabled(true);
     }
@@ -85,8 +85,8 @@ void MainWindow::on_radioButtonMalhaFechada_clicked()
 {
     if(ui->radioButtonMalhaFechada->isChecked())
     {
-        ui->SpinBoxTensao->setEnabled(false);
-        ui->SpinBoxNivel->setEnabled(true);
+        ui->labelTensaoNivel->setText("Nivel");
+        ui->SpinBoxTensaoNivel->setEnabled(true);
         ui->spinBoxCanal->setEnabled(true);
         ui->comboBoxSinal->setEnabled(true);
     }
@@ -99,27 +99,22 @@ void MainWindow::on_comboBoxSinal_activated(const QString &arg1)
     if(sinal == "Degrau")
     {
         ui->SpinBoxPeriodo->setEnabled(false);
-        ui->SpinBoxTensao->setEnabled(true);
     }
     else if(sinal == "Senoidal")
     {
         ui->SpinBoxPeriodo->setEnabled(true);
-        ui->SpinBoxTensao->setEnabled(true);
     }
     else if(sinal == "Onda quadrada")
     {
         ui->SpinBoxPeriodo->setEnabled(true);
-        ui->SpinBoxTensao->setEnabled(true);
     }
     else if(sinal == "Dente de serra")
     {
         ui->SpinBoxPeriodo->setEnabled(true);
-        ui->SpinBoxTensao->setEnabled(true);
     }
     else if(sinal == "Aleatorio")
     {
         ui->SpinBoxPeriodo->setEnabled(false);
-        ui->SpinBoxTensao->setEnabled(false);
     }
 }
 
@@ -308,7 +303,7 @@ void MainWindow::on_checkBox_8_clicked()
 void MainWindow::on_pushButtonEnviar_clicked()
 {
     fuc= ui->comboBoxSinal->currentText().toStdString();
-    A = ui->SpinBoxTensao->value();
+    A = ui->SpinBoxTensaoNivel->value();
     T = ui->SpinBoxPeriodo->value();
 }
 

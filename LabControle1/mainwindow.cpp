@@ -54,7 +54,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_radioButtonMalhaAberta_clicked()
 {
-    fuc= ui->comboBoxSinal->currentText().toStdString();
     if(ui->radioButtonMalhaAberta->isChecked())
     {
         ui->SpinBoxTensao->setEnabled(true);
@@ -66,7 +65,6 @@ void MainWindow::on_radioButtonMalhaAberta_clicked()
 
 void MainWindow::on_radioButtonMalhaFechada_clicked()
 {
-    fuc= ui->comboBoxSinal->currentText().toStdString();
     if(ui->radioButtonMalhaFechada->isChecked())
     {
         ui->SpinBoxTensao->setEnabled(false);
@@ -80,7 +78,6 @@ void MainWindow::on_comboBoxSinal_activated(const QString &arg1)
 {
     QString sinal = ui->comboBoxSinal->currentText();
 
-    fuc= sinal.toStdString();
     if(sinal == "Degrau")
     {
         ui->SpinBoxPeriodo->setEnabled(false);
@@ -189,6 +186,10 @@ void MainWindow::Controle()
         {
             val= funcAleatoria(tempo);
         }
+        else
+        {
+            val= 0;
+        }
 
         ui->plotS1->graph(0)->addData(tempo, sensores[0]);
         ui->plotS1->graph(1)->addData(tempo, sensores[3]+0.5);
@@ -218,7 +219,6 @@ void MainWindow::Recebe()
 {
     while(0)
     {
-
        usleep(10E4);
     }
 }
@@ -264,12 +264,14 @@ void MainWindow::on_checkBox_8_clicked()
 
 void MainWindow::on_pushButtonEnviar_clicked()
 {
+    fuc= ui->comboBoxSinal->currentText().toStdString();
     A = ui->SpinBoxTensao->value();
     T = ui->SpinBoxPeriodo->value();
 }
 
 void MainWindow::on_pushButtonCancel_clicked()
 {
+    fuc= "";
     A = 0;
     T = 0;
 }

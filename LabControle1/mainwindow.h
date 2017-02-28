@@ -36,12 +36,19 @@ private slots:
     void on_radioButtonMalhaFechada_clicked();
     void on_comboBoxSinal_activated(const QString &arg1);
 
+    void on_pushButtonEnviar_clicked();
+
+    void on_pushButtonCancel_clicked();
+
 private:
     Quanser* quanser;
     Ui::MainWindow *ui;
     std::thread* controle, *recebe;
     string fuc;
     float tempo;
+    bool canais[8];
+    double A =0;
+    double T = 0;
 };
 
 #endif // MAINWINDOW_H

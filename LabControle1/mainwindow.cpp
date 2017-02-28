@@ -52,11 +52,6 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_pushButton_clicked()
-{
-
-}
-
 void MainWindow::on_radioButtonMalhaAberta_clicked()
 {
     fuc= ui->comboBoxSinal->currentText().toStdString();
@@ -165,8 +160,6 @@ void MainWindow::Controle()
 {
     while(1)
     {
-        double A= ui->SpinBoxTensao->value();
-        double T= ui->SpinBoxPeriodo->value();
         int canal= ui->spinBoxCanal->value();
 
         double sensores[8];
@@ -266,4 +259,16 @@ void MainWindow::on_checkBox_7_clicked()
 void MainWindow::on_checkBox_8_clicked()
 {
     canais[7] = ui->checkBox_8->isChecked();
+}
+
+void MainWindow::on_pushButtonEnviar_clicked()
+{
+    A = ui->SpinBoxTensao->value();
+    T = ui->SpinBoxPeriodo->value();
+}
+
+void MainWindow::on_pushButtonCancel_clicked()
+{
+    A = 0;
+    T = 0;
 }

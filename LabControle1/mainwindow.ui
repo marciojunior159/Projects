@@ -362,7 +362,7 @@
       </rect>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton">
+    <widget class="QPushButton" name="pushButtonEnviar">
      <property name="geometry">
       <rect>
        <x>60</x>
@@ -375,7 +375,7 @@
       <string>Enviar</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_2">
+    <widget class="QPushButton" name="pushButtonCancel">
      <property name="geometry">
       <rect>
        <x>190</x>
@@ -408,7 +408,6 @@
       <height>271</height>
      </rect>
     </property>
-    <zorder>groupBoxSaida</zorder>
    </widget>
    <widget class="QCustomPlot" name="plotS2" native="true">
     <property name="geometry">
@@ -427,7 +426,7 @@
      <x>0</x>
      <y>0</y>
      <width>1200</width>
-     <height>22</height>
+     <height>19</height>
     </rect>
    </property>
   </widget>

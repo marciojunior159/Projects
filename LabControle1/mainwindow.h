@@ -36,7 +36,9 @@ private slots:
     void on_radioButtonMalhaFechada_clicked();
     void on_comboBoxSinal_activated(const QString &arg1);
 
-    void on_pushButton_clicked();
+    void on_pushButtonEnviar_clicked();
+
+    void on_pushButtonCancel_clicked();
 
 private:
     Quanser* quanser;
@@ -45,6 +47,8 @@ private:
     string fuc;
     float tempo;
     bool canais[8];
+    double A =0;
+    double T = 0;
 };
 
 #endif // MAINWINDOW_H

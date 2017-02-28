@@ -419,7 +419,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QWidget" name="widget" native="true">
+   <widget class="QCustomPlot" name="plotS3" native="true">
     <property name="geometry">
      <rect>
       <x>520</x>
@@ -429,7 +429,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QWidget" name="widget_2" native="true">
+   <widget class="QCustomPlot" name="plotS4" native="true">
     <property name="geometry">
      <rect>
       <x>850</x>
@@ -446,7 +446,7 @@
      <x>0</x>
      <y>0</y>
      <width>1200</width>
-     <height>19</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

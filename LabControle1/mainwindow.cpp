@@ -41,10 +41,28 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->plotS2->yAxis->setLabel("y");
     ui->plotS2->yAxis->setRange(-5, 5);
 
+    ui->plotS3->addGraph();
+    ui->plotS3->addGraph();
+    ui->plotS3->graph(0)->setPen(QPen(Qt::blue));
+    ui->plotS3->graph(1)->setPen(QPen(Qt::red));
+    ui->plotS3->xAxis->setLabel("x");
+    ui->plotS3->yAxis->setLabel("y");
+    ui->plotS3->yAxis->setRange(-5, 5);
+
+    ui->plotS4->addGraph();
+    ui->plotS4->addGraph();
+    ui->plotS4->graph(0)->setPen(QPen(Qt::blue));
+    ui->plotS4->graph(1)->setPen(QPen(Qt::red));
+    ui->plotS4->xAxis->setLabel("x");
+    ui->plotS4->yAxis->setLabel("y");
+    ui->plotS4->yAxis->setRange(-5, 5);
+
     controle= new std::thread(&MainWindow::Controle, this);
     recebe= new std::thread(&MainWindow::Recebe, this);
-    startTimer(0);
+    for(int i=0; i<8; i++)
+        canais[i]= false;
 
+    startTimer(0);
 }
 
 MainWindow::~MainWindow()
@@ -119,6 +137,14 @@ void MainWindow::timerEvent(QTimerEvent *e)
     ui->plotS2->graph(0)->removeDataBefore(tempo-12);
     ui->plotS2->xAxis->setRange(tempo + 0.25, 10, Qt::AlignRight);
 
+    ui->plotS3->replot();
+    ui->plotS3->graph(0)->removeDataBefore(tempo-12);
+    ui->plotS3->xAxis->setRange(tempo + 0.25, 10, Qt::AlignRight);
+
+    ui->plotS4->replot();
+    ui->plotS4->graph(0)->removeDataBefore(tempo-12);
+    ui->plotS4->xAxis->setRange(tempo + 0.25, 10, Qt::AlignRight);
+
     if(canais[0])
         ui->plotS1->graph(0)->setVisible(1);
     else
@@ -138,16 +164,27 @@ void MainWindow::timerEvent(QTimerEvent *e)
         ui->plotS2->graph(1)->setVisible(1);
     else
         ui->plotS2->graph(1)->setVisible(0);
-    /*
+
     if(canais[4])
-        ui->plotS1->graph(0)->setVisible(1);
+        ui->plotS3->graph(0)->setVisible(1);
+    else
+        ui->plotS3->graph(0)->setVisible(0);
+
     if(canais[5])
-        ui->plotS1->graph(0)->setVisible(1);
+        ui->plotS4->graph(0)->setVisible(1);
+    else
+        ui->plotS4->graph(0)->setVisible(0);
+
     if(canais[6])
-        ui->plotS1->graph(0)->setVisible(1);
+        ui->plotS3->graph(1)->setVisible(1);
+    else
+        ui->plotS3->graph(1)->setVisible(0);
+
     if(canais[7])
-        ui->plotS1->graph(0)->setVisible(1);
-    */
+        ui->plotS4->graph(1)->setVisible(1);
+    else
+        ui->plotS4->graph(1)->setVisible(0);
+
 
 }
 
@@ -192,9 +229,15 @@ void MainWindow::Controle()
         }
 
         ui->plotS1->graph(0)->addData(tempo, sensores[0]);
-        ui->plotS1->graph(1)->addData(tempo, sensores[3]+0.5);
+        ui->plotS1->graph(1)->addData(tempo, -sensores[2]);
         ui->plotS2->graph(0)->addData(tempo, sensores[1]);
-        ui->plotS2->graph(1)->addData(tempo, sensores[4]-0.5);
+        ui->plotS2->graph(1)->addData(tempo, -sensores[3]);
+
+        ui->plotS3->graph(0)->addData(tempo, sensores[4]);
+        ui->plotS3->graph(1)->addData(tempo, -sensores[6]);
+        ui->plotS4->graph(0)->addData(tempo, sensores[5]);
+        ui->plotS4->graph(1)->addData(tempo, -sensores[7]);
+
         ui->customPlot->graph(0)->addData(tempo, val);
 
         if(ui->radioButtonMalhaAberta->isChecked())

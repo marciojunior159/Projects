@@ -18,15 +18,28 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->comboBoxSinal->addItem("Onda quadrada");
     ui->comboBoxSinal->addItem("Dente de serra");
     ui->comboBoxSinal->addItem("Aleatorio");
-      
-    ui->customPlot->addGraph();
 
-    // give the axes some labels:
+
+    ui->customPlot->addGraph();
     ui->customPlot->xAxis->setLabel("x");
     ui->customPlot->yAxis->setLabel("y");
-    // set axes ranges, so we see all data:
-    //ui->customPlot->xAxis->setRange(-5, 5);
     ui->customPlot->yAxis->setRange(-5, 5);
+
+    ui->plotS1->addGraph();
+    ui->plotS1->addGraph();
+    ui->plotS1->graph(0)->setPen(QPen(Qt::blue));
+    ui->plotS1->graph(1)->setPen(QPen(Qt::red));
+    ui->plotS1->xAxis->setLabel("x");
+    ui->plotS1->yAxis->setLabel("y");
+    ui->plotS1->yAxis->setRange(-5, 5);
+
+    ui->plotS2->addGraph();
+    ui->plotS2->addGraph();
+    ui->plotS2->graph(0)->setPen(QPen(Qt::blue));
+    ui->plotS2->graph(1)->setPen(QPen(Qt::red));
+    ui->plotS2->xAxis->setLabel("x");
+    ui->plotS2->yAxis->setLabel("y");
+    ui->plotS2->yAxis->setRange(-5, 5);
 
     controle= new std::thread(&MainWindow::Controle, this);
     recebe= new std::thread(&MainWindow::Recebe, this);
@@ -39,6 +52,10 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::on_pushButton_clicked()
+{
+
+}
 
 void MainWindow::on_radioButtonMalhaAberta_clicked()
 {
@@ -101,6 +118,45 @@ void MainWindow::timerEvent(QTimerEvent *e)
     ui->customPlot->replot();
     ui->customPlot->graph(0)->removeDataBefore(tempo-12);
     ui->customPlot->xAxis->setRange(tempo + 0.25, 10, Qt::AlignRight);
+
+    ui->plotS1->replot();
+    ui->plotS1->graph(0)->removeDataBefore(tempo-12);
+    ui->plotS1->xAxis->setRange(tempo + 0.25, 10, Qt::AlignRight);
+
+    ui->plotS2->replot();
+    ui->plotS2->graph(0)->removeDataBefore(tempo-12);
+    ui->plotS2->xAxis->setRange(tempo + 0.25, 10, Qt::AlignRight);
+
+    if(canais[0])
+        ui->plotS1->graph(0)->setVisible(1);
+    else
+        ui->plotS1->graph(0)->setVisible(0);
+
+    if(canais[1])
+        ui->plotS2->graph(0)->setVisible(1);
+    else
+        ui->plotS2->graph(0)->setVisible(0);
+
+    if(canais[2])
+        ui->plotS1->graph(1)->setVisible(1);
+    else
+        ui->plotS1->graph(1)->setVisible(0);
+
+    if(canais[3])
+        ui->plotS2->graph(1)->setVisible(1);
+    else
+        ui->plotS2->graph(1)->setVisible(0);
+    /*
+    if(canais[4])
+        ui->plotS1->graph(0)->setVisible(1);
+    if(canais[5])
+        ui->plotS1->graph(0)->setVisible(1);
+    if(canais[6])
+        ui->plotS1->graph(0)->setVisible(1);
+    if(canais[7])
+        ui->plotS1->graph(0)->setVisible(1);
+    */
+
 }
 
 #include <chrono>
@@ -112,6 +168,11 @@ void MainWindow::Controle()
         double A= ui->SpinBoxTensao->value();
         double T= ui->SpinBoxPeriodo->value();
         int canal= ui->spinBoxCanal->value();
+
+        double sensores[8];
+        for(int i=0; i<8; i++)
+            sensores[i]= quanser->readAD(i);
+
         double val=0;
 
         if(fuc == "Degrau")
@@ -135,72 +196,74 @@ void MainWindow::Controle()
             val= funcAleatoria(tempo);
         }
 
-        qDebug() << "Teste " << quanser->readAD(0) << " " << quanser->readAD(1)
-              << " " << quanser->readAD(2) << " " << quanser->readAD(3) << endl;
-
+        ui->plotS1->graph(0)->addData(tempo, sensores[0]);
+        ui->plotS1->graph(1)->addData(tempo, sensores[3]+0.5);
+        ui->plotS2->graph(0)->addData(tempo, sensores[1]);
+        ui->plotS2->graph(1)->addData(tempo, sensores[4]-0.5);
         ui->customPlot->graph(0)->addData(tempo, val);
-        quanser->writeDA(canal, val);
 
-        usleep(10.0*10E3);
-        //qDebug() << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now()-now).count() << "ms\n";
+        if(ui->radioButtonMalhaAberta->isChecked())
+        {
+            quanser->writeDA(canal, val);
+        }
+        else if(ui->radioButtonMalhaFechada->isChecked())
+        {
+            // Calculo malha fechada e controle
+            quanser->writeDA(canal, val);
+        }
+
+        qDebug() << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now()-now).count() << "ms\n";
         now = std::chrono::high_resolution_clock::now();
         tempo+=0.1;
+
+        usleep(10.0*10E3);
     }
 }
 
 void MainWindow::Recebe()
 {
-    while(1)
+    while(0)
     {
 
        usleep(10E4);
     }
 }
 
-bool canal0 = false;
-bool canal1 = false;
-bool canal2 = false;
-bool canal3 = false;
-bool canal4 = false;
-bool canal5 = false;
-bool canal6 = false;
-bool canal7 = false;
-
 void MainWindow::on_checkBox_clicked()
 {
-    canal0 = ui->checkBox->isChecked();
+    canais[0] = ui->checkBox->isChecked();
 }
 
 void MainWindow::on_checkBox_2_clicked()
 {
-    canal1 = ui->checkBox_2->isChecked();
+    canais[1] = ui->checkBox_2->isChecked();
 }
 
 void MainWindow::on_checkBox_3_clicked()
 {
-    canal2 = ui->checkBox_3->isChecked();
+    canais[2] = ui->checkBox_3->isChecked();
 }
 void MainWindow::on_checkBox_4_clicked()
 {
-    canal3 = ui->checkBox_4->isChecked();
+    canais[3] = ui->checkBox_4->isChecked();
 }
 
 void MainWindow::on_checkBox_5_clicked()
 {
-    canal4 = ui->checkBox_5->isChecked();
+    canais[4] = ui->checkBox_5->isChecked();
 }
 
 void MainWindow::on_checkBox_6_clicked()
 {
-    canal5 = ui->checkBox_6->isChecked();
+    canais[5] = ui->checkBox_6->isChecked();
 }
 
 void MainWindow::on_checkBox_7_clicked()
 {
-    canal6 = ui->checkBox_7->isChecked();
+    canais[6] = ui->checkBox_7->isChecked();
 }
 
 void MainWindow::on_checkBox_8_clicked()
 {
-    canal7 = ui->checkBox_8->isChecked();
+    canais[7] = ui->checkBox_8->isChecked();
 }

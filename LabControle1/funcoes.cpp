@@ -58,10 +58,17 @@ double funcQuadrada(double amp, double periodo, double tempo){
 
 }
 
+//funcao que retorna a tensao para controlar a vazao de entrada no modo malha fechada a partir da altura
 double funcAlturaTensao(double alt){
 
     //aproximação linear
     return (alt + 11)/12;
+}
+
+//funcao que retorna a altura a partir das leituras do sensor de pressao
+double funcSensor(double leituras){
+
+    return 5.4*leituras + 1.5;
 }
 
 //Nao esquecer das travas

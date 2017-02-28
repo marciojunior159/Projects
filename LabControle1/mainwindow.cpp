@@ -161,6 +161,7 @@ void MainWindow::timerEvent(QTimerEvent *e)
 
 #include <chrono>
 auto now = std::chrono::high_resolution_clock::now();
+
 void MainWindow::Controle()
 {
     while(1)

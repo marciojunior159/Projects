@@ -32,6 +32,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->plotS1->xAxis->setLabel("x");
     ui->plotS1->yAxis->setLabel("y");
     ui->plotS1->yAxis->setRange(-5, 5);
+    ui->plotS1->legend->setVisible(true);
+    ui->plotS1->legend->setFont(QFont("Helvetica", 9));
+    ui->plotS1->legend->setRowSpacing(-3);
+    ui->plotS1->graph(0)->setName("Canal 0");
+    ui->plotS1->graph(1)->setName("Canal 2");
+    ui->plotS1->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignRight|Qt::AlignBottom);
 
     ui->plotS2->addGraph();
     ui->plotS2->addGraph();
@@ -40,6 +46,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->plotS2->xAxis->setLabel("x");
     ui->plotS2->yAxis->setLabel("y");
     ui->plotS2->yAxis->setRange(-5, 5);
+    ui->plotS2->legend->setVisible(true);
+    ui->plotS2->legend->setFont(QFont("Helvetica", 9));
+    ui->plotS2->legend->setRowSpacing(-3);
+    ui->plotS2->graph(0)->setName("Canal 1");
+    ui->plotS2->graph(1)->setName("Canal 3");
+    ui->plotS2->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignRight|Qt::AlignBottom);
 
     ui->plotS3->addGraph();
     ui->plotS3->addGraph();
@@ -48,6 +60,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->plotS3->xAxis->setLabel("x");
     ui->plotS3->yAxis->setLabel("y");
     ui->plotS3->yAxis->setRange(-5, 5);
+    ui->plotS3->legend->setVisible(true);
+    ui->plotS3->legend->setFont(QFont("Helvetica", 9));
+    ui->plotS3->legend->setRowSpacing(-3);
+    ui->plotS3->graph(0)->setName("Canal 4");
+    ui->plotS3->graph(1)->setName("Canal 6");
+    ui->plotS3->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignRight|Qt::AlignBottom);
 
     ui->plotS4->addGraph();
     ui->plotS4->addGraph();
@@ -56,6 +74,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->plotS4->xAxis->setLabel("x");
     ui->plotS4->yAxis->setLabel("y");
     ui->plotS4->yAxis->setRange(-5, 5);
+    ui->plotS4->legend->setVisible(true);
+    ui->plotS4->legend->setFont(QFont("Helvetica", 9));
+    ui->plotS4->legend->setRowSpacing(-3);
+    ui->plotS4->graph(0)->setName("Canal 5");
+    ui->plotS4->graph(1)->setName("Canal 7");
+    ui->plotS4->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignRight|Qt::AlignBottom);
 
     controle= new std::thread(&MainWindow::Controle, this);
     recebe= new std::thread(&MainWindow::Recebe, this);

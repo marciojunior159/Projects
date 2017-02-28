@@ -196,7 +196,7 @@ void MainWindow::Controle()
         for(int i=0; i<8; i++)
             sensores[i]= quanser->readAD(i);
 
-        double val=0;
+        double val=0, inAlt, erro, outAlt;
 
         if(fuc == "Degrau")
         {
@@ -242,6 +242,12 @@ void MainWindow::Controle()
         else if(ui->radioButtonMalhaFechada->isChecked())
         {
             // Calculo malha fechada e controle
+            inAlt = ui->SpinBoxTensaoNivel->value();
+            //loop para todos as portas?
+            outAlt = funcSensor(sensores[0]);
+            erro = inAlt - outAlt;
+            val = funcAlturaTensao(inAlt+erro);
+
             quanser->writeDA(canal, val);
         }
 

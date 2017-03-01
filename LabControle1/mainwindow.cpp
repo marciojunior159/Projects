@@ -225,7 +225,7 @@ void MainWindow::Controle()
         for(int i=0; i<8; i++)
             sensores[i]= quanser->readAD(i);
 
-        double val=0;
+        double val=0, inAlt, erro, outAlt;
 
         if(fuc == "Degrau")
         {
@@ -266,11 +266,41 @@ void MainWindow::Controle()
 
         if(ui->radioButtonMalhaAberta->isChecked())
         {
+            outAlt = funcSensor(sensores[0]);
+            //Trava #1
+            if(val > 4)
+                val = 4;
+            if(val<-4)
+                val = -4;
+            //Trava #2 e #3
+            if(outAlt <= 0 && val < 0){
+                val = 0;
+            }else if(outAlt >=29 && val > 0){
+                val = 2.75; //tensao de equilibrio
+            }
             quanser->writeDA(canal, val);
         }
         else if(ui->radioButtonMalhaFechada->isChecked())
         {
             // Calculo malha fechada e controle
+            inAlt = ui->SpinBoxTensaoNivel->value();
+            //loop para todos as portas?
+            outAlt = funcSensor(sensores[0]);
+            erro = inAlt - outAlt;
+            val = funcAlturaTensao(inAlt+erro);
+
+            //Trava #1
+            if(val > 4)
+                val = 4;
+            if(val<-4)
+                val = -4;
+            //Trava #2 e #3
+            if(outAlt <= 0 && val < 0){
+                val = 0;
+            }else if(outAlt >=29 && val > 0){
+                val = 2.75; //tensao de equilibrio
+            }
+
             quanser->writeDA(canal, val);
         }
 

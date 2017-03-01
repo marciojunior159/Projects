@@ -261,6 +261,18 @@ void MainWindow::Controle()
 
         if(ui->radioButtonMalhaAberta->isChecked())
         {
+            outAlt = funcSensor(sensores[0]);
+            //Trava #1
+            if(val > 4)
+                val = 4;
+            if(val<-4)
+                val = -4;
+            //Trava #2 e #3
+            if(outAlt <= 0 && val < 0){
+                val = 0;
+            }else if(outAlt >=29 && val > 0){
+                val = 2.75; //tensao de equilibrio
+            }
             quanser->writeDA(canal, val);
         }
         else if(ui->radioButtonMalhaFechada->isChecked())
@@ -271,6 +283,18 @@ void MainWindow::Controle()
             outAlt = funcSensor(sensores[0]);
             erro = inAlt - outAlt;
             val = funcAlturaTensao(inAlt+erro);
+
+            //Trava #1
+            if(val > 4)
+                val = 4;
+            if(val<-4)
+                val = -4;
+            //Trava #2 e #3
+            if(outAlt <= 0 && val < 0){
+                val = 0;
+            }else if(outAlt >=29 && val > 0){
+                val = 2.75; //tensao de equilibrio
+            }
 
             quanser->writeDA(canal, val);
         }

@@ -8,7 +8,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     //quanser= new Quanser("10.13.97.69", 20072);
-    quanser= new Quanser("127.0.0.1", 20072);
+    quanser= new Quanser("127.0.0.1", 20073);
 
     fuc= "WAIT";
     tempo= 0;
@@ -31,13 +31,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->plotS1->graph(1)->setPen(QPen(Qt::red));
     ui->plotS1->xAxis->setLabel("x");
     ui->plotS1->yAxis->setLabel("y");
-    ui->plotS1->yAxis->setRange(-5, 5);
+    ui->plotS1->yAxis->setRange(0, 35);
     ui->plotS1->legend->setVisible(true);
     ui->plotS1->legend->setFont(QFont("Helvetica", 9));
-    ui->plotS1->legend->setRowSpacing(-3);
+    ui->plotS1->legend->setRowSpacing(-5);
     ui->plotS1->graph(0)->setName("Canal 0");
     ui->plotS1->graph(1)->setName("Canal 2");
-    ui->plotS1->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignRight|Qt::AlignBottom);
+    ui->plotS1->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignLeft|Qt::AlignTop);
 
     ui->plotS2->addGraph();
     ui->plotS2->addGraph();
@@ -45,13 +45,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->plotS2->graph(1)->setPen(QPen(Qt::red));
     ui->plotS2->xAxis->setLabel("x");
     ui->plotS2->yAxis->setLabel("y");
-    ui->plotS2->yAxis->setRange(-5, 5);
+    ui->plotS2->yAxis->setRange(0, 35);
     ui->plotS2->legend->setVisible(true);
     ui->plotS2->legend->setFont(QFont("Helvetica", 9));
     ui->plotS2->legend->setRowSpacing(-3);
     ui->plotS2->graph(0)->setName("Canal 1");
     ui->plotS2->graph(1)->setName("Canal 3");
-    ui->plotS2->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignRight|Qt::AlignBottom);
+    ui->plotS2->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignLeft|Qt::AlignTop);
 
     ui->plotS3->addGraph();
     ui->plotS3->addGraph();
@@ -59,13 +59,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->plotS3->graph(1)->setPen(QPen(Qt::red));
     ui->plotS3->xAxis->setLabel("x");
     ui->plotS3->yAxis->setLabel("y");
-    ui->plotS3->yAxis->setRange(-5, 5);
+    ui->plotS3->yAxis->setRange(0, 35);
     ui->plotS3->legend->setVisible(true);
     ui->plotS3->legend->setFont(QFont("Helvetica", 9));
     ui->plotS3->legend->setRowSpacing(-3);
     ui->plotS3->graph(0)->setName("Canal 4");
     ui->plotS3->graph(1)->setName("Canal 6");
-    ui->plotS3->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignRight|Qt::AlignBottom);
+    ui->plotS3->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignLeft|Qt::AlignTop);
 
     ui->plotS4->addGraph();
     ui->plotS4->addGraph();
@@ -73,13 +73,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->plotS4->graph(1)->setPen(QPen(Qt::red));
     ui->plotS4->xAxis->setLabel("x");
     ui->plotS4->yAxis->setLabel("y");
-    ui->plotS4->yAxis->setRange(-5, 5);
+    ui->plotS4->yAxis->setRange(0, 35);
     ui->plotS4->legend->setVisible(true);
     ui->plotS4->legend->setFont(QFont("Helvetica", 9));
     ui->plotS4->legend->setRowSpacing(-3);
     ui->plotS4->graph(0)->setName("Canal 5");
     ui->plotS4->graph(1)->setName("Canal 7");
-    ui->plotS4->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignRight|Qt::AlignBottom);
+    ui->plotS4->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignLeft|Qt::AlignTop);
 
     controle= new std::thread(&MainWindow::Controle, this);
     recebe= new std::thread(&MainWindow::Recebe, this);
@@ -122,22 +122,27 @@ void MainWindow::on_comboBoxSinal_activated(const QString &arg1)
 
     if(sinal == "Degrau")
     {
+        ui->SpinBoxTensaoNivel->setEnabled(true);
         ui->SpinBoxPeriodo->setEnabled(false);
     }
     else if(sinal == "Senoidal")
     {
+        ui->SpinBoxTensaoNivel->setEnabled(true);
         ui->SpinBoxPeriodo->setEnabled(true);
     }
     else if(sinal == "Onda quadrada")
     {
+        ui->SpinBoxTensaoNivel->setEnabled(true);
         ui->SpinBoxPeriodo->setEnabled(true);
     }
     else if(sinal == "Dente de serra")
     {
+        ui->SpinBoxTensaoNivel->setEnabled(true);
         ui->SpinBoxPeriodo->setEnabled(true);
     }
     else if(sinal == "Aleatorio")
     {
+        ui->SpinBoxTensaoNivel->setEnabled(false);
         ui->SpinBoxPeriodo->setEnabled(false);
     }
 }

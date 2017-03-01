@@ -8,7 +8,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     //quanser= new Quanser("10.13.97.69", 20072);
-    quanser= new Quanser("127.0.0.1", 20073);
+    quanser= new Quanser("127.0.0.1", 20074);
 
     fuc= "WAIT";
     tempo= 0;
@@ -102,6 +102,7 @@ void MainWindow::on_radioButtonMalhaAberta_clicked()
         ui->SpinBoxTensaoNivel->setEnabled(true);
         ui->spinBoxCanal->setEnabled(true);
         ui->comboBoxSinal->setEnabled(true);
+        ui->SpinBoxTensaoNivel->setMaximum(4);
     }
 }
 
@@ -113,6 +114,7 @@ void MainWindow::on_radioButtonMalhaFechada_clicked()
         ui->SpinBoxTensaoNivel->setEnabled(true);
         ui->spinBoxCanal->setEnabled(true);
         ui->comboBoxSinal->setEnabled(true);
+        ui->SpinBoxTensaoNivel->setMaximum(30);
     }
 }
 
@@ -252,17 +254,15 @@ void MainWindow::Controle()
             val= 0;
         }
 
-        ui->plotS1->graph(0)->addData(tempo, sensores[0]);
-        ui->plotS1->graph(1)->addData(tempo, -sensores[2]);
-        ui->plotS2->graph(0)->addData(tempo, sensores[1]);
-        ui->plotS2->graph(1)->addData(tempo, -sensores[3]);
+        ui->plotS1->graph(0)->addData(tempo, funcSensor(sensores[0]));
+        ui->plotS1->graph(1)->addData(tempo, funcSensor(sensores[2]));
+        ui->plotS2->graph(0)->addData(tempo, funcSensor(sensores[1]));
+        ui->plotS2->graph(1)->addData(tempo, funcSensor(sensores[3]));
 
-        ui->plotS3->graph(0)->addData(tempo, sensores[4]);
-        ui->plotS3->graph(1)->addData(tempo, -sensores[6]);
-        ui->plotS4->graph(0)->addData(tempo, sensores[5]);
-        ui->plotS4->graph(1)->addData(tempo, -sensores[7]);
-
-        ui->customPlot->graph(0)->addData(tempo, val);
+        ui->plotS3->graph(0)->addData(tempo, funcSensor(sensores[4]));
+        ui->plotS3->graph(1)->addData(tempo, funcSensor(sensores[6]));
+        ui->plotS4->graph(0)->addData(tempo, funcSensor(sensores[5]));
+        ui->plotS4->graph(1)->addData(tempo, funcSensor(sensores[7]));
 
         if(ui->radioButtonMalhaAberta->isChecked())
         {
@@ -273,21 +273,22 @@ void MainWindow::Controle()
             if(val<-4)
                 val = -4;
             //Trava #2 e #3
-            if(outAlt <= 0 && val < 0){
+            if(outAlt <= 1.5 && val < 0){
                 val = 0;
-            }else if(outAlt >=29 && val > 0){
+            }else if(outAlt >= 29 && val > 0){
                 val = 2.75; //tensao de equilibrio
             }
+            qDebug() << sensores[0] << " " << outAlt << endl;
             quanser->writeDA(canal, val);
         }
         else if(ui->radioButtonMalhaFechada->isChecked())
         {
             // Calculo malha fechada e controle
-            inAlt = ui->SpinBoxTensaoNivel->value();
+            inAlt = val;
             //loop para todos as portas?
             outAlt = funcSensor(sensores[0]);
             erro = inAlt - outAlt;
-            val = funcAlturaTensao(inAlt+erro);
+            val = funcAlturaTensao(inAlt)+erro;
 
             //Trava #1
             if(val > 4)
@@ -295,7 +296,7 @@ void MainWindow::Controle()
             if(val<-4)
                 val = -4;
             //Trava #2 e #3
-            if(outAlt <= 0 && val < 0){
+            if(outAlt <= 1.5 && val < 0){
                 val = 0;
             }else if(outAlt >=29 && val > 0){
                 val = 2.75; //tensao de equilibrio
@@ -304,7 +305,10 @@ void MainWindow::Controle()
             quanser->writeDA(canal, val);
         }
 
-        qDebug() << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now()-now).count() << "ms\n";
+        ui->customPlot->graph(0)->addData(tempo, val);
+
+
+        //qDebug() << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now()-now).count() << "ms\n";
         now = std::chrono::high_resolution_clock::now();
         tempo+=0.1;
 

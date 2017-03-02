@@ -99,10 +99,10 @@ void MainWindow::on_radioButtonMalhaAberta_clicked()
     if(ui->radioButtonMalhaAberta->isChecked())
     {
         ui->labelTensaoNivel->setText("Tensão");
-        ui->SpinBoxTensaoNivel->setEnabled(true);
         ui->spinBoxCanal->setEnabled(true);
         ui->comboBoxSinal->setEnabled(true);
         ui->SpinBoxTensaoNivel->setMaximum(4);
+        on_comboBoxSinal_activated(QString());
     }
 }
 
@@ -111,10 +111,10 @@ void MainWindow::on_radioButtonMalhaFechada_clicked()
     if(ui->radioButtonMalhaFechada->isChecked())
     {
         ui->labelTensaoNivel->setText("Nivel");
-        ui->SpinBoxTensaoNivel->setEnabled(true);
         ui->spinBoxCanal->setEnabled(true);
         ui->comboBoxSinal->setEnabled(true);
         ui->SpinBoxTensaoNivel->setMaximum(30);
+        on_comboBoxSinal_activated(QString());
     }
 }
 
@@ -278,7 +278,6 @@ void MainWindow::Controle()
             }else if(outAlt >= 29 && val > 0){
                 val = 2.75; //tensao de equilibrio
             }
-            qDebug() << sensores[0] << " " << outAlt << endl;
             quanser->writeDA(canal, val);
         }
         else if(ui->radioButtonMalhaFechada->isChecked())

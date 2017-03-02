@@ -11,7 +11,7 @@ serverSocket.bind((serverName,serverPort)) # bind do ip do servidor com a porta
 serverSocket.listen(1) # socket pronto para "ouvir" conexoes
 
 print "Servidor TCP esperando conexoes na porta %d ..." % (serverPort)
-connectionSocket, addr = serverSocket.accept() # aceita as conexoes dos clientes
+
 
 lastRecv= "0,0 \n"
 
@@ -37,42 +37,49 @@ def simulacao(threadName, delay):
         if h1 < 0:
             h1= 0
         if h2 < 0:
-            h3= 0
+            h2= 0
         h10= h1
         h20= h2
         time.sleep(delay)
 
-thread.start_new_thread(simulacao, ("simulacao", 0.01,))
-
 while 1:
-    sentence = connectionSocket.recv(1024) # recebe dados do cliente
-    if sentence == "":
-        break
-    if "READ" in sentence:
-        if sentence[5] == "0":
-            print h1*100/6.1
-            toSend= str(h1*100/6.1)+" \n"
-            toSend= toSend.replace(".", ",")
-            connectionSocket.send(toSend)
-        elif sentence[5] == "1":
-            print h2*100/6.1
-            toSend= str(h2*100/6.1)+" \n"
-            toSend= toSend.replace(".", ",")
-            connectionSocket.send(toSend)
+    h1= 0.0
+    h2= 0.0
+    h10= 0.0
+    u10= 0.0
+    h20= 0.0
+    u20= 0.0
+    parar= False
+    thread.start_new_thread(simulacao, ("simulacao", 0.01,))
+    connectionSocket, addr = serverSocket.accept() # aceita as conexoes dos clientes
+    while 1:
+        sentence = connectionSocket.recv(1024) # recebe dados do cliente
+        if sentence == "":
+            break
+        if "READ" in sentence:
+            if sentence[5] == "0":
+                #print h1*100/6.1
+                toSend= str(h1*100/6.1)+" \n"
+                toSend= toSend.replace(".", ",")
+                connectionSocket.send(toSend)
+            elif sentence[5] == "1":
+                #print h2*100/6.1
+                toSend= str(h2*100/6.1)+" \n"
+                toSend= toSend.replace(".", ",")
+                connectionSocket.send(toSend)
+            else:
+                #print h1*100/6.1
+                toSend= str(h1*100/6.1)+" \n"
+                toSend= toSend.replace(".", ",")
+                connectionSocket.send(toSend)
+
         else:
-            print h1*100/6.1
-            toSend= str(h1*100/6.1)+" \n"
-            toSend= toSend.replace(".", ",")
-            connectionSocket.send(toSend)
+            #print sentence
+            u10= float(sentence.split(' ')[2])
+            lastRecv= sentence.split(' ')[2]+" \n"
+            lastRecv= lastRecv.replace(".", ",")
+            connectionSocket.send("ACK\n")
+    parar= True
 
-    else:
-        #print sentence
-        u10= float(sentence.split(' ')[2])
-        lastRecv= sentence.split(' ')[2]+" \n"
-        lastRecv= lastRecv.replace(".", ",")
-        connectionSocket.send("ACK\n")
-
-parar= True
-
-connectionSocket.close() # encerra o socket com o cliente
+    connectionSocket.close() # encerra o socket com o cliente
 serverSocket.close() # encerra o socket do servidor

@@ -29,6 +29,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \usepackage{graphicx}
+\usepackage{float}
 \usepackage{epstopdf}
 \usepackage{subfig}
 \usepackage{mathptmx}
@@ -288,11 +289,61 @@ trabalho.
 
 \section{REFERENCIAL TEÓRICO}
 
+\subsection{MODELAGEM}
+
+\begin{figure}[h]
+\includegraphics[scale=1]{tanques.png}
+\caption{Sistema de tanques}
+\label{fig:tanques}
+\end{figure}
+Sabemos que a vazão de entrada é dada por $ k_mu(t) $ e a vazão de saida $ \sqrt{2gh(t)}a $, onde $k_m$ é a constante da bomba e $"a"$ a área do furo. Assim: 
+\[ \frac{dq}{dt}=qin-qout\]
+\[ A\frac{dh(t)}{dt}=k_mu(t)-\sqrt{2gh(t)}a \]
+\[ A\frac{dh(t)}{dt}=k_mu(t)-\sqrt{2gh(t)}a \]
+\[ \frac{dh(t)}{dt}= \frac{k_m}{A}u(t)- \frac{a\sqrt{2gh(t)}}{A} \]
+
+\subsection{ANALISE}
+
+Para atingir um certo nivel no tanque estamos interessados no valor de tensão que fará o sistema alcançar esse nivel. Para isso precisamos analisar o regime permanente.
+
+Apos muito tempo a altura praticamente não vai mais variar, então podemos considerar.  $\frac{dh(t)}{dt}=0 $
+Com isso nossa equação fica:
+\[ 0= \frac{k_m}{A}u(t)- \frac{a\sqrt{2gh(t)}}{A} \]
+\[ \frac{k_m}{A}u(t)= \frac{a\sqrt{2gh(t)}}{A} \]
+\[ u(t)=  \frac{a\sqrt{2gh(t)}}{k_m}\]
+\begin{equation}\label{eq:1}
+u(t)=k\sqrt{h}
+\end{equation}
+Com a relação do sinal de entrada com o nivel final do tanque, podemos calcular experimentalmente o valor de k, aplicando um sinal de entrada do tipo degrau e observando o seu valor final.
+Com o valor de k calculado dado um nivel sabemos qual a tensão necessaria para atingilo.
 
 
-Trata-se da apresentação do embasamento teórico sobre o qual se fundamentará
-o trabalho, ou seja, são os pressupostos que darão suporte à abordagem do trabalho.
-Lembrar de sempre que utilizar texto de outros lugares, utilizar citação da fonte, como por exemplo, \cite{LATEX04}.
+\subsection{SISTEMA EM MALHA ABERTA}
+
+\begin{figure}[H]
+\includegraphics[width=15cm]{malhaAberta.png}
+\caption{Malha aberta}
+\label{fig:malhaAberta}
+\end{figure}
+
+No processo em malha aberta não existe nenhum controle o sinal de entrada é a tensão e a saida o nivel do tanque
+
+
+\subsection{SISTEMA EM MALHA FECHADA}
+
+No processo em malha fechada o sinal de entrada é o nivel de refencia.
+A saida do controlador é a diferença do nivel que eu quero com o meu nivel atual somado com a tensão necessaria para o sistema estabilizar naquele nivel, utilizando a equação \ref{eq:1}.
+O periodo de amostragem e controle do sistema é de 100 milisegundos.
+
+
+
+\begin{figure}[H]
+\includegraphics[width=15cm]{malhaFechada.jpg}
+\caption{Malha Fechada}
+\label{fig:malhaFechada}
+\end{figure}
+
+
 
 \subsection{Seções}
 

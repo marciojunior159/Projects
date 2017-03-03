@@ -42,7 +42,12 @@ def simulacao(threadName, delay):
         h20= h2
         time.sleep(delay)
 
-while 1:
+
+#c2*u10=c1*math.sqrt(h10)
+print math.pow(c2/c1,2)
+print c1/c2
+
+while 0:
     h1= 0.0
     h2= 0.0
     h10= 0.0

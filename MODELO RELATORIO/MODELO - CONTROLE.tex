@@ -290,54 +290,49 @@ trabalho.
 \section{REFERENCIAL TEÓRICO}
 
 \subsection{MODELAGEM}
-
+\hspace{4ex}O sistema de controle é representado pelo seguinte modelo.
 \begin{figure}[h]
 \includegraphics[scale=1]{tanques.png}
 \caption{Sistema de tanques}
 \label{fig:tanques}
 \end{figure}
-Sabemos que a vazão de entrada é dada por $ k_mu(t) $ e a vazão de saida $ \sqrt{2gh(t)}a $, onde $k_m$ é a constante da bomba e $"a"$ a área do furo. Assim: 
+
+\hspace{4ex}Sabemos que a vazão de entrada é dada por $ k_mu(t) $ e a vazão de saída $ \sqrt{2gh(t)}a $, onde $k_m$ é a constante da bomba e $"a"$ a área do furo. Assim: 
 \[ \frac{dq}{dt}=qin-qout\]
 \[ A\frac{dh(t)}{dt}=k_mu(t)-\sqrt{2gh(t)}a \]
 \[ A\frac{dh(t)}{dt}=k_mu(t)-\sqrt{2gh(t)}a \]
 \[ \frac{dh(t)}{dt}= \frac{k_m}{A}u(t)- \frac{a\sqrt{2gh(t)}}{A} \]
 
 \subsection{ANALISE}
-
-Para atingir um certo nivel no tanque estamos interessados no valor de tensão que fará o sistema alcançar esse nivel. Para isso precisamos analisar o regime permanente.
-
-Apos muito tempo a altura praticamente não vai mais variar, então podemos considerar.  $\frac{dh(t)}{dt}=0 $
-Com isso nossa equação fica:
+\hspace{4ex}Para atingir um certo nível no tanque estamos interessados no valor de tensão que fará o sistema alcançar esse nível. Para isso precisamos analisar o regime permanente.
+\hspace{4ex}Após algum tempo a altura praticamente não vai mais variar, então podemos considerar.  $\frac{dh(t)}{dt}=0 $, com isso nossa equação fica:
 \[ 0= \frac{k_m}{A}u(t)- \frac{a\sqrt{2gh(t)}}{A} \]
 \[ \frac{k_m}{A}u(t)= \frac{a\sqrt{2gh(t)}}{A} \]
 \[ u(t)=  \frac{a\sqrt{2gh(t)}}{k_m}\]
 \begin{equation}\label{eq:1}
 u(t)=k\sqrt{h}
 \end{equation}
-Com a relação do sinal de entrada com o nivel final do tanque, podemos calcular experimentalmente o valor de k, aplicando um sinal de entrada do tipo degrau e observando o seu valor final.
-Com o valor de k calculado dado um nivel sabemos qual a tensão necessaria para atingilo.
+\hspace{4ex}Com a relação do sinal de entrada com o nível final do tanque, podemos calcular experimentalmente o valor de k, aplicando um sinal de entrada do tipo degrau e observando o seu valor final.
+Com o valor de k calculado dado um nível sabemos qual a tensão necessária para atingi-lo.
 
 \subsection{SENSORES}
-Para obter o nivel dos tanques são utilizados sensores de pressão. a saida desses sensores são uma tensão proporcional a pressão e como a pressão é proporcinal a altura podemos encontrar uma relação linear da tensão com a altura da agua.
+\hspace{4ex}Para obter o nível dos tanques são utilizados sensores de pressão. a saída desses sensores são uma tensão proporcional a pressão e como a pressão é proporcional a altura podemos encontrar uma relação linear da tensão com a altura da água.
 
 
 \subsection{SISTEMA EM MALHA ABERTA}
-
 \begin{figure}[H]
 \includegraphics[width=15cm]{malhaAberta.png}
 \caption{Malha aberta}
 \label{fig:malhaAberta}
 \end{figure}
-
-No processo em malha aberta não existe nenhum controle o sinal de entrada é a tensão e a saida o nivel do tanque
+\hspace{4ex}No processo em malha aberta não existe nenhum controle o sinal de entrada é a tensão e a saída o nível do tanque que é lida pelo sensor.
 
 
 \subsection{SISTEMA EM MALHA FECHADA}
-
-No processo em malha fechada o sinal de entrada é o nivel de refencia.
-A entrada do controlador é a diferença de nivel desejado para o medido, a saida do controlador é a propria diferença somada com a tensão necessaria para o sistema estabilizar naquele nivel, utilizando a equação \ref{eq:1}.
-Assim a tensão somada dá o valor necessario par estabilizar e o erro acelera esse processo.
-O periodo de amostragem e o controle do sistema é feito a cada 100 milisegundos.
+\hspace{4ex}No processo em malha fechada o sinal de entrada é o nível de referência.
+A entrada do controlador é a diferença de nivel desejado para o medido, a saida do controlador é a própria diferença somada com a tensão necessária para o sistema estabilizar naquele nível, utilizando a equação \ref{eq:1}.
+Assim a tensão somada dá o valor necessário para estabilizar e o erro acelera esse processo.
+O período de amostragem e o controle do sistema é feito a cada 100 milisegundos.
 
 
 \begin{figure}[H]

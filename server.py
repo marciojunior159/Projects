@@ -42,12 +42,7 @@ def simulacao(threadName, delay):
         h20= h2
         time.sleep(delay)
 
-
-#c2*u10=c1*math.sqrt(h10)
-print math.pow(c2/c1,2)
-print c1/c2
-
-while 0:
+while 1:
     h1= 0.0
     h2= 0.0
     h10= 0.0
@@ -65,24 +60,24 @@ while 0:
             if sentence[5] == "0":
                 #print h1*100/6.1
                 toSend= str(h1*100/6.1)+" \n"
-                toSend= toSend.replace(".", ",")
+                #toSend= toSend.replace(".", ",")
                 connectionSocket.send(toSend)
             elif sentence[5] == "1":
                 #print h2*100/6.1
                 toSend= str(h2*100/6.1)+" \n"
-                toSend= toSend.replace(".", ",")
+                #toSend= toSend.replace(".", ",")
                 connectionSocket.send(toSend)
             else:
                 #print h1*100/6.1
                 toSend= str(h1*100/6.1)+" \n"
-                toSend= toSend.replace(".", ",")
+                #toSend= toSend.replace(".", ",")
                 connectionSocket.send(toSend)
 
         else:
             #print sentence
             u10= float(sentence.split(' ')[2])
             lastRecv= sentence.split(' ')[2]+" \n"
-            lastRecv= lastRecv.replace(".", ",")
+            #lastRecv= lastRecv.replace(".", ",")
             connectionSocket.send("ACK\n")
     parar= True
 

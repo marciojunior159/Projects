@@ -290,22 +290,21 @@ trabalho.
 \section{REFERENCIAL TEÓRICO}
 
 \subsection{MODELAGEM}
-\hspace{4ex}O sistema de controle é representado pelo seguinte modelo.
+\hspace{4ex}O sistema a ser controlado é representado pelo seguinte sistema.
 \begin{figure}[h]
 \includegraphics[scale=1]{tanques.png}
 \caption{Sistema de tanques}
 \label{fig:tanques}
 \end{figure}
 
-\hspace{4ex}Sabemos que a vazão de entrada é dada por $ k_mu(t) $ e a vazão de saída $ \sqrt{2gh(t)}a $, onde $k_m$ é a constante da bomba e $"a"$ a área do furo. Assim: 
+\hspace{4ex}Sabemos que a vazão de entrada é dada por $ k_mu(t) $ e a vazão de saída $ \sqrt{2gh(t)}a $, onde $k_m$ é a constante da bomba e $"a"$ a área do orificio. Assim: 
 \[ \frac{dq}{dt}=qin-qout\]
 \[ A\frac{dh(t)}{dt}=k_mu(t)-\sqrt{2gh(t)}a \]
 \[ A\frac{dh(t)}{dt}=k_mu(t)-\sqrt{2gh(t)}a \]
 \[ \frac{dh(t)}{dt}= \frac{k_m}{A}u(t)- \frac{a\sqrt{2gh(t)}}{A} \]
 
 \subsection{ANALISE}
-\hspace{4ex}Para atingir um certo nível no tanque estamos interessados no valor de tensão que fará o sistema alcançar esse nível. Para isso precisamos analisar o regime permanente.
-\hspace{4ex}Após algum tempo a altura praticamente não vai mais variar, então podemos considerar.  $\frac{dh(t)}{dt}=0 $, com isso nossa equação fica:
+\hspace{4ex}Para atingir um certo nível no tanque estamos interessados no valor de tensão que fará o sistema alcançar esse nível. Para isso precisamos analisar o regime permanente. Após algum tempo a altura praticamente não vai mais variar, então podemos considerar.  $\frac{dh(t)}{dt}=0 $, com isso nossa equação fica:
 \[ 0= \frac{k_m}{A}u(t)- \frac{a\sqrt{2gh(t)}}{A} \]
 \[ \frac{k_m}{A}u(t)= \frac{a\sqrt{2gh(t)}}{A} \]
 \[ u(t)=  \frac{a\sqrt{2gh(t)}}{k_m}\]
@@ -313,7 +312,7 @@ trabalho.
 u(t)=k\sqrt{h}
 \end{equation}
 \hspace{4ex}Com a relação do sinal de entrada com o nível final do tanque, podemos calcular experimentalmente o valor de k, aplicando um sinal de entrada do tipo degrau e observando o seu valor final.
-Com o valor de k calculado dado um nível sabemos qual a tensão necessária para atingi-lo.
+Com o valor de k calculado, dado um nível sabemos qual a tensão necessária para atingi-lo.
 
 \subsection{SENSORES}
 \hspace{4ex}Para obter o nível dos tanques são utilizados sensores de pressão. a saída desses sensores são uma tensão proporcional a pressão e como a pressão é proporcional a altura podemos encontrar uma relação linear da tensão com a altura da água.

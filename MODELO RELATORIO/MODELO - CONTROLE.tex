@@ -103,7 +103,7 @@ ANDRESSA STÉFANY SILVA DE OLIVEIRA: 20160154101\\
 \vspace{0.8cm}
 FERNANDA MONTEIRO DE ALMEIDA 20160154228\\
 \vspace{0.8cm}
-NOME COMPLETO 3º ALUNO: Nº MATRÍCULA\\
+VITOR RAMOS GOMES DA SILVA: 20160154415\\
 \vspace{0.8cm}
 NOME COMPLETO 4º ALUNO: Nº MATRÍCULA\\
 \end{normalsize}
@@ -129,7 +129,7 @@ ANDRESSA STÉFANY SILVA DE OLIVEIRA: 2016015410\\
 \vspace{0.8cm}
 FERNANDA MONTEIRO DE ALMEIDA 20160154228\\
 \vspace{0.8cm}
-NOME COMPLETO 3º ALUNO: Nº MATRÍCULA\\
+VITOR RAMOS GOMES DA SILVA: 20160154415\\
 \vspace{0.8cm}
 NOME COMPLETO 4º ALUNO: Nº MATRÍCULA\\
 
@@ -299,13 +299,12 @@ trabalho.
 
 \subsection{ANALISE}
 \hspace{4ex}Para atingir um certo nível no tanque estamos interessados no valor de tensão que fará o sistema alcançar esse nível. Para isso precisamos analisar o regime permanente. Após algum tempo a altura praticamente não vai mais variar, então podemos considerar.  $\frac{dh(t)}{dt}=0 $, com isso nossa equação fica:
-\[ 0= \frac{k_m}{A}u(t)- \frac{a\sqrt{2gh(t)}}{A} \]
 \[ \frac{k_m}{A}u(t)= \frac{a\sqrt{2gh(t)}}{A} \]
 \[ u(t)=  \frac{a\sqrt{2gh(t)}}{k_m}\]
 \begin{equation}\label{eq:1}
-u(t)=k\sqrt{h}
+u(t)=k\sqrt{h(t)}
 \end{equation}
-\hspace{4ex}Com a relação do sinal de entrada com o nível final do tanque, podemos calcular experimentalmente o valor de k, aplicando um sinal de entrada do tipo degrau e observando o seu valor final.
+\hspace{4ex}Por questões de simplificação e como a variação da altura é pequena, aproximamos para uma função linear. Com a relação do sinal de entrada com o nível final do tanque, podemos calcular experimentalmente o valor de k, aplicando um sinal de entrada do tipo degrau e observando o seu valor final.
 Com o valor de k calculado, dado um nível sabemos qual a tensão necessária para atingi-lo.
 
 \subsection{SENSORES}
@@ -334,11 +333,6 @@ O período de amostragem e o controle do sistema é feito a cada 100 milisegundo
 \label{fig:malhaFechada}
 \end{figure}
 
-
-
-\subsection{Seções}
-
-\subsubsection{Subseções}
 
 \newpage
 
@@ -388,7 +382,27 @@ Onde o gráfico principal que está localizado no canto inferior esquerdo aprese
 
 \newpage
 \subsection{Sistema de tanques}
+\hspace{4ex}
+Pode-se observar através das leituras dos sensores como se deu o comportamento do nível dos tanques. Quando escolhido a malha aberta, a saída segue a entrada e se os dados recebidos não estiverem de acordo com a referência, só poderá ser corrigido quando a entrada é alterada. Dessa forma, o ajuste é feito manualmente. 
 
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.8\textwidth]{maberta-sen-4.eps}
+\caption{Sistem de controle para malha aberta com entrada senoidal}
+\label{Entrada Senoidal - aberta}
+\end{figure}
+  
+Na imagem acima pode-se ver que a resposta do sistema está deslocada em relação ao sinal de entrada. Enquanto a entrada está no seu ponto mínimo, na resposta o sinal está logo após o pico. 
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.8\textwidth]{maberta-serra-4.eps}
+\caption{Sistem de controle para malha aberta com entrada dente de serra}
+\label{Entrada Dente de Serra - aberta}
+\end{figure}
+
+\newpage
+Já observando a resposta a um sinal dente de serra na figura 6, quando há a mudança brusca de valor quando se alcança a amplitude determinada na entrada, vê-se que o nível não segue o mesmo ritmo de mudança. O nível desce lentamente e dependendo do período, pode-se manter um certo nível.
 \newpage
 
 %%%%%%%%%% CONCLUSÃO %%%%%%%%%%%%%%%

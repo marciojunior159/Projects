@@ -1,11 +1,24 @@
 \select@language {brazil}
 \contentsline {section}{\numberline {1}INTRODU\IeC {\c C}\IeC {\~A}O}{8}{section.1}
 \contentsline {section}{\numberline {2}REFERENCIAL TE\IeC {\'O}RICO}{9}{section.2}
+<<<<<<< HEAD
 \contentsline {subsection}{\numberline {2.1}Se\IeC {\c c}\IeC {\~o}es}{9}{subsection.2.1}
 \contentsline {subsubsection}{\numberline {2.1.1}Subse\IeC {\c c}\IeC {\~o}es}{9}{subsubsection.2.1.1}
 \contentsline {section}{\numberline {3}METODOLOGIA}{10}{section.3}
 \contentsline {section}{\numberline {4}RESULTADOS}{11}{section.4}
 \contentsline {subsection}{\numberline {4.1}Programa de controle}{11}{subsection.4.1}
 \contentsline {subsection}{\numberline {4.2}Sistema de tanques}{12}{subsection.4.2}
+=======
+\contentsline {subsection}{\numberline {2.1}MODELAGEM}{9}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}ANALISE}{9}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}SISTEMA EM MALHA ABERTA}{10}{subsection.2.3}
+\contentsline {subsection}{\numberline {2.4}SISTEMA EM MALHA FECHADA}{10}{subsection.2.4}
+\contentsline {subsection}{\numberline {2.5}Se\IeC {\c c}\IeC {\~o}es}{10}{subsection.2.5}
+\contentsline {subsubsection}{\numberline {2.5.1}Subse\IeC {\c c}\IeC {\~o}es}{10}{subsubsection.2.5.1}
+\contentsline {section}{\numberline {3}METODOLOGIA}{11}{section.3}
+\contentsline {section}{\numberline {4}RESULTADOS}{12}{section.4}
+\contentsline {subsection}{\numberline {4.1}Se\IeC {\c c}\IeC {\~o}es}{12}{subsection.4.1}
+\contentsline {subsubsection}{\numberline {4.1.1}Subse\IeC {\c c}\IeC {\~o}es}{12}{subsubsection.4.1.1}
+>>>>>>> 07859a46cf0aeb14afdeca1d2522855ff6d3262b
 \contentsline {section}{\numberline {5}CONCLUS\IeC {\~A}O}{13}{section.5}
 \contentsline {chapter}{Refer\IeC {\^e}ncias bibliogr\IeC {\'a}ficas}{14}{section.5}

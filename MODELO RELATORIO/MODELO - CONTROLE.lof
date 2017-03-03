@@ -1,2 +1,8 @@
 \select@language {brazil}
+<<<<<<< HEAD
 \contentsline {figure}{\numberline {1}{\ignorespaces Interface do programa de controle\relax }}{11}{figure.caption.4}
+=======
+\contentsline {figure}{\numberline {1}{\ignorespaces Sistema de tanques\relax }}{9}{figure.caption.4}
+\contentsline {figure}{\numberline {2}{\ignorespaces Malha aberta\relax }}{10}{figure.caption.5}
+\contentsline {figure}{\numberline {3}{\ignorespaces Malha Fechada\relax }}{10}{figure.caption.6}
+>>>>>>> 07859a46cf0aeb14afdeca1d2522855ff6d3262b

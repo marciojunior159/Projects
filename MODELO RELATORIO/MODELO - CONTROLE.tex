@@ -382,7 +382,27 @@ Onde o gráfico principal que está localizado no canto inferior esquerdo aprese
 
 \newpage
 \subsection{Sistema de tanques}
+\hspace{4ex}
+Pode-se observar através das leituras dos sensores como se deu o comportamento do nível dos tanques. Quando escolhido a malha aberta, a saída segue a entrada e se os dados recebidos não estiverem de acordo com a referência, só poderá ser corrigido quando a entrada é alterada. Dessa forma, o ajuste é feito manualmente. 
 
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.8\textwidth]{maberta-sen-4.eps}
+\caption{Sistem de controle para malha aberta com entrada senoidal}
+\label{Entrada Senoidal - aberta}
+\end{figure}
+  
+Na imagem acima pode-se ver que a resposta do sistema está deslocada em relação ao sinal de entrada. Enquanto a entrada está no seu ponto mínimo, na resposta o sinal está logo após o pico. 
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.8\textwidth]{maberta-serra-4.eps}
+\caption{Sistem de controle para malha aberta com entrada dente de serra}
+\label{Entrada Dente de Serra - aberta}
+\end{figure}
+
+\newpage
+Já observando a resposta a um sinal dente de serra na figura 6, quando há a mudança brusca de valor quando se alcança a amplitude determinada na entrada, vê-se que o nível não segue o mesmo ritmo de mudança. O nível desce lentamente e dependendo do período, pode-se manter um certo nível.
 \newpage
 
 %%%%%%%%%% CONCLUSÃO %%%%%%%%%%%%%%%

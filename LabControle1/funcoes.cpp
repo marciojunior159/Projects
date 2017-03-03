@@ -68,7 +68,7 @@ double funcAlturaTensao(double alt){
 //funcao que retorna a altura a partir das leituras do sensor de pressao
 double funcSensor(double leituras){
 
-    return 5.4*leituras + 1.5;
+    return 6.1*leituras;
 }
 
 //Nao esquecer das travas

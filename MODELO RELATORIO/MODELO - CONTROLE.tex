@@ -317,6 +317,9 @@ u(t)=k\sqrt{h}
 Com a relação do sinal de entrada com o nivel final do tanque, podemos calcular experimentalmente o valor de k, aplicando um sinal de entrada do tipo degrau e observando o seu valor final.
 Com o valor de k calculado dado um nivel sabemos qual a tensão necessaria para atingilo.
 
+\subsection{SENSORES}
+Para obter o nivel dos tanques são utilizados sensores de pressão. a saida desses sensores são uma tensão proporcional a pressão e como a pressão é proporcinal a altura podemos encontrar uma relação linear da tensão com a altura da agua.
+
 
 \subsection{SISTEMA EM MALHA ABERTA}
 
@@ -332,9 +335,9 @@ No processo em malha aberta não existe nenhum controle o sinal de entrada é a 
 \subsection{SISTEMA EM MALHA FECHADA}
 
 No processo em malha fechada o sinal de entrada é o nivel de refencia.
-A saida do controlador é a diferença do nivel que eu quero com o meu nivel atual somado com a tensão necessaria para o sistema estabilizar naquele nivel, utilizando a equação \ref{eq:1}.
-O periodo de amostragem e controle do sistema é de 100 milisegundos.
-
+A entrada do controlador é a diferença de nivel desejado para o medido, a saida do controlador é a propria diferença somada com a tensão necessaria para o sistema estabilizar naquele nivel, utilizando a equação \ref{eq:1}.
+Assim a tensão somada dá o valor necessario par estabilizar e o erro acelera esse processo.
+O periodo de amostragem e o controle do sistema é feito a cada 100 milisegundos.
 
 
 \begin{figure}[H]

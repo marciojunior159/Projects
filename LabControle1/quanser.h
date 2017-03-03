@@ -140,7 +140,11 @@ public:
         _toSend.append("\n");
         this->sendData(_toSend);
         std::string _rec = this->receiveData();
-        return atof(_rec.c_str());
+        double val;
+        stringstream ss;
+        ss << _rec;
+        ss >> val;
+        return val; // atof(_rec.c_str());
     }
 
 

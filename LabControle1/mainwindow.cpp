@@ -268,9 +268,9 @@ void MainWindow::Controle()
         {
             outAlt = funcSensor(sensores[0]);
             //Trava #1
-            if(val > 4)
+            if(val > 3.9)
                 val = 4;
-            if(val<-4)
+            if(val<-3.9)
                 val = -4;
             //Trava #2 e #3
             if(outAlt <= 1.5 && val < 0){
@@ -290,9 +290,9 @@ void MainWindow::Controle()
             val = funcAlturaTensao(inAlt)+erro;
 
             //Trava #1
-            if(val > 4)
+            if(val > 3.9)
                 val = 4;
-            if(val<-4)
+            if(val<-3.9)
                 val = -4;
             //Trava #2 e #3
             if(outAlt <= 1.5 && val < 0){

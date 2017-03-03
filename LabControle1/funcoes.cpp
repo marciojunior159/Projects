@@ -27,12 +27,21 @@ double funcSerra(double amplitude, double periodo, double tempo)
     return amplitude/periodo*novoTempo;
 }
 
-double funcAleatoria(double tempo)
+double funcAleatoria1(double tempo)
 {
     if(tempo>periodoAle)
     {
-        amplitudeAle = (rand() % 8000 )/ 1000.0 - 4.0;
-        periodoAle = (rand() % 100 )/50.0+tempo + 0.1;
+        amplitudeAle = (rand() % 4000 )/ 1000.0;
+        periodoAle = (rand() % 100 )/50.0+tempo+1;
+    }
+    return amplitudeAle;
+}
+double funcAleatoria2(double tempo)
+{
+    if(tempo>periodoAle)
+    {
+        amplitudeAle = (rand() % 30000 )/ 1000.0;
+        periodoAle = (rand() % 100 )/50.0+tempo+1;
     }
     return amplitudeAle;
 }
@@ -62,7 +71,8 @@ double funcQuadrada(double amp, double periodo, double tempo){
 double funcAlturaTensao(double alt){
 
     //aproximação linear
-    return (alt + 11)/12;
+    double v= (alt + 11)/12;
+    return alt>0?v:0;
 }
 
 //funcao que retorna a altura a partir das leituras do sensor de pressao

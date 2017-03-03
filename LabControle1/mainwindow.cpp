@@ -7,7 +7,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-    //quanser= new Quanser("10.13.97.69", 20072);
+    //quanser= new Quanser("10.13.99.69", 20081);
     quanser= new Quanser("127.0.0.1", 20074);
 
     fuc= "WAIT";
@@ -31,7 +31,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->plotS1->graph(1)->setPen(QPen(Qt::red));
     ui->plotS1->xAxis->setLabel("x");
     ui->plotS1->yAxis->setLabel("y");
-    ui->plotS1->yAxis->setRange(0, 35);
+    ui->plotS1->yAxis->setRange(-1, 31);
     ui->plotS1->legend->setVisible(true);
     ui->plotS1->legend->setFont(QFont("Helvetica", 9));
     ui->plotS1->legend->setRowSpacing(-5);
@@ -45,7 +45,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->plotS2->graph(1)->setPen(QPen(Qt::red));
     ui->plotS2->xAxis->setLabel("x");
     ui->plotS2->yAxis->setLabel("y");
-    ui->plotS2->yAxis->setRange(0, 35);
+    ui->plotS2->yAxis->setRange(-1, 31);
     ui->plotS2->legend->setVisible(true);
     ui->plotS2->legend->setFont(QFont("Helvetica", 9));
     ui->plotS2->legend->setRowSpacing(-3);
@@ -59,7 +59,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->plotS3->graph(1)->setPen(QPen(Qt::red));
     ui->plotS3->xAxis->setLabel("x");
     ui->plotS3->yAxis->setLabel("y");
-    ui->plotS3->yAxis->setRange(0, 35);
+    ui->plotS3->yAxis->setRange(-1, 31);
     ui->plotS3->legend->setVisible(true);
     ui->plotS3->legend->setFont(QFont("Helvetica", 9));
     ui->plotS3->legend->setRowSpacing(-3);
@@ -73,7 +73,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->plotS4->graph(1)->setPen(QPen(Qt::red));
     ui->plotS4->xAxis->setLabel("x");
     ui->plotS4->yAxis->setLabel("y");
-    ui->plotS4->yAxis->setRange(0, 35);
+    ui->plotS4->yAxis->setRange(-1, 31);
     ui->plotS4->legend->setVisible(true);
     ui->plotS4->legend->setFont(QFont("Helvetica", 9));
     ui->plotS4->legend->setRowSpacing(-3);
@@ -247,7 +247,10 @@ void MainWindow::Controle()
         }
         else if(fuc == "Aleatorio") // intervalo
         {
-            val= funcAleatoria(tempo);
+            if(ui->radioButtonMalhaAberta->isChecked())
+                val= funcAleatoria1(tempo);
+            else
+                val= funcAleatoria2(tempo);
         }
         else
         {
@@ -255,27 +258,27 @@ void MainWindow::Controle()
         }
 
         ui->plotS1->graph(0)->addData(tempo, funcSensor(sensores[0]));
-        ui->plotS1->graph(1)->addData(tempo, funcSensor(sensores[2]));
+        ui->plotS1->graph(1)->addData(tempo, sensores[2]);
         ui->plotS2->graph(0)->addData(tempo, funcSensor(sensores[1]));
-        ui->plotS2->graph(1)->addData(tempo, funcSensor(sensores[3]));
+        ui->plotS2->graph(1)->addData(tempo, sensores[3]);
 
-        ui->plotS3->graph(0)->addData(tempo, funcSensor(sensores[4]));
-        ui->plotS3->graph(1)->addData(tempo, funcSensor(sensores[6]));
-        ui->plotS4->graph(0)->addData(tempo, funcSensor(sensores[5]));
-        ui->plotS4->graph(1)->addData(tempo, funcSensor(sensores[7]));
+        ui->plotS3->graph(0)->addData(tempo, sensores[4]);
+        ui->plotS3->graph(1)->addData(tempo, sensores[6]);
+        ui->plotS4->graph(0)->addData(tempo, sensores[5]);
+        ui->plotS4->graph(1)->addData(tempo, sensores[7]);
 
         if(ui->radioButtonMalhaAberta->isChecked())
         {
             outAlt = funcSensor(sensores[0]);
             //Trava #1
-            if(val > 3.9)
+            if(val>3.9)
                 val = 4;
             if(val<-3.9)
                 val = -4;
             //Trava #2 e #3
             if(outAlt <= 1.5 && val < 0){
                 val = 0;
-            }else if(outAlt >= 29 && val > 0){
+            }else if(outAlt >= 30 && val > 0){
                 val = 2.75; //tensao de equilibrio
             }
             quanser->writeDA(canal, val);
@@ -297,21 +300,22 @@ void MainWindow::Controle()
             //Trava #2 e #3
             if(outAlt <= 1.5 && val < 0){
                 val = 0;
-            }else if(outAlt >=29 && val > 0){
+            }else if(outAlt >= 30 && val > 0){
                 val = 2.75; //tensao de equilibrio
             }
 
             quanser->writeDA(canal, val);
         }
-
         ui->customPlot->graph(0)->addData(tempo, val);
 
-
         //qDebug() << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now()-now).count() << "ms\n";
+        double t= std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now()-now).count()/1000.0;
+        //qDebug() << t << endl;
+        tempo+=t;
         now = std::chrono::high_resolution_clock::now();
-        tempo+=0.1;
+        //tempo+=0.1;
 
-        usleep(10.0*10E3);
+        usleep(t*10E5);
     }
 }
 

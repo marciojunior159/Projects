@@ -357,6 +357,17 @@ Na imagem acima pode-se ver que a resposta do sistema está deslocada em relaç�
 
 \newpage
 Já observando a resposta a um sinal dente de serra na figura 6, quando há a mudança brusca de valor quando se alcança a amplitude determinada na entrada, vê-se que o nível não segue o mesmo ritmo de mudança. O nível desce lentamente e dependendo do período, pode-se manter um certo nível.
+
+Para o caso de malha fechada, o sistema vai tentar compensar o erro da referência. É o que se pode notar nos gráficos de saída. A figura 7 mostra que para uma entrada degrau em que a referência é 20cm, o sistema envia a tensão de 4 volts, ou seja, tensão máxima. O tanque alcança o nível, então para se manter no valor de referência, a tensão converge lentamente para uma tensão de equlíbrio.
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.8\textwidth]{mfechada-degrau-20.eps}
+\caption{Sistem de controle para malha fechada com entrada degrau}
+\label{Entrada Degrau - fechada}
+\end{figure}
+
+
 \newpage
 
 %%%%%%%%%% CONCLUSÃO %%%%%%%%%%%%%%%

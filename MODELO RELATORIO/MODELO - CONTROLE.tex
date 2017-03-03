@@ -225,9 +225,7 @@ Professor:  Fábio Meneghetti Ugulino de Araújo.
 
 A aplicação deve ser capaz de controlar o nível no tanque superior de acordo com a orientação dada pelo usuário. O usuário define a tensão da bomba em volts (para o caso de malha aberta) ou o nível a ser atingido no tanque em centímetros (para o caso de malha fechada), sendo estabelecidos limites na aplicação respeitando os limites físicos do tanque e da bomba. A aplicação deverá realizar esse controle utilizando-se de cinco tipos de sinais: degrau, onda senoidal, onda quadrada, onda do tipo dente de serra, e aleatória. O usuário definirá também as portas de entrada e saída, podendo escolher de uma a oito portas de saída.
 
-
 Através das equações de vazão, pretende-se achar uma relação entre a tensão aplicada pela bomba e nível de água no tanque, de forma que o nível varie o mínimo possível. A partir dessa relação serão desenvolvidas as funções referentes aos cinco tipos de sinais.
-
 
 O resultado será apresentado através de uma interface gráfica, onde o usuário, além de controlar a situação, poderá visualizar as variações ocorrentes nas portas de saída em plano cartesiano, incluindo os níveis nos dois tanques e a tensão na bomba.
 \end{flushleft}
@@ -371,6 +369,8 @@ Para o caso de malha fechada, o sistema vai tentar compensar o erro da referênc
 \end{figure}
 
 Quando se transmite o dente de serra, observa que o sinal de entrada perde suas características, como se pode ver na figura 8, o gráfico principal não tem mais um subida rápida e linear. Porém, na saída, notou-se que o nível não permanecia constante, o nível se assemelhava a função dente de serra com uma subida mais lenta e com descida rápida, mas não brusca.  
+
+Por fim, tem-se o caso do sinal aleatório para malha fechada em que o sinal de referência está  mudando rapidamente. Dessa forma, fica mais difĩcil de analisar o controle, já que não se consegue convergir em um valor ou um comportamento fixo. Na figura 9 se pode notar que tensões negativas e próximas de zero, considerando que o nível do tanque era alto antes de mudar para o sinal aleatório, viu-se que o nível rapidamente desceu. Logo, para um sinal aleatório a média fica em torno de zero, por isso o tanque não sobe muito. Há pequenas mudanças mas nada que se sutenta. O gráfico de saída ficou mais incostante como se tivessem pequenas pertubações no tanque.
 
 \newpage
 

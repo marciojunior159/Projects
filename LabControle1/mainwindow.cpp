@@ -3,8 +3,10 @@
 #include <QMessageBox>
 #include "funcoes.h"
 
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
+    pid(0,0,0),
     ui(new Ui::MainWindow)
 {
     //quanser= new Quanser("10.13.99.69", 20081);
@@ -18,7 +20,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->comboBoxSinal->addItem("Onda quadrada");
     ui->comboBoxSinal->addItem("Dente de serra");
     ui->comboBoxSinal->addItem("Aleatorio");
-
 
     ui->customPlot->addGraph();
     ui->customPlot->xAxis->setLabel("x");
@@ -290,7 +291,8 @@ void MainWindow::Controle()
             //loop para todos as portas?
             outAlt = funcSensor(sensores[0]);
             erro = inAlt - outAlt;
-            val = funcAlturaTensao(inAlt)+erro;
+            //val = funcAlturaTensao(inAlt)+erro;
+            val = pid.Controle(erro, 0.1);
 
             //Trava #1
             if(val > 3.9)

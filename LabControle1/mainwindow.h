@@ -5,6 +5,7 @@
 #include <quanser.h>
 #include <thread>
 #include <QTime>
+#include <pid.h>
 
 namespace Ui {
 class MainWindow;
@@ -47,6 +48,7 @@ private:
     string fuc;
     float tempo;
     bool canais[8];
+    PID pid;
     double A =0;
     double T = 0;
 };

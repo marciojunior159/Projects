@@ -17,8 +17,8 @@ void PID::setConstantes(double Kp, double Ki, double Kd)
 void PID::setConstantesT(double K, double Ti, double Td)
 {
     this->Kp= Kp;
-    this->Ki= Ti*Kp;
-    this->Kd= Kp/Td;
+    this->Ki= Kp/Ti;
+    this->Kd= Kp*Td;
 }
 
 double PID::Controle(double e, double h)

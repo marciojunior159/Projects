@@ -21,66 +21,74 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->comboBoxSinal->addItem("Dente de serra");
     ui->comboBoxSinal->addItem("Aleatorio");
 
+    ui->doubleSpinBox_kp->setDecimals(3);
+    ui->doubleSpinBox_ki->setDecimals(3);
+    ui->doubleSpinBox_kd->setDecimals(3);
+
     ui->customPlot->addGraph();
-    ui->customPlot->xAxis->setLabel("x");
-    ui->customPlot->yAxis->setLabel("y");
+    ui->customPlot->addGraph();
+    ui->customPlot->graph(0)->setPen(QPen(Qt::blue));
+    ui->customPlot->graph(1)->setPen(QPen(Qt::red));
+    ui->customPlot->xAxis->setLabel("tempo(ms)");
+    ui->customPlot->yAxis->setLabel("tensão(V)");
     ui->customPlot->yAxis->setRange(-5, 5);
+
 
     ui->plotS1->addGraph();
     ui->plotS1->addGraph();
     ui->plotS1->graph(0)->setPen(QPen(Qt::blue));
     ui->plotS1->graph(1)->setPen(QPen(Qt::red));
-    ui->plotS1->xAxis->setLabel("x");
-    ui->plotS1->yAxis->setLabel("y");
+    ui->plotS1->xAxis->setLabel("tempo(ms)");
+    ui->plotS1->yAxis->setLabel("altura(cm)");
     ui->plotS1->yAxis->setRange(-1, 31);
     ui->plotS1->legend->setVisible(true);
     ui->plotS1->legend->setFont(QFont("Helvetica", 9));
     ui->plotS1->legend->setRowSpacing(-5);
-    ui->plotS1->graph(0)->setName("Canal 0");
-    ui->plotS1->graph(1)->setName("Canal 2");
+    ui->plotS1->graph(0)->setName("Sensor 1");
+    ui->plotS1->graph(1)->setName("Set Point");
     ui->plotS1->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignLeft|Qt::AlignTop);
 
     ui->plotS2->addGraph();
     ui->plotS2->addGraph();
     ui->plotS2->graph(0)->setPen(QPen(Qt::blue));
     ui->plotS2->graph(1)->setPen(QPen(Qt::red));
-    ui->plotS2->xAxis->setLabel("x");
-    ui->plotS2->yAxis->setLabel("y");
+    ui->plotS2->xAxis->setLabel("tempo(ms)");
+    ui->plotS2->yAxis->setLabel("altura(cm)");
     ui->plotS2->yAxis->setRange(-1, 31);
     ui->plotS2->legend->setVisible(true);
     ui->plotS2->legend->setFont(QFont("Helvetica", 9));
     ui->plotS2->legend->setRowSpacing(-3);
-    ui->plotS2->graph(0)->setName("Canal 1");
-    ui->plotS2->graph(1)->setName("Canal 3");
+    ui->plotS2->graph(0)->setName("Sensor 2");
+    ui->plotS2->graph(1)->setName("Set Point");
     ui->plotS2->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignLeft|Qt::AlignTop);
 
-    ui->plotS3->addGraph();
-    ui->plotS3->addGraph();
-    ui->plotS3->graph(0)->setPen(QPen(Qt::blue));
-    ui->plotS3->graph(1)->setPen(QPen(Qt::red));
-    ui->plotS3->xAxis->setLabel("x");
-    ui->plotS3->yAxis->setLabel("y");
-    ui->plotS3->yAxis->setRange(-1, 31);
-    ui->plotS3->legend->setVisible(true);
-    ui->plotS3->legend->setFont(QFont("Helvetica", 9));
-    ui->plotS3->legend->setRowSpacing(-3);
-    ui->plotS3->graph(0)->setName("Canal 4");
-    ui->plotS3->graph(1)->setName("Canal 6");
-    ui->plotS3->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignLeft|Qt::AlignTop);
+//    ui->plotS3->addGraph();
+//    ui->plotS3->addGraph();
+//    ui->plotS3->graph(0)->setPen(QPen(Qt::blue));
+//    ui->plotS3->graph(1)->setPen(QPen(Qt::red));
+//    ui->plotS3->xAxis->setLabel("x");
+//    ui->plotS3->yAxis->setLabel("y");
+//    ui->plotS3->yAxis->setRange(-1, 31);
+//    ui->plotS3->legend->setVisible(true);
+//    ui->plotS3->legend->setFont(QFont("Helvetica", 9));
+//    ui->plotS3->legend->setRowSpacing(-3);
+//    ui->plotS3->graph(0)->setName("Canal 4");
+//    ui->plotS3->graph(1)->setName("Canal 6");
+//    ui->plotS3->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignLeft|Qt::AlignTop);
 
-    ui->plotS4->addGraph();
-    ui->plotS4->addGraph();
-    ui->plotS4->graph(0)->setPen(QPen(Qt::blue));
-    ui->plotS4->graph(1)->setPen(QPen(Qt::red));
-    ui->plotS4->xAxis->setLabel("x");
-    ui->plotS4->yAxis->setLabel("y");
-    ui->plotS4->yAxis->setRange(-1, 31);
-    ui->plotS4->legend->setVisible(true);
-    ui->plotS4->legend->setFont(QFont("Helvetica", 9));
-    ui->plotS4->legend->setRowSpacing(-3);
-    ui->plotS4->graph(0)->setName("Canal 5");
-    ui->plotS4->graph(1)->setName("Canal 7");
-    ui->plotS4->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignLeft|Qt::AlignTop);
+//    ui->plotS4->addGraph();
+//    ui->plotS4->addGraph();
+//    ui->plotS4->graph(0)->setPen(QPen(Qt::blue));
+//    ui->plotS4->graph(1)->setPen(QPen(Qt::red));
+//    ui->plotS4->xAxis->setLabel("x");
+//    ui->plotS4->yAxis->setLabel("y");
+//    ui->plotS4->yAxis->setRange(-1, 31);
+//    ui->plotS4->legend->setVisible(true);
+//    ui->plotS4->legend->setFont(QFont("Helvetica", 9));
+//    ui->plotS4->legend->setRowSpacing(-3);
+//    ui->plotS4->graph(0)->setName("Canal 5");
+//    ui->plotS4->graph(1)->setName("Canal 7");
+//    ui->plotS4->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignLeft|Qt::AlignTop);
 
     controle= new std::thread(&MainWindow::Controle, this);
     recebe= new std::thread(&MainWindow::Recebe, this);
@@ -104,6 +112,13 @@ void MainWindow::on_radioButtonMalhaAberta_clicked()
         ui->comboBoxSinal->setEnabled(true);
         ui->SpinBoxTensaoNivel->setMaximum(4);
         on_comboBoxSinal_activated(QString());
+
+        ui->comboBoxTipodeControle->setDisabled(true);
+        ui->doubleSpinBox_kp->setDisabled(true);
+        ui->doubleSpinBox_ki->setDisabled(true);
+        ui->doubleSpinBox_kd->setDisabled(true);
+        ui->radioButtonGanho->setDisabled(true);
+        ui->radioButtonTempo->setDisabled(true);
     }
 }
 
@@ -116,6 +131,14 @@ void MainWindow::on_radioButtonMalhaFechada_clicked()
         ui->comboBoxSinal->setEnabled(true);
         ui->SpinBoxTensaoNivel->setMaximum(30);
         on_comboBoxSinal_activated(QString());
+
+
+        ui->comboBoxTipodeControle->setEnabled(true);
+        ui->doubleSpinBox_kp->setEnabled(true);
+        ui->doubleSpinBox_ki->setEnabled(true);
+        ui->doubleSpinBox_kd->setEnabled(true);
+        ui->radioButtonGanho->setEnabled(true);
+        ui->radioButtonTempo->setEnabled(true);
     }
 }
 
@@ -164,13 +187,13 @@ void MainWindow::timerEvent(QTimerEvent *e)
     ui->plotS2->graph(0)->removeDataBefore(tempo-12);
     ui->plotS2->xAxis->setRange(tempo + 0.25, 10, Qt::AlignRight);
 
-    ui->plotS3->replot();
-    ui->plotS3->graph(0)->removeDataBefore(tempo-12);
-    ui->plotS3->xAxis->setRange(tempo + 0.25, 10, Qt::AlignRight);
+//    ui->plotS3->replot();
+//    ui->plotS3->graph(0)->removeDataBefore(tempo-12);
+//    ui->plotS3->xAxis->setRange(tempo + 0.25, 10, Qt::AlignRight);
 
-    ui->plotS4->replot();
-    ui->plotS4->graph(0)->removeDataBefore(tempo-12);
-    ui->plotS4->xAxis->setRange(tempo + 0.25, 10, Qt::AlignRight);
+//    ui->plotS4->replot();
+//    ui->plotS4->graph(0)->removeDataBefore(tempo-12);
+//    ui->plotS4->xAxis->setRange(tempo + 0.25, 10, Qt::AlignRight);
 
     if(canais[0])
         ui->plotS1->graph(0)->setVisible(1);
@@ -192,25 +215,25 @@ void MainWindow::timerEvent(QTimerEvent *e)
     else
         ui->plotS2->graph(1)->setVisible(0);
 
-    if(canais[4])
-        ui->plotS3->graph(0)->setVisible(1);
-    else
-        ui->plotS3->graph(0)->setVisible(0);
+//    if(canais[4])
+//        ui->plotS3->graph(0)->setVisible(1);
+//    else
+//        ui->plotS3->graph(0)->setVisible(0);
 
-    if(canais[5])
-        ui->plotS4->graph(0)->setVisible(1);
-    else
-        ui->plotS4->graph(0)->setVisible(0);
+//    if(canais[5])
+//        ui->plotS4->graph(0)->setVisible(1);
+//    else
+//        ui->plotS4->graph(0)->setVisible(0);
 
-    if(canais[6])
-        ui->plotS3->graph(1)->setVisible(1);
-    else
-        ui->plotS3->graph(1)->setVisible(0);
+//    if(canais[6])
+//        ui->plotS3->graph(1)->setVisible(1);
+//    else
+//        ui->plotS3->graph(1)->setVisible(0);
 
-    if(canais[7])
-        ui->plotS4->graph(1)->setVisible(1);
-    else
-        ui->plotS4->graph(1)->setVisible(0);
+//    if(canais[7])
+//        ui->plotS4->graph(1)->setVisible(1);
+//    else
+//        ui->plotS4->graph(1)->setVisible(0);
 
 
 }
@@ -263,10 +286,10 @@ void MainWindow::Controle()
         ui->plotS2->graph(0)->addData(tempo, funcSensor(sensores[1]));
         ui->plotS2->graph(1)->addData(tempo, sensores[3]);
 
-        ui->plotS3->graph(0)->addData(tempo, sensores[4]);
-        ui->plotS3->graph(1)->addData(tempo, sensores[6]);
-        ui->plotS4->graph(0)->addData(tempo, sensores[5]);
-        ui->plotS4->graph(1)->addData(tempo, sensores[7]);
+//        ui->plotS3->graph(0)->addData(tempo, sensores[4]);
+//        ui->plotS3->graph(1)->addData(tempo, sensores[6]);
+//        ui->plotS4->graph(0)->addData(tempo, sensores[5]);
+//        ui->plotS4->graph(1)->addData(tempo, sensores[7]);
 
         if(ui->radioButtonMalhaAberta->isChecked())
         {
@@ -317,7 +340,7 @@ void MainWindow::Controle()
         now = std::chrono::high_resolution_clock::now();
         //tempo+=0.1;
 
-        usleep(t*10E5);
+        usleep(1*10E4);
     }
 }
 
@@ -373,6 +396,14 @@ void MainWindow::on_pushButtonEnviar_clicked()
     fuc= ui->comboBoxSinal->currentText().toStdString();
     A = ui->SpinBoxTensaoNivel->value();
     T = ui->SpinBoxPeriodo->value();
+
+    if(ui->radioButtonGanho->isChecked()){
+        pid.setConstantes(ui->doubleSpinBox_kp->value(), ui->doubleSpinBox_ki->value(), ui->doubleSpinBox_kd->value());
+    }else if(ui->radioButtonTempo->isChecked()){
+        pid.setConstantesT(ui->doubleSpinBox_kp->value(), ui->doubleSpinBox_ki->value(), ui->doubleSpinBox_kd->value());
+    }
+
+
 }
 
 void MainWindow::on_pushButtonCancel_clicked()
@@ -380,4 +411,51 @@ void MainWindow::on_pushButtonCancel_clicked()
     fuc= "";
     A = 0;
     T = 0;
+}
+
+void MainWindow::on_radioButtonGanho_clicked(bool checked)
+{
+    if(checked==true){
+        ui->label_kd->setText("Ganho (Kd)");
+        ui->label_ki->setText("Ganho (Ki)");
+    }
+}
+
+void MainWindow::on_radioButtonTempo_clicked(bool checked)
+{
+    if(checked==true){
+        ui->label_kd->setText("Tempo (Td)");
+        ui->label_ki->setText("Tempo (Ti)");
+    }
+}
+
+void MainWindow::on_comboBoxTipodeControle_activated(const QString &arg1)
+{
+    QString tipo = ui->comboBoxTipodeControle->currentText();
+
+    if(tipo == "P"){
+
+        ui->doubleSpinBox_ki->setEnabled(false);
+        ui->doubleSpinBox_kd->setEnabled(false);
+
+    }else if(tipo == "PI"){
+
+        ui->doubleSpinBox_ki->setEnabled(true);
+        ui->doubleSpinBox_kd->setEnabled(false);
+
+    }else if(tipo == "PD"){
+
+        ui->doubleSpinBox_ki->setEnabled(false);
+        ui->doubleSpinBox_kd->setEnabled(true);
+
+    }else if(tipo == "PID"){
+        ui->doubleSpinBox_ki->setEnabled(true);
+        ui->doubleSpinBox_kd->setEnabled(true);
+
+    }else if(tipo == "PI-D"){
+
+        ui->doubleSpinBox_ki->setEnabled(true);
+        ui->doubleSpinBox_kd->setEnabled(true);
+
+    }
 }

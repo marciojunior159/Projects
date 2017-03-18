@@ -31,11 +31,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->customPlot->graph(1)->setPen(QPen(Qt::red));
     ui->customPlot->xAxis->setLabel("tempo(ms)");
     ui->customPlot->yAxis->setLabel("tensão(V)");
-    ui->customPlot->yAxis->setRange(-5, 5);
+    ui->customPlot->yAxis->setRange(-7, 7);
+    //ui->customPlot->setParent(ui->frame);
 
 
     ui->plotS1->addGraph();
-    ui->plotS1->addGraph();
+    ui->plotS1->addGraph();    
     ui->plotS1->graph(0)->setPen(QPen(Qt::blue));
     ui->plotS1->graph(1)->setPen(QPen(Qt::red));
     ui->plotS1->xAxis->setLabel("tempo(ms)");
@@ -48,8 +49,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->plotS1->graph(1)->setName("Set Point");
     ui->plotS1->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignLeft|Qt::AlignTop);
 
+
     ui->plotS2->addGraph();
     ui->plotS2->addGraph();
+    //ui->plotS2->setBackground(QBrush(Qt::green, Qt::SolidPattern));
     ui->plotS2->graph(0)->setPen(QPen(Qt::blue));
     ui->plotS2->graph(1)->setPen(QPen(Qt::red));
     ui->plotS2->xAxis->setLabel("tempo(ms)");
@@ -182,6 +185,9 @@ void MainWindow::timerEvent(QTimerEvent *e)
     ui->plotS1->replot();
     ui->plotS1->graph(0)->removeDataBefore(tempo-12);
     ui->plotS1->xAxis->setRange(tempo + 0.25, 10, Qt::AlignRight);
+    //ui->plotS1->replot();
+    //ui->plotS1->graph(1)->removeDataBefore(tempo-12);
+    //ui->plotS1->xAxis->setRange(tempo + 0.25, 10, Qt::AlignRight);
 
     ui->plotS2->replot();
     ui->plotS2->graph(0)->removeDataBefore(tempo-12);
@@ -205,12 +211,12 @@ void MainWindow::timerEvent(QTimerEvent *e)
     else
         ui->plotS2->graph(0)->setVisible(0);
 
-    if(canais[2])
+    if(canais[0])
         ui->plotS1->graph(1)->setVisible(1);
     else
         ui->plotS1->graph(1)->setVisible(0);
 
-    if(canais[3])
+    if(canais[1])
         ui->plotS2->graph(1)->setVisible(1);
     else
         ui->plotS2->graph(1)->setVisible(0);
@@ -243,6 +249,7 @@ auto now = std::chrono::high_resolution_clock::now();
 
 void MainWindow::Controle()
 {
+    double valCalculado;
     while(1)
     {
         int canal= ui->spinBoxCanal->value();
@@ -282,9 +289,9 @@ void MainWindow::Controle()
         }
 
         ui->plotS1->graph(0)->addData(tempo, funcSensor(sensores[0]));
-        ui->plotS1->graph(1)->addData(tempo, sensores[2]);
+        ui->plotS1->graph(1)->addData(tempo, ui->SpinBoxTensaoNivel->value());
         ui->plotS2->graph(0)->addData(tempo, funcSensor(sensores[1]));
-        ui->plotS2->graph(1)->addData(tempo, sensores[3]);
+        ui->plotS2->graph(1)->addData(tempo, 30);
 
 //        ui->plotS3->graph(0)->addData(tempo, sensores[4]);
 //        ui->plotS3->graph(1)->addData(tempo, sensores[6]);
@@ -295,6 +302,7 @@ void MainWindow::Controle()
         {
             outAlt = funcSensor(sensores[0]);
             //Trava #1
+            valCalculado = val;
             if(val>3.9)
                 val = 4;
             if(val<-3.9)
@@ -309,6 +317,7 @@ void MainWindow::Controle()
         }
         else if(ui->radioButtonMalhaFechada->isChecked())
         {
+
             // Calculo malha fechada e controle
             inAlt = val;
             //loop para todos as portas?
@@ -316,6 +325,7 @@ void MainWindow::Controle()
             erro = inAlt - outAlt;
             //val = funcAlturaTensao(inAlt)+erro;
             val = pid.Controle(erro, 0.1);
+            valCalculado = val;
 
             //Trava #1
             if(val > 3.9)
@@ -332,10 +342,11 @@ void MainWindow::Controle()
             quanser->writeDA(canal, val);
         }
         ui->customPlot->graph(0)->addData(tempo, val);
+        ui->customPlot->graph(1)->addData(tempo, valCalculado);
 
         //qDebug() << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now()-now).count() << "ms\n";
         double t= std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now()-now).count()/1000.0;
-        //qDebug() << t << endl;
+        qDebug() << valCalculado << endl;
         tempo+=t;
         now = std::chrono::high_resolution_clock::now();
         //tempo+=0.1;

@@ -6,7 +6,7 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    pid(0,0,0),
+    pid(1,0.4,0.01),
     ui(new Ui::MainWindow)
 {
     //quanser= new Quanser("10.13.99.69", 20081);
@@ -293,7 +293,6 @@ void MainWindow::Controle()
             erro = inAlt - outAlt;
             //val = funcAlturaTensao(inAlt)+erro;
             val = pid.Controle(erro, 0.1);
-
             //Trava #1
             if(val > 3.9)
                 val = 4;

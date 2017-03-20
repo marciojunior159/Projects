@@ -32,7 +32,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->customPlot->xAxis->setLabel("tempo(ms)");
     ui->customPlot->yAxis->setLabel("tensão(V)");
     ui->customPlot->yAxis->setRange(-7, 7);
-    //ui->customPlot->setParent(ui->frame);
+    ui->customPlot->legend->setVisible(true);
+    ui->customPlot->legend->setFont(QFont("Helvetica", 9));
+    ui->customPlot->legend->setRowSpacing(-5);
+    ui->customPlot->graph(0)->setName("Saturada");
+    ui->customPlot->graph(1)->setName("Calculada");
+    ui->customPlot->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignLeft|Qt::AlignTop);
+
 
 
     ui->plotS1->addGraph();
@@ -52,7 +58,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->plotS2->addGraph();
     ui->plotS2->addGraph();
-    //ui->plotS2->setBackground(QBrush(Qt::green, Qt::SolidPattern));
     ui->plotS2->graph(0)->setPen(QPen(Qt::blue));
     ui->plotS2->graph(1)->setPen(QPen(Qt::red));
     ui->plotS2->xAxis->setLabel("tempo(ms)");
@@ -449,15 +454,23 @@ void MainWindow::on_comboBoxTipodeControle_activated(const QString &arg1)
         ui->doubleSpinBox_ki->setEnabled(false);
         ui->doubleSpinBox_kd->setEnabled(false);
 
+        ui->doubleSpinBox_ki->setValue(0);
+        ui->doubleSpinBox_kd->setValue(0);
+
     }else if(tipo == "PI"){
 
         ui->doubleSpinBox_ki->setEnabled(true);
         ui->doubleSpinBox_kd->setEnabled(false);
 
+        ui->doubleSpinBox_kd->setValue(0);
+
+
     }else if(tipo == "PD"){
 
         ui->doubleSpinBox_ki->setEnabled(false);
         ui->doubleSpinBox_kd->setEnabled(true);
+
+        ui->doubleSpinBox_ki->setValue(0);
 
     }else if(tipo == "PID"){
         ui->doubleSpinBox_ki->setEnabled(true);

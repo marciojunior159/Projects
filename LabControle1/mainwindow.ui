@@ -200,6 +200,9 @@
         <property name="enabled">
          <bool>false</bool>
         </property>
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
         <item>
          <property name="text">
           <string>P</string>
@@ -243,6 +246,9 @@
        <widget class="QRadioButton" name="radioButtonGanho">
         <property name="text">
          <string>Ganho</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -390,6 +396,12 @@
        <widget class="QComboBox" name="comboBoxSinal">
         <property name="enabled">
          <bool>false</bool>
+        </property>
+        <property name="editable">
+         <bool>false</bool>
+        </property>
+        <property name="currentIndex">
+         <number>-1</number>
         </property>
        </widget>
       </item>

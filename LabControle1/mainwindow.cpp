@@ -298,6 +298,8 @@ void MainWindow::Controle()
         ui->plotS2->graph(0)->addData(tempo, funcSensor(sensores[1]));
         ui->plotS2->graph(1)->addData(tempo, 30);
 
+        ui->label_altura->setText(QString::number(funcSensor(sensores[0])));
+
 //        ui->plotS3->graph(0)->addData(tempo, sensores[4]);
 //        ui->plotS3->graph(1)->addData(tempo, sensores[6]);
 //        ui->plotS4->graph(0)->addData(tempo, sensores[5]);
@@ -351,7 +353,7 @@ void MainWindow::Controle()
 
         //qDebug() << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now()-now).count() << "ms\n";
         double t= std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now()-now).count()/1000.0;
-        qDebug() << valCalculado << endl;
+        //qDebug() << valCalculado << endl;
         tempo+=t;
         now = std::chrono::high_resolution_clock::now();
         //tempo+=0.1;

@@ -41,6 +41,14 @@ private slots:
 
     void on_pushButtonCancel_clicked();
 
+    //void on_radioButton_clicked(bool checked);
+
+    void on_radioButtonGanho_clicked(bool checked);
+
+    void on_radioButtonTempo_clicked(bool checked);
+
+    void on_comboBoxTipodeControle_activated(const QString &arg1);
+
 private:
     Quanser* quanser;
     Ui::MainWindow *ui;

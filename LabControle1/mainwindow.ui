@@ -206,6 +206,9 @@
         <property name="enabled">
          <bool>false</bool>
         </property>
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
         <item>
          <property name="text">
           <string>P</string>
@@ -418,6 +421,12 @@
         <property name="enabled">
          <bool>false</bool>
         </property>
+        <property name="editable">
+         <bool>false</bool>
+        </property>
+        <property name="currentIndex">
+         <number>-1</number>
+        </property>
        </widget>
       </item>
      </layout>
@@ -427,7 +436,7 @@
     <property name="geometry">
      <rect>
       <x>520</x>
-      <y>350</y>
+      <y>320</y>
       <width>631</width>
       <height>271</height>
      </rect>
@@ -459,7 +468,7 @@
     <property name="geometry">
      <rect>
       <x>520</x>
-      <y>110</y>
+      <y>80</y>
       <width>301</width>
       <height>211</height>
      </rect>
@@ -486,12 +495,16 @@
       <enum>QFrame::Raised</enum>
      </property>
     </widget>
+    <zorder>frame_2</zorder>
+    <zorder>frame</zorder>
+    <zorder></zorder>
+    <zorder>frame_3</zorder>
    </widget>
    <widget class="QCustomPlot" name="plotS2" native="true">
     <property name="geometry">
      <rect>
       <x>850</x>
-      <y>110</y>
+      <y>80</y>
       <width>301</width>
       <height>211</height>
      </rect>
@@ -517,6 +530,7 @@
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
+     <zorder>plotS2</zorder>
     </widget>
    </widget>
    <widget class="QSplitter" name="splitter">
@@ -542,6 +556,42 @@
      </property>
     </widget>
    </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>520</x>
+      <y>610</y>
+      <width>211</width>
+      <height>19</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="label_7">
+       <property name="text">
+        <string>Altura do tanque:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_altura">
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_9">
+       <property name="text">
+        <string>cm</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
    <zorder>radioButtonMalhaAberta</zorder>
    <zorder>radioButtonMalhaFechada</zorder>
    <zorder>groupBoxSaida</zorder>
@@ -551,6 +601,12 @@
    <zorder>plotS2</zorder>
    <zorder>splitter</zorder>
    <zorder>customPlot</zorder>
+   <zorder>label_7</zorder>
+   <zorder>label_altura</zorder>
+   <zorder>label_9</zorder>
+   <zorder>frame</zorder>
+   <zorder>frame_3</zorder>
+   <zorder>label_7</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

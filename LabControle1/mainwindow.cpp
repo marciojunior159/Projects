@@ -9,8 +9,8 @@ MainWindow::MainWindow(QWidget *parent) :
     pid(0,0,0),
     ui(new Ui::MainWindow)
 {
-    quanser= new Quanser("10.13.99.69", 20081);
-    //quanser= new Quanser("127.0.0.1", 20074);
+    //quanser= new Quanser("10.13.99.69", 20081);
+    quanser= new Quanser("127.0.0.1", 20074);
 
     fuc= "WAIT";
     tempo= 0;
@@ -32,7 +32,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->customPlot->xAxis->setLabel("tempo(ms)");
     ui->customPlot->yAxis->setLabel("tensão(V)");
     ui->customPlot->yAxis->setRange(-7, 7);
-    //ui->customPlot->setParent(ui->frame);
+    ui->customPlot->legend->setVisible(true);
+    ui->customPlot->legend->setFont(QFont("Helvetica", 9));
+    ui->customPlot->legend->setRowSpacing(-5);
+    ui->customPlot->graph(0)->setName("Saturada");
+    ui->customPlot->graph(1)->setName("Calculada");
+    ui->customPlot->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignLeft|Qt::AlignTop);
+
 
 
     ui->plotS1->addGraph();
@@ -52,7 +58,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->plotS2->addGraph();
     ui->plotS2->addGraph();
-    //ui->plotS2->setBackground(QBrush(Qt::green, Qt::SolidPattern));
     ui->plotS2->graph(0)->setPen(QPen(Qt::blue));
     ui->plotS2->graph(1)->setPen(QPen(Qt::red));
     ui->plotS2->xAxis->setLabel("tempo(ms)");
@@ -296,6 +301,8 @@ void MainWindow::Controle()
         ui->plotS2->graph(0)->addData(tempo, funcSensor(sensores[1]));
         ui->plotS2->graph(1)->addData(tempo, 30);
 
+        ui->label_altura->setText(QString::number(funcSensor(sensores[0])));
+
 //        ui->plotS3->graph(0)->addData(tempo, sensores[4]);
 //        ui->plotS3->graph(1)->addData(tempo, sensores[6]);
 //        ui->plotS4->graph(0)->addData(tempo, sensores[5]);
@@ -354,7 +361,7 @@ void MainWindow::Controle()
         //qDebug() << std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now()-now).count() << "us\n";
         double t= std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now()-now).count()/1000.0;
         //qDebug() << valCalculado << endl;
-        qDebug() << 0.1-t << endl;
+        //qDebug() << 0.1-t << endl;
         tempo+=0.1;
         //tempo+=0.1;
         usleep((0.1)*10E5);
@@ -458,15 +465,23 @@ void MainWindow::on_comboBoxTipodeControle_activated(const QString &arg1)
         ui->doubleSpinBox_ki->setEnabled(false);
         ui->doubleSpinBox_kd->setEnabled(false);
 
+        ui->doubleSpinBox_ki->setValue(0);
+        ui->doubleSpinBox_kd->setValue(0);
+
     }else if(tipo == "PI"){
 
         ui->doubleSpinBox_ki->setEnabled(true);
         ui->doubleSpinBox_kd->setEnabled(false);
 
+        ui->doubleSpinBox_kd->setValue(0);
+
+
     }else if(tipo == "PD"){
 
         ui->doubleSpinBox_ki->setEnabled(false);
         ui->doubleSpinBox_kd->setEnabled(true);
+
+        ui->doubleSpinBox_ki->setValue(0);
 
     }else if(tipo == "PID"){
         ui->doubleSpinBox_ki->setEnabled(true);

@@ -34,6 +34,17 @@
 \usepackage{subfig}
 \usepackage{mathptmx}
 \usepackage{changepage}
+
+\usepackage{listings}
+\usepackage{xcolor}
+\lstset{language=C++,
+                basicstyle=\ttfamily,
+                keywordstyle=\color{blue}\ttfamily,
+                stringstyle=\color{red}\ttfamily,
+                commentstyle=\color{green}\ttfamily,
+                morecomment=[l][\color{magenta}]{\#}
+}
+
 %\usepackage[alf]{abntex2cite}
 
 %%%%%%%%%%% PDF METADATA %%%%%%%%%%%%%
@@ -297,15 +308,28 @@ O período de amostragem e o controle do sistema é feito a cada 100 milisegundo
 
 \section{METODOLOGIA}
 
+\hspace{4ex}O sistema de controle Proporcional Integral Derivativo (PID) desenvolvido foi implementado no código de acordo com o referencial teórico. Para isso, foi criado uma classe que de acordo com a solicitação do usuário será: apenas Proporcional (P), ou Proporcional Integrativo (PI), ou Proporcional Derivativo (PD), ou PID, ou PI-D. A implementação pode ser observada abaixo:
 
-\hspace{4ex}Neste sistema de controle desenvolvido, foi utilizado a planta da \textit{Quanser}, um sistema com dois tanques com altura de 30cm e diâmetro de 4,45cm cada. Desejava-se controlar o nível dos tanques com a bomba através das tensões enviadas para a uma placa onde havia uma comunicação cliente-servidor. Fez-se um experimento inicial para se ter conhecimento do comportamento do fluxo de água enviado pela bomba, a vazão de saída dos tanques e a leitura dos sensores. Assim como os níveis de equilíbrio entre a vazão de entrada e saída. Após a obtenção desses valores, comparou-se com as constantes obtidas na documentação do fabricante: constante da bomba e constante para conversão dos valores obtidos do sensor para centímetro. Foi adotado, então, a constante do  sensor do fabricante na conversão das leituras recebidas do sensor. Não foi necessário a constante da bomba, apenas para simulações feitas sem o uso da planta.
+\begin{lstlisting}
+double PID::Controle(double e, double h)
+{
+    I= I+Ki*e*h;
+    D= Kd*(e-e_ant)/h;
+    e_ant= e;
+    return Kp*e+I+D;
+}
 
-Em seguida, foi feito o planejamento do leiaute do software de controle, os parâmetros de entrada e os valores de saída a serem apresentados nos gráficos, seguindo as especificações do roteiro. O programa foi feito no ambiente Qt Creator utilizando a linguagem C++, pois tinha suporte para interface gráfica. A leitura e escrita não foi paralelizada para evitar alguns conflitos de sincronização. 
+double PID::Controle(double e, double y, double h)
+{
+    I= I+Ki*e*h;
+    D= Kd*(y-e_ant)/h;
+    e_ant= y;
+    return Kp*e+I+D;
+}
+\end{lstlisting}
 
-Após finalizado o sistema, a validação do controle foi feita testando cada função de entrada: degrau, senoidal, dente de serra e aleatório. Variando também os valores de entrada e fazendo a comutação entre malha fechada e aberta. 
-
-No caso específico da malha fechada onde seria necessário utilizar as leituras do sensor, foi utilizado a seguinte estratégia: a referência era enviada para a placa e ao receber as leituras do sensor, esses valores eram comparados. Se houvesse alguma diferença, ou erro, era corrigido na referência diminuindo-se o erro.
-
+\hspace{4ex}O primeiro método é referente ao P, PI, PD e PID, enquanto que o segundo método é o PI-D.
+\hspace{4ex}Após essa implementação, foram feitos vários testes utilizando todos os tipos de controladores, como também, variando os ganhos.
 
 \newpage
 

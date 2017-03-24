@@ -195,13 +195,13 @@ Professor:  Fábio Meneghetti Ugulino de Araújo.
 
 \begin{flushleft}
 
-\hspace{4ex}O presente trabalho é referente ao desenvolvimento de um software que se comunica com um sistema de tanques, uma planta Quanser, e seu simulador, o qual possui canais para leitura e escrita de sinais. Primeiro, houve a análise matemática das relações entre vazão de entrada, vazão de saída, tensão enviada para a bomba e o nível de água presente no tanque. Além disso, o sistema possui duas situações: malha aberta, a qual o usuário escolhe a tensão a ser enviada; e malha fechada, nesse caso, o usuário indica exatamente o nível que a água deve estar. O usuário também escolhe o tipo de sinal que está sendo enviado (degrau, onda quadrada, entre outros). Posteriormente, fazendo uso de dados adquiridos experimentalmente, obteve as equações referente ao comportamento do fluxo da água com relação à bomba, como também, a associação da altura com a tensão. O comportamento do sistema é informado para o usuário através de gráficos presentes na interface do software, tanto o sinal de entrada escolhido como os valores que são lidos nos canais indicados pelo usuário.\\
+\hspace{4ex}O presente trabalho é uma continuação ao que foi previamente realizado na primeira prática. Consiste no desenvolvimento de um software que se comunica com um sistema de tanques, uma planta Quanser, e seu simulador, com canais para leitura e escrita de sinais. Nesta etapa do trabalho, foi-se adicionado ao software desenvolvido na primeira experiência as ações de controle proporcional (P), integral (I) e derivativo (D), possibilitando ao usuário a opção de escolher entre controladores P, PI, PD, PID e PI-D. As funções teóricas utilizadas para formular o controlador estão explicitadas no texto deste relatório, bem como os algoritmos que simulam seus funcionamentos. O comportamento do sistema pode ser observado pelo usuário através de três gráficos presentes na interface do software, um para o sinal de entrada e os demais para os canais de saída.\\
 
 \end{flushleft}
 
 \vspace{1.5cm}
 
-\textbf{Palavras-chave:} sistema de tanques; sistema de controle; software; planta Quanser.
+\textbf{Palavras-chave:} sistema de tanques; sistema de controle; software; planta Quanser, controlador PID.
 
 \newpage
 
@@ -434,21 +434,28 @@ double PID::Controle(double e, double y, double h)
 \section{CONCLUSÃO}
 
 
-\hspace{4ex}De acordo com os resultados obtidos, pode-se concluir que na malha fechada, o controlador consegue rastrear bem o degrau, para os demais sinais, esse rastreamento só é possível se a variação do sinal for mais lenta que a constante de tempo do sistema. Enquanto que na malha aberta, é importante ressaltar que o sinal dificilmente ficará no valor calculado teoricamente, devido a interferência de fatores externos e internos, como por exemplo a temperatura, funcionamento da bomba e ajustes dos sensores da planta.
+\hspace{4ex}Através dos testes realizados, é possível perceber a menor eficiência dos controladores P e PI na administração da resposta transitória. Por um lado, ambos melhoram a resposta em regime, com o PI apresentando erro quase zero do sinal de controle em relação ao sinal de referência, por outro, essa maior aproximação ao valor desejado vem às custas da manipulação de variáveis que podem: instabilizar o sistema – caso de Kp – ou aumentar o overshoot – caso de Ki. O controlador PD, que se mostra visivelmente melhor na resposta transitória, apresenta um maior erro na resposta em regime, e sua variável Kd pode deixar o sistema muito oscilatório.
 
-Além disso, o controlador utilizado na malha fechada calcula o erro do nível do tanque e soma com a tensão necessária para chegar na altura desejada pelo usuário, dessa forma, o erro faz o papel de acelerador do sistema, fazendo com que um determinado nível seja alcançado rapidamente, diferentemente do caso em que se utiliza apenas o valor do erro onde o valor desejado pode não ser alcançado.
+Os controladores PID e PI-D mostraram-se capazes de produzir bons resultados tanto na resposta transitória quanto na resposta em regime: houve diminuição do overshoot, menor tempo de resposta e sinal de controle muito próximo ao sinal de referência. Os testes com o PI-D revelam também a atuação deste na redução de variações bruscas no sinal de controle. 
 
 \newpage
 
 %%%%%%%% REFERÊNCIAS %%%%%%%%%%%%%%%%%
 
-%Referências bibliogáficas (geradas automaticamente)
-\addcontentsline{toc}{chapter}{Referências bibliográficas}
-\bibliography{bib/bibliografia}
+\thispagestyle{empty}
+\section{BIBLIOGRAFIA}
+ .
+ 
+Dorf, R.; Bishop, R. Sistemas de controle modernos. Rio de Janeiro (RJ): LTC, 2009. 
 
-\appendix
+Ogata, K. Modern control engineering. Boston: Prentice Hall, 2010.
+
+
+%Referências bibliogáficas (geradas automaticamente)
+%\addcontentsline{toc}{chapter}{Referências bibliográficas}
+%\bibliography{bib/bibliografia}
 
 %Apêndice A
-\include{apendice}
+%\include{apendice}
 
 \end{document}

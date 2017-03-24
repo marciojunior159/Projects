@@ -35,6 +35,7 @@
 \usepackage{mathptmx}
 \usepackage{changepage}
 
+
 \usepackage{listings}
 \usepackage{xcolor}
 \lstset{language=C++,
@@ -105,7 +106,6 @@ INTRODUÇÃO AO LABORATÓRIO DE CONTROLE\\
 	GRUPO Nº}
 
 \vspace{3.6cm}
-
 
 
 \begin{flushright}
@@ -232,7 +232,13 @@ Professor:  Fábio Meneghetti Ugulino de Araújo.
 \section{INTRODUÇÃO}
 
 \begin{flushleft}
-\hspace{4ex}O trabalho descrito neste relatório tem como objetivo o desenvolvimento de uma aplicação capaz de manipular um sistema de tanques Quanser através da utilização da linguagem C++.
+\hspace{4ex}O trabalho descrito neste relatório é uma continuação do programa desenvolvido na primeira experîência.
+
+\hspace{4ex}Além do usuário possuir a opção de malha aberta e malha fechada, onde antes era apenas informado o sinal e a tensão ou nível desejado, agora é possível escolher entre os controladores Proporcional(P), Proporcional Integral(PI), Proporcional Derivativo(PD), Proporcional Integral Derivativo(PID) e (Proporcional+Integral)+Derivativo(PI-D), e assim, de acordo com o controlador escolhido, a determinação de Kp, Ki e Kd, ou    $\tau_i$ e $\tau_d.$
+
+\hspace{4ex}Além disso, o relatório dispõe de um referêncial teórico 
+
+ tem como objetivo o desenvolvimento de uma aplicação capaz de manipular um sistema de tanques Quanser através da utilização da linguagem C++.
 
 A aplicação deve ser capaz de controlar o nível no tanque superior de acordo com a orientação dada pelo usuário. O usuário define a tensão da bomba em volts (para o caso de malha aberta) ou o nível a ser atingido no tanque em centímetros (para o caso de malha fechada), sendo estabelecidos limites na aplicação respeitando os limites físicos do tanque e da bomba. A aplicação deverá realizar esse controle utilizando-se de cinco tipos de sinais: degrau, onda senoidal, onda quadrada, onda do tipo dente de serra, e aleatória. O usuário definirá também as portas de entrada e saída, podendo escolher de uma a oito portas de saída.
 
@@ -329,6 +335,7 @@ double PID::Controle(double e, double y, double h)
 \end{lstlisting}
 
 \hspace{4ex}O primeiro método é referente ao P, PI, PD e PID, enquanto que o segundo método é o PI-D.
+
 \hspace{4ex}Após essa implementação, foram feitos vários testes utilizando todos os tipos de controladores, como também, variando os ganhos.
 
 \newpage
@@ -339,80 +346,92 @@ double PID::Controle(double e, double y, double h)
 
 \section{RESULTADOS}
 
-\hspace{4ex}
+\hspace{4ex}Bla bla
 
-\subsection{Programa de controle}
-O sistema no geral não apresentou problemas de conexão com o servidor, como perda de conexão ou atrasos consideráveis nos dados recebidos. Para o caso de não paralelizar a leitura e escrita de dados, foi observada que não houve influencia negativa observável, como na vazão de entrada, a bomba era iniciada quase que instantaneamente. Os dados recebidos dos sensores que representavam o nível estavam bem próximos do valor real, tendo em casos uma diferença em média de mais ou menos um centímetro. 
+\subsection{Controle P}
+\hspace{4ex}Utilizando o Controle Proporcional foram obtidos vários resultados variando o valor de Kp, como também o nível desejado, observe a figura \ref{fig:ControleP}.
 
-A figura a seguir mostra uma visão geral do programa desenvolvido.
-
-%%% Problemas para inserir figuras %%%
-\begin{figure}[!h]
-\centering
-\includegraphics[width=0.9\textwidth]{prog-geral.eps}
-\caption{Interface do programa de controle}
-\label{Interface}
-\end{figure}
-\hspace{4ex}
-Onde o gráfico principal que está localizado no canto inferior esquerdo apresenta o sinal enviado em tempo real. Os outros quatro gráficos à direita do gráfico principal apresentam as leituras dos possíveis oito canais disponíveis na placa. Entretanto, apenas dois obtinham informação relevante. No canal 0, a leitura do nível do tanque 1 e, no canal 1, a leitura do nível do tanque 2.
-
-
-%\subsubsection{Subseções}
-
-\newpage
-\subsection{Sistema de tanques}
-\hspace{4ex}
-Pode-se observar através das leituras dos sensores como se deu o comportamento do nível dos tanques. Quando escolhido a malha aberta, a saída segue a entrada e se os dados recebidos não estiverem de acordo com a referência, só poderá ser corrigido quando a entrada é alterada. Dessa forma, o ajuste é feito manualmente. 
-
-\begin{figure}[!h]
-\centering
-\includegraphics[width=0.8\textwidth]{maberta-sen-4.eps}
-\caption{Sistem de controle para malha aberta com entrada senoidal}
-\label{Entrada Senoidal - aberta}
-\end{figure}
-  
-Na imagem acima pode-se ver que a resposta do sistema está deslocada em relação ao sinal de entrada. Enquanto a entrada está no seu ponto mínimo, na resposta o sinal está logo após o pico. 
-
-\begin{figure}[!h]
-\centering
-\includegraphics[width=0.8\textwidth]{maberta-serra-4.eps}
-\caption{Sistem de controle para malha aberta com entrada dente de serra}
-\label{Entrada Dente de Serra - aberta}
+\hspace{4ex}Notou-se que com o aumento do ganho o sistema se aproxima da referência, mas nunca a alcança. Além disso, a partir de um certo valor de Kp, o sistema começa a ficar instável, como pode ser observado nas figuras \ref{<figureP6>} e \ref{<figureP7>}.
+\begin{figure}[H]
+     \centering
+     \subfloat[][]{\includegraphics[width=8cm]{resultados/P/00}\label{<figureP1>}}\hspace{4ex}
+     \subfloat[][]{\includegraphics[width=8cm]{resultados/P/01}\label{<figureP2>}}\\
+     \subfloat[][]{\includegraphics[width=8cm]{resultados/P/02}\label{<figureP3>}}\hspace{4ex}
+     \subfloat[][]{\includegraphics[width=8cm]{resultados/P/03}\label{<figureP4>}}\\
+     \subfloat[][]{\includegraphics[width=8cm]{resultados/P/04}\label{<figureP5>}}\hspace{4ex}
+     \subfloat[][]{\includegraphics[width=8cm]{resultados/P/05}\label{<figureP6>}}\\
+     \subfloat[][]{\includegraphics[width=8cm]{resultados/P/06}\label{<figureP7>}}\hspace{4ex}
+     \subfloat[][]{\includegraphics[width=8cm]{resultados/P/07}\label{<figureP8>}}
+     \caption{Controle P}
+     \label{fig:ControleP}
 \end{figure}
 
-\newpage
-Já observando a resposta a um sinal dente de serra na figura 6, quando há a mudança brusca de valor quando se alcança a amplitude determinada na entrada, vê-se que o nível não segue o mesmo ritmo de mudança. O nível desce lentamente e dependendo do período, pode-se manter um certo nível.
+\subsection{Controle PI}
+\hspace{4ex}Abaixo, na figura \ref{controlePI}, é possível analisar resultados obtidos pela utilização do controle Proporcional Integral.
 
-Para o caso de malha fechada, o sistema vai tentar compensar o erro da referência. É o que se pode notar nos gráficos de saída. A figura 7 mostra que para uma entrada degrau em que a referência é 20cm, o sistema envia a tensão de 4 volts, ou seja, tensão máxima. O tanque alcança o nível, então para se manter no valor de referência, a tensão converge lentamente para uma tensão de equlíbrio.
+\hspace{4ex}Como esperado, o nível do tanque consegue atingir o sinal de referência, pois o controlado PI zera o erro de regime para uma entrada degrau.
 
-\begin{figure}[!h]
-\centering
-\includegraphics[width=0.8\textwidth]{mfechada-degrau-20.eps}
-\caption{Sistem de controle para malha fechada com entrada degrau}
-\label{Entrada Degrau - fechada}
+\hspace{4ex}Também foi verificado que com o aumento do Ki houve um aumento do overshoot, isso pode ser notado nas figuras \ref{<figurePI3>} e \ref{<figurePI4>}.
+\begin{figure}[H]
+     \centering
+     \subfloat[][]{\includegraphics[width=8cm]{resultados/PI/00}\label{<figurePI1>}}\hspace{4ex}
+     \subfloat[][]{\includegraphics[width=8cm]{resultados/PI/01}\label{<figurePI2>}}\\
+     \subfloat[][]{\includegraphics[width=8cm]{resultados/PI/02}\label{<figurePI3>}}\hspace{4ex}
+     \subfloat[][]{\includegraphics[width=8cm]{resultados/PI/03}\label{<figurePI4>}}\\
+     \subfloat[][]{\includegraphics[width=8cm]{resultados/PI/04}\label{<figurePI5>}}\hspace{4ex}
+     \subfloat[][]{\includegraphics[width=8cm]{resultados/PI/05}\label{<figurePI6>}}\\
+     \subfloat[][]{\includegraphics[width=8cm]{resultados/PI/06}\label{<figurePI7>}}
+     \caption{Controle PI}
+     \label{controlePI}
 \end{figure}
 
-Quando se transmite o dente de serra, observa que o sinal de entrada perde suas características, como se pode ver na figura 8, o gráfico principal não tem mais um subida rápida e linear. Porém, na saída, notou-se que o nível não permanecia constante, o nível se assemelhava a função dente de serra com uma subida mais lenta e com descida rápida, mas não brusca.  
+\subsection{Controle PD}
+\hspace{4ex}O controlador PD tenta prever variações no sinal, dessa forma, melhorando o transitório, veja a figura \ref{controlePD}.
 
-Por fim, tem-se o caso do sinal aleatório para malha fechada em que o sinal de referência está  mudando rapidamente. Dessa forma, fica mais difĩcil de analisar o controle, já que não se consegue convergir em um valor ou um comportamento fixo. Na figura 9 se pode notar que tensões negativas e próximas de zero, considerando que o nível do tanque era alto antes de mudar para o sinal aleatório, viu-se que o nível rapidamente desceu. Logo, para um sinal aleatório a média fica em torno de zero, por isso o tanque não sobe muito. Há pequenas mudanças mas nada que se sutenta. O gráfico de saída ficou mais incostante como se tivessem pequenas pertubações no tanque.
-
-\newpage
-
-\begin{figure}[!h]
-\centering
-\includegraphics[width=0.8\textwidth]{mfechada-serra-15.eps}
-\caption{Sistem de controle para malha fechada com dente de serra}
-\label{Entrada Dente de serra - fechada}
+\hspace{4ex}Como também, quando há o aumento do valor do Kd, o sinal de controle fica muito oscilatório como visto na figura \ref{<figurePD4>}.
+\begin{figure}[H]
+     \centering
+     \subfloat[][]{\includegraphics[width=8cm]{resultados/PD/00}\label{<figurePD1>}}\hspace{4ex}
+     \subfloat[][]{\includegraphics[width=8cm]{resultados/PD/01}\label{<figurePD2>}}\\
+     \subfloat[][]{\includegraphics[width=8cm]{resultados/PD/02}\label{<figurePD3>}}\hspace{4ex}
+     \subfloat[][]{\includegraphics[width=8cm]{resultados/PD/03}\label{<figurePD4>}}\\
+     \subfloat[][]{\includegraphics[width=8cm]{resultados/PD/04}\label{<figurePD5>}}\hspace{4ex}
+     \subfloat[][]{\includegraphics[width=8cm]{resultados/PD/05}\label{<figurePD6>}}\\
+     \subfloat[][]{\includegraphics[width=8cm]{resultados/PD/06}\label{<figurePD7>}}
+     \caption{Controle PD}
+     \label{controlePD}
 \end{figure}
 
-\begin{figure}[!h]
-\centering
-\includegraphics[width=0.8\textwidth]{mfechada-rand.eps}
-\caption{Sistem de controle para malha fechada com aleatória}
-\label{Entrada aleatória - fechada}
+\subsection{Controle PID}
+\hspace{4ex}Usando o controlador PID é possível constatar uma diminuição do overshoot e no tempo de resposta.
+\begin{figure}[H]
+     \centering
+     \subfloat[][]{\includegraphics[width=8cm]{resultados/PID/00}\label{<figurePID1>}}\hspace{4ex}
+     \subfloat[][]{\includegraphics[width=8cm]{resultados/PID/01}\label{<figurePID2>}}\\
+     \subfloat[][]{\includegraphics[width=8cm]{resultados/PID/02}\label{<figurePID3>}}\hspace{4ex}
+     \subfloat[][]{\includegraphics[width=8cm]{resultados/PID/03}\label{<figurePID4>}}\\
+     \subfloat[][]{\includegraphics[width=8cm]{resultados/PID/04}\label{<figurePID5>}}\hspace{4ex}
+     \subfloat[][]{\includegraphics[width=8cm]{resultados/PID/05}\label{<figurePID6>}}\\
+     \subfloat[][]{\includegraphics[width=8cm]{resultados/PID/06}\label{<figurePID7>}}
+     \caption{Controle PID}
+     \label{steady_state}
 \end{figure}
 
-
+\subsection{Controle PI-D}
+\hspace{4ex}Fazendo uso do controlador PI-D é possível ver que existe menos variações bruscas no sinal de controle, além do tempo de resposta ser mais rápido, veja a figura \ref{controlePI-D}. Esse sinal parece ser melhor para sinais que possuem uma maior variancia.
+\begin{figure}[H]
+     \centering
+     \subfloat[][]{\includegraphics[width=8cm]{resultados/PI-D/00}\label{<figurePI_D1>}}\hspace{4ex}
+     \subfloat[][]{\includegraphics[width=8cm]{resultados/PI-D/01}\label{<figurePI_D2>}}\\
+     \subfloat[][]{\includegraphics[width=8cm]{resultados/PI-D/02}\label{<figurePI_D3>}}\hspace{4ex}
+     \subfloat[][]{\includegraphics[width=8cm]{resultados/PI-D/03}\label{<figurePI_D4>}}\\
+     \subfloat[][]{\includegraphics[width=8cm]{resultados/PI-D/04}\label{<figurePI_D5>}}\hspace{4ex}
+     \subfloat[][]{\includegraphics[width=8cm]{resultados/PI-D/05}\label{<figurePI_D6>}}\\
+     \subfloat[][]{\includegraphics[width=8cm]{resultados/PI-D/06}\label{<figurePI_D7>}}\hspace{4ex}
+     \subfloat[][]{\includegraphics[width=8cm]{resultados/PI-D/07}\label{<figurePI_D8>}}
+     \caption{Controle PI-D}
+     \label{controlePI-D}
+\end{figure}
 
 \newpage
 

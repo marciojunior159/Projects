@@ -255,57 +255,57 @@ O resultado será apresentado através de uma interface gráfica, onde o usuári
 
 \section{REFERENCIAL TEÓRICO}
 
-\subsection{MODELAGEM}
-\hspace{4ex}O sistema a ser controlado é representado pelo seguinte sistema.
-\begin{figure}[h]
-\includegraphics[scale=1]{tanques.png}
-\caption{Sistema de tanques}
-\label{fig:tanques}
-\end{figure}
-
-\hspace{4ex}Sabemos que a vazão de entrada é dada por $ k_mu(t) $ e a vazão de saída $ \sqrt{2gh(t)}a $, onde $k_m$ é a constante da bomba e $"a"$ a área do orificio. Assim: 
-\[ \frac{dq}{dt}=qin-qout\]
-\[ A\frac{dh(t)}{dt}=k_mu(t)-\sqrt{2gh(t)}a \]
-\[ A\frac{dh(t)}{dt}=k_mu(t)-\sqrt{2gh(t)}a \]
-\[ \frac{dh(t)}{dt}= \frac{k_m}{A}u(t)- \frac{a\sqrt{2gh(t)}}{A} \]
-
-\subsection{ANALISE}
-\hspace{4ex}Para atingir um certo nível no tanque estamos interessados no valor de tensão que fará o sistema alcançar esse nível. Para isso precisamos analisar o regime permanente. Após algum tempo a altura praticamente não vai mais variar, então podemos considerar.  $\frac{dh(t)}{dt}=0 $, com isso nossa equação fica:
-\[ \frac{k_m}{A}u(t)= \frac{a\sqrt{2gh(t)}}{A} \]
-\[ u(t)=  \frac{a\sqrt{2gh(t)}}{k_m}\]
+\subsection{LUGAR GEOMÉTRICO DAS RAÍZES}
+\hspace{4ex}Lugar geométrico das raízes é a representação gráfica dos lugares dos pólos e zeros da função de transferência de malha fechada quando os paramêtros da função, também chamado de ganho, são variados de zero a infinito.
+ 
+%\[ \frac{k_m}{A}u(t)= \frac{a\sqrt{2gh(t)}}{A} \]
+%\[ u(t)=  \frac{a\sqrt{2gh(t)}}{k_m}\]
+Pode se obter esses lugares através da função de transferência de malha fechada do sistema:
 \begin{equation}\label{eq:1}
-u(t)=k\sqrt{h(t)}
+1 + kG(s)H(s) = 0
 \end{equation}
-\hspace{4ex}Por questões de simplificação e como a variação da altura é pequena, aproximamos para uma função linear. Com a relação do sinal de entrada com o nível final do tanque, podemos calcular experimentalmente o valor de k, aplicando um sinal de entrada do tipo degrau e observando o seu valor final.
-Com o valor de k calculado, dado um nível sabemos qual a tensão necessária para atingi-lo.
 
-\subsection{SENSORES}
-\hspace{4ex}Para obter o nível dos tanques são utilizados sensores de pressão. a saída desses sensores são uma tensão proporcional a pressão e como a pressão é proporcional a altura podemos encontrar uma relação linear da tensão com a altura da água.
+\subsection{CONTROLADOR DE TRÊS TERMOS (PID)}
+O controlador PID é o mais utilizado na indústria (DorfBishop, 2009) um dos motivos para que isso ocorra é devido a facilidade de ser controlado no local. Além disso, é amplamente discutido na literatura, com várias publicações de ajustes e ajustes finos (Ogata, 2010). PID modificados como o PI-D também é bastante utilizado. Pode também ser usado em situações em que não se conhece a função de transferência sistema e ainda conseguir um bom resultado. Porém há ressalvas e em alguns sistemas pode se não obter um controle ótimo.
 
+O PID tem como função de transferência a seguinte expressão:
 
-\subsection{SISTEMA EM MALHA ABERTA}
-\begin{figure}[H]
-\includegraphics[width=15cm]{malhaAberta.png}
-\caption{Malha aberta}
-\label{fig:malhaAberta}
-\end{figure}
-\hspace{4ex}No processo em malha aberta não existe nenhum controle o sinal de entrada é a tensão e a saída o nível do tanque que é lida pelo sensor.
+\begin{equation}\label{eq:1}
+G_c(s) = K_p + \frac{K_I}{s} + K_D s
+\end{equation}
 
+Na equação podemos ver três parâmetros. Quando se atribui zero ao parâmetro derivativo, obtém-se o controlador PI, controlador proporcional e integral:  \[K_D = 0 \] 
+Logo, \[G_c(s) = K_p + \frac{K_I}{s} \]
+Da mesma forma para o parâmetro da integral:
+\[K_I = 0 \] 
+Tem-se o controlador proporcional derivativo, ou PD: \[G_c(s) = K_p + K_D s \]
 
-\subsection{SISTEMA EM MALHA FECHADA}
-\hspace{4ex}No processo em malha fechada o sinal de entrada é o nível de referência.
-A entrada do controlador é a diferença de nivel desejado para o medido, a saida do controlador é a própria diferença somada com a tensão necessária para o sistema estabilizar naquele nível, utilizando a equação \ref{eq:1}.
-Assim a tensão somada dá o valor necessário para estabilizar e o erro acelera esse processo.
-O período de amostragem e o controle do sistema é feito a cada 100 milisegundos.
-
-
-\begin{figure}[H]
-\includegraphics[width=15cm]{malhaFechada.jpg}
-\caption{Malha Fechada}
-\label{fig:malhaFechada}
+\begin{figure}[!h]
+\centering
+\includegraphics[scale=1]{controlador-malha-fechada.jpg}
+\caption{Sistema de malha fechada com controlador}
+\label{fig:sistema}
+{Fonte: DorfBishop, 2009}
 \end{figure}
 
+A função de transferência do PID insere no sistema uma pólo na origem e dois zeros em lugares a serem determinados. Se for adicionado zeros complexos no sistema, têm-se um lugar geométrico das raízes como o exemplo a seguir: 
 
+\begin{figure}[!h]
+\centering
+\includegraphics[scale=1]{lugar-das-raizes-pid.jpg}
+\caption{Lugar das raízes com zeros complexos}
+\label{fig:lgr}
+{Fonte: DorfBishop, 2009}
+\end{figure}
+
+
+\subsection{EFEITOS DO CONTROLE DERIVATIVO E INTEGRAL NA PERFORMANCE DO SISTEMA}
+\hspace{4ex}
+Para um sistema com controle apenas proporcional, dada uma entrada degrau, o erro de regime estacionário aparecerá. Esse offset dependerá do ganho proporcional atribuído. Para que seja eliminado esse erro é necessário a adição de um controlador integral, já que ele adiciona um zero ao sistema, mas pode deixar o sistema mais oscilatório.
+
+Já o controle derivativo quando adicionado a um controle proporcional (PD), oferece um controle com alta sensibilidade, devido a responder a taxa de variação do erro, dessa forma o controle atua antes de forma preventiva (Ogata, 2010). Esse tipo de controle não corrige diretamento o erro de regime estacionário, mas adiciona amortecimento ao sistema de forma que permite um uso de um ganho maior.
+
+Portanto, tendo em mente os efeitos e peculiaridades de cada controlador, pode-se projetar um PID mais eficiente.
 \newpage
 
 %%%%%%%%%% METODOLOGIA %%%%%%%%%%%%%%%

@@ -232,19 +232,11 @@ Professor:  Fábio Meneghetti Ugulino de Araújo.
 \section{INTRODUÇÃO}
 
 \begin{flushleft}
-\hspace{4ex}O trabalho descrito neste relatório é uma continuação do programa desenvolvido na primeira experîência.
+\hspace{4ex}O trabalho descrito neste relatório é uma continuação do programa desenvolvido na primeira experiência.
 
 \hspace{4ex}Além do usuário possuir a opção de malha aberta e malha fechada, onde antes era apenas informado o sinal e a tensão ou nível desejado, agora é possível escolher entre os controladores Proporcional(P), Proporcional Integral(PI), Proporcional Derivativo(PD), Proporcional Integral Derivativo(PID) e (Proporcional+Integral)+Derivativo(PI-D), e assim, de acordo com o controlador escolhido, a determinação de Kp, Ki e Kd, ou    $\tau_i$ e $\tau_d.$
 
-\hspace{4ex}Além disso, o relatório dispõe de um referêncial teórico 
-
- tem como objetivo o desenvolvimento de uma aplicação capaz de manipular um sistema de tanques Quanser através da utilização da linguagem C++.
-
-A aplicação deve ser capaz de controlar o nível no tanque superior de acordo com a orientação dada pelo usuário. O usuário define a tensão da bomba em volts (para o caso de malha aberta) ou o nível a ser atingido no tanque em centímetros (para o caso de malha fechada), sendo estabelecidos limites na aplicação respeitando os limites físicos do tanque e da bomba. A aplicação deverá realizar esse controle utilizando-se de cinco tipos de sinais: degrau, onda senoidal, onda quadrada, onda do tipo dente de serra, e aleatória. O usuário definirá também as portas de entrada e saída, podendo escolher de uma a oito portas de saída.
-
-Através das equações de vazão, pretende-se achar uma relação entre a tensão aplicada pela bomba e nível de água no tanque, de forma que o nível varie o mínimo possível. A partir dessa relação serão desenvolvidas as funções referentes aos cinco tipos de sinais.
-
-O resultado será apresentado através de uma interface gráfica, onde o usuário, além de controlar a situação, poderá visualizar as variações ocorrentes nas portas de saída em plano cartesiano, incluindo os níveis nos dois tanques e a tensão na bomba.
+\hspace{4ex}No relatório é apresentado como foi implementado os controladores, bem como, os resultados e conclusões dos testes realizados.
 \end{flushleft}
 
 \newpage
@@ -282,7 +274,7 @@ Tem-se o controlador proporcional derivativo, ou PD: \[G_c(s) = K_p + K_D s \]
 
 \begin{figure}[!h]
 \centering
-\includegraphics[scale=1]{controlador-malha-fechada.jpg}
+\includegraphics[scale=1]{controlador-malha-fechada.JPG}
 \caption{Sistema de malha fechada com controlador}
 \label{fig:sistema}
 {Fonte: DorfBishop, 2009}
@@ -292,7 +284,7 @@ A função de transferência do PID insere no sistema uma pólo na origem e dois
 
 \begin{figure}[!h]
 \centering
-\includegraphics[scale=1]{lugar-das-raizes-pid.jpg}
+\includegraphics[scale=1]{lugar-das-raizes-pid.JPG}
 \caption{Lugar das raízes com zeros complexos}
 \label{fig:lgr}
 {Fonte: DorfBishop, 2009}
@@ -346,7 +338,7 @@ double PID::Controle(double e, double y, double h)
 
 \section{RESULTADOS}
 
-\hspace{4ex}Bla bla
+\hspace{4ex}Para a análise do comportamento dos controladores foi realizado vários testes diversificando o tipo de controlador e suas variáveis, esses testes podem ser encontrados nos seguintes subtópicos.
 
 \subsection{Controle P}
 \hspace{4ex}Utilizando o Controle Proporcional foram obtidos vários resultados variando o valor de Kp, como também o nível desejado, observe a figura \ref{fig:ControleP}.

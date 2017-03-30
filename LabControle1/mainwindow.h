@@ -59,6 +59,7 @@ private:
     PID pid;
     double A =0;
     double T = 0;
+    double offset = 0;
 };
 
 #endif // MAINWINDOW_H

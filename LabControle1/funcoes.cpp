@@ -12,19 +12,19 @@ using namespace std;
 double periodoAle = 0;
 double amplitudeAle = 0;
 
-double funcDegrau(double amp, double tempo)
+double funcDegrau(double amp, double tempo, double offset)
 {
     if(tempo>=0)
-        return amp;
+        return amp+offset;
 
-    return 0;
+    return offset;
 }
 
-double funcSerra(double amplitude, double periodo, double tempo)
+double funcSerra(double amplitude, double periodo, double tempo, double offset)
 {
     double novoTempo = fmod(tempo, periodo);
 
-    return amplitude/periodo*novoTempo;
+    return (amplitude/periodo*novoTempo) + offset;
 }
 
 double funcAleatoria1(double tempo)
@@ -46,23 +46,23 @@ double funcAleatoria2(double tempo)
     return amplitudeAle;
 }
 
-double funcSenoidal(double amp, double periodo, double tempo){
+double funcSenoidal(double amp, double periodo, double tempo, double offset){
 
-    return (amp/2)*sin(2*PI*1/periodo*tempo) + amp/2;
+    return (amp/2)*sin(2*PI*1/periodo*tempo) + amp/2 + offset;
     //periodo em radianos
-    if((fmod(tempo, periodo)) < periodo/2){
-        return (amp/2)*sin(2*PI*periodo*tempo) + amp/2;
-    }else{
-        return 0;
-    }
+//    if((fmod(tempo, periodo)) < periodo/2){
+//        return ((amp/2)*sin(2*PI*periodo*tempo) + amp/2) + offset;
+//    }else{
+//        return offset;
+//    }
 }
 
-double funcQuadrada(double amp, double periodo, double tempo){
+double funcQuadrada(double amp, double periodo, double tempo, double offset){
 
     if( fmod(tempo,periodo) < periodo/2){
-        return amp;
+        return amp+offset;
     }else{
-        return 0;
+        return offset;
     }
 
 }

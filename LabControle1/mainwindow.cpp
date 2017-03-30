@@ -31,7 +31,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->customPlot->graph(1)->setPen(QPen(Qt::red));
     ui->customPlot->xAxis->setLabel("tempo(ms)");
     ui->customPlot->yAxis->setLabel("tensão(V)");
-    ui->customPlot->yAxis->setRange(-7, 7);
+    ui->customPlot->yAxis->setRange(-7, 10);
     ui->customPlot->legend->setVisible(true);
     ui->customPlot->legend->setFont(QFont("Helvetica", 9));
     ui->customPlot->legend->setRowSpacing(-5);
@@ -128,6 +128,8 @@ void MainWindow::on_radioButtonMalhaAberta_clicked()
         ui->doubleSpinBox_kd->setDisabled(true);
         ui->radioButtonGanho->setDisabled(true);
         ui->radioButtonTempo->setDisabled(true);
+
+        ui->SpinBoxPeriodoOffset->setEnabled(true);
     }
 }
 
@@ -149,6 +151,8 @@ void MainWindow::on_radioButtonMalhaFechada_clicked()
         //ui->doubleSpinBox_kd->setEnabled(true);
         ui->radioButtonGanho->setEnabled(true);
         ui->radioButtonTempo->setEnabled(true);
+
+        ui->SpinBoxPeriodoOffset->setEnabled(true);
     }
 }
 
@@ -186,19 +190,19 @@ void MainWindow::on_comboBoxSinal_activated(const QString &arg1)
 void MainWindow::timerEvent(QTimerEvent *e)
 {
     ui->customPlot->replot();
-    ui->customPlot->graph(0)->removeDataBefore(tempo-12);
-    ui->customPlot->xAxis->setRange(tempo + 0.25, 10, Qt::AlignRight);
+    ui->customPlot->graph(0)->removeDataBefore(tempo-120);
+    ui->customPlot->xAxis->setRange(tempo + 0.25, 100, Qt::AlignRight);
 
     ui->plotS1->replot();
-    ui->plotS1->graph(0)->removeDataBefore(tempo-12);
-    ui->plotS1->xAxis->setRange(tempo + 0.25, 10, Qt::AlignRight);
+    ui->plotS1->graph(0)->removeDataBefore(tempo-120);
+    ui->plotS1->xAxis->setRange(tempo + 0.25, 100, Qt::AlignRight);
     //ui->plotS1->replot();
     //ui->plotS1->graph(1)->removeDataBefore(tempo-12);
     //ui->plotS1->xAxis->setRange(tempo + 0.25, 10, Qt::AlignRight);
 
     ui->plotS2->replot();
-    ui->plotS2->graph(0)->removeDataBefore(tempo-12);
-    ui->plotS2->xAxis->setRange(tempo + 0.25, 10, Qt::AlignRight);
+    ui->plotS2->graph(0)->removeDataBefore(tempo-120);
+    ui->plotS2->xAxis->setRange(tempo + 0.25, 100, Qt::AlignRight);
 
 //    ui->plotS3->replot();
 //    ui->plotS3->graph(0)->removeDataBefore(tempo-12);
@@ -271,19 +275,19 @@ void MainWindow::Controle()
 
         if(fuc == "Degrau")
         {
-            val= funcDegrau(A, tempo);
+            val= funcDegrau(A, tempo, offset);
         }
         else if(fuc == "Senoidal")
         {
-            val= funcSenoidal(A, T, tempo);
+            val= funcSenoidal(A, T, tempo, offset);
         }
         else if(fuc == "Onda quadrada")
         {
-            val= funcQuadrada(A, T, tempo);
+            val= funcQuadrada(A, T, tempo, offset);
         }
         else if(fuc == "Dente de serra")
         {
-            val= funcSerra(A, T, tempo);
+            val= funcSerra(A, T, tempo, offset);
         }
         else if(fuc == "Aleatorio") // intervalo
         {
@@ -420,6 +424,7 @@ void MainWindow::on_pushButtonEnviar_clicked()
     fuc= ui->comboBoxSinal->currentText().toStdString();
     A = ui->SpinBoxTensaoNivel->value();
     T = ui->SpinBoxPeriodo->value();
+    offset=ui->SpinBoxPeriodoOffset->value();
 
     if(ui->radioButtonGanho->isChecked()){
         pid.setConstantes(ui->doubleSpinBox_kp->isEnabled()?ui->doubleSpinBox_kp->value():0,
@@ -429,6 +434,7 @@ void MainWindow::on_pushButtonEnviar_clicked()
         pid.setConstantesT(ui->doubleSpinBox_kp->isEnabled()?ui->doubleSpinBox_kp->value():0,
                            ui->doubleSpinBox_ki->isEnabled()?ui->doubleSpinBox_ki->value():0,
                            ui->doubleSpinBox_kd->isEnabled()?ui->doubleSpinBox_kd->value():0);
+
     }
 
 
@@ -439,6 +445,7 @@ void MainWindow::on_pushButtonCancel_clicked()
     fuc= "";
     A = 0;
     T = 0;
+    offset=0;
 }
 
 void MainWindow::on_radioButtonGanho_clicked(bool checked)

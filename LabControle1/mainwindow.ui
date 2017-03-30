@@ -276,10 +276,10 @@
     <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
-       <x>262</x>
-       <y>33</y>
-       <width>131</width>
-       <height>131</height>
+       <x>260</x>
+       <y>30</y>
+       <width>141</width>
+       <height>121</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout_4">
@@ -351,58 +351,21 @@
     <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
-       <x>13</x>
-       <y>39</y>
+       <x>10</x>
+       <y>30</y>
        <width>201</width>
        <height>128</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout_5">
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_5">
-        <property name="text">
-         <string>Canal</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1" colspan="2">
-       <widget class="QSpinBox" name="spinBoxCanal">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="maximum">
-         <number>7</number>
-        </property>
-       </widget>
-      </item>
       <item row="2" column="0">
-       <widget class="QLabel" name="label_3">
-        <property name="text">
-         <string>Sinal</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1" colspan="2">
-       <widget class="QComboBox" name="comboBoxSinal">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="editable">
-         <bool>false</bool>
-        </property>
-        <property name="currentIndex">
-         <number>-1</number>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
          <string>Tipo</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="1" colspan="2">
+      <item row="2" column="1" colspan="2">
        <widget class="QComboBox" name="comboBoxTipodeControle">
         <property name="enabled">
          <bool>false</bool>
@@ -438,14 +401,31 @@
        </widget>
       </item>
       <item row="0" column="0">
-       <widget class="QLabel" name="label_10">
+       <widget class="QLabel" name="label_5">
         <property name="text">
-         <string>Ordem</string>
+         <string>Canal</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1" colspan="2">
-       <widget class="QComboBox" name="comboBoxSinal_ordem">
+       <widget class="QSpinBox" name="spinBoxCanal">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="maximum">
+         <number>7</number>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Sinal</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1" colspan="2">
+       <widget class="QComboBox" name="comboBoxSinal">
         <property name="enabled">
          <bool>false</bool>
         </property>
@@ -453,18 +433,8 @@
          <bool>false</bool>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>-1</number>
         </property>
-        <item>
-         <property name="text">
-          <string>Primeira</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Segunda</string>
-         </property>
-        </item>
        </widget>
       </item>
      </layout>

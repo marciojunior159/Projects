@@ -70,33 +70,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->plotS2->graph(1)->setName("Set Point");
     ui->plotS2->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignLeft|Qt::AlignTop);
 
-//    ui->plotS3->addGraph();
-//    ui->plotS3->addGraph();
-//    ui->plotS3->graph(0)->setPen(QPen(Qt::blue));
-//    ui->plotS3->graph(1)->setPen(QPen(Qt::red));
-//    ui->plotS3->xAxis->setLabel("x");
-//    ui->plotS3->yAxis->setLabel("y");
-//    ui->plotS3->yAxis->setRange(-1, 31);
-//    ui->plotS3->legend->setVisible(true);
-//    ui->plotS3->legend->setFont(QFont("Helvetica", 9));
-//    ui->plotS3->legend->setRowSpacing(-3);
-//    ui->plotS3->graph(0)->setName("Canal 4");
-//    ui->plotS3->graph(1)->setName("Canal 6");
-//    ui->plotS3->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignLeft|Qt::AlignTop);
-
-//    ui->plotS4->addGraph();
-//    ui->plotS4->addGraph();
-//    ui->plotS4->graph(0)->setPen(QPen(Qt::blue));
-//    ui->plotS4->graph(1)->setPen(QPen(Qt::red));
-//    ui->plotS4->xAxis->setLabel("x");
-//    ui->plotS4->yAxis->setLabel("y");
-//    ui->plotS4->yAxis->setRange(-1, 31);
-//    ui->plotS4->legend->setVisible(true);
-//    ui->plotS4->legend->setFont(QFont("Helvetica", 9));
-//    ui->plotS4->legend->setRowSpacing(-3);
-//    ui->plotS4->graph(0)->setName("Canal 5");
-//    ui->plotS4->graph(1)->setName("Canal 7");
-//    ui->plotS4->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignLeft|Qt::AlignTop);
 
     controle= new std::thread(&MainWindow::Controle, this);
     recebe= new std::thread(&MainWindow::Recebe, this);
@@ -196,21 +169,10 @@ void MainWindow::timerEvent(QTimerEvent *e)
     ui->plotS1->replot();
     ui->plotS1->graph(0)->removeDataBefore(tempo-120);
     ui->plotS1->xAxis->setRange(tempo + 0.25, 100, Qt::AlignRight);
-    //ui->plotS1->replot();
-    //ui->plotS1->graph(1)->removeDataBefore(tempo-12);
-    //ui->plotS1->xAxis->setRange(tempo + 0.25, 10, Qt::AlignRight);
 
     ui->plotS2->replot();
     ui->plotS2->graph(0)->removeDataBefore(tempo-120);
     ui->plotS2->xAxis->setRange(tempo + 0.25, 100, Qt::AlignRight);
-
-//    ui->plotS3->replot();
-//    ui->plotS3->graph(0)->removeDataBefore(tempo-12);
-//    ui->plotS3->xAxis->setRange(tempo + 0.25, 10, Qt::AlignRight);
-
-//    ui->plotS4->replot();
-//    ui->plotS4->graph(0)->removeDataBefore(tempo-12);
-//    ui->plotS4->xAxis->setRange(tempo + 0.25, 10, Qt::AlignRight);
 
     if(canais[0])
         ui->plotS1->graph(0)->setVisible(1);
@@ -232,26 +194,6 @@ void MainWindow::timerEvent(QTimerEvent *e)
     else
         ui->plotS2->graph(1)->setVisible(0);
 
-//    if(canais[4])
-//        ui->plotS3->graph(0)->setVisible(1);
-//    else
-//        ui->plotS3->graph(0)->setVisible(0);
-
-//    if(canais[5])
-//        ui->plotS4->graph(0)->setVisible(1);
-//    else
-//        ui->plotS4->graph(0)->setVisible(0);
-
-//    if(canais[6])
-//        ui->plotS3->graph(1)->setVisible(1);
-//    else
-//        ui->plotS3->graph(1)->setVisible(0);
-
-//    if(canais[7])
-//        ui->plotS4->graph(1)->setVisible(1);
-//    else
-//        ui->plotS4->graph(1)->setVisible(0);
-
 
 }
 
@@ -260,7 +202,7 @@ auto now = std::chrono::high_resolution_clock::now();
 
 void MainWindow::Controle()
 {
-    double valCalculado;
+    double tensaoCalculado;
     now = std::chrono::high_resolution_clock::now();
     while(1)
     {
@@ -271,34 +213,35 @@ void MainWindow::Controle()
         for(int i=0; i<2; i++)
             sensores[i]= quanser->readAD(i);
 
-        double val=0, inAlt, erro, outAlt;
+        //ST = referencia; //PV = leitura da altura dos tanques
+        double tensao=0, st, erro, pv;
 
         if(fuc == "Degrau")
         {
-            val= funcDegrau(A, tempo, offset);
+            tensao= funcDegrau(A, tempo, offset);
         }
         else if(fuc == "Senoidal")
         {
-            val= funcSenoidal(A, T, tempo, offset);
+            tensao= funcSenoidal(A, T, tempo, offset);
         }
         else if(fuc == "Onda quadrada")
         {
-            val= funcQuadrada(A, T, tempo, offset);
+            tensao= funcQuadrada(A, T, tempo, offset);
         }
         else if(fuc == "Dente de serra")
         {
-            val= funcSerra(A, T, tempo, offset);
+            tensao= funcSerra(A, T, tempo, offset);
         }
         else if(fuc == "Aleatorio") // intervalo
         {
             if(ui->radioButtonMalhaAberta->isChecked())
-                val= funcAleatoria1(tempo);
+                tensao= funcAleatoria1(tempo);
             else
-                val= funcAleatoria2(tempo);
+                tensao= funcAleatoria2(tempo);
         }
         else
         {
-            val= 0;
+            tensao= 0;
         }
 
         ui->plotS1->graph(0)->addData(tempo, funcSensor(sensores[0]));
@@ -314,57 +257,66 @@ void MainWindow::Controle()
 
         if(ui->radioButtonMalhaAberta->isChecked())
         {
-            outAlt = funcSensor(sensores[0]);
+            pv = funcSensor(sensores[0]);
             //Trava #1
-            valCalculado = val;
-            if(val>3.9)
-                val = 4;
-            if(val<-3.9)
-                val = -4;
+            tensaoCalculado = tensao;
+
+            if(tensao>3.9)
+                tensao = 3.9;
+            if(tensao<-3.9)
+                tensao = -3.9;
             //Trava #2 e #3
-            if(outAlt <= 1.5 && val < 0){
-                val = 0;
-            }else if(outAlt >= 30 && val > 0){
-                val = 2.75; //tensao de equilibrio
+            if(pv <= 1.5 && tensao < 0){
+                tensao = 0;
+            }else if(pv >= 30 && tensao > 0){
+                tensao = 2.75; //tensao de equilibrio
             }
-            quanser->writeDA(canal, val);
+            quanser->writeDA(canal, tensao);
         }
         else if(ui->radioButtonMalhaFechada->isChecked())
         {
-            ui->plotS1->graph(1)->addData(tempo, val);
-            // Calculo malha fechada e controle
-            inAlt = val;
-            //loop para todos as portas?
-            outAlt = funcSensor(sensores[0]);
-            erro = inAlt - outAlt;
-            //val = funcAlturaTensao(inAlt)+erro;
+            ui->plotS1->graph(1)->addData(tempo, tensao);
+
+            st = tensao;
+
+            if(ui->comboBoxSinalOrdem->currentText() == "Primeira"){
+
+                pv = funcSensor(sensores[0]);
+
+            }else{
+
+                pv = funcSensor(sensores[1]);
+            }
+            erro = st - pv;
+            //tensao = funcAlturaTensao(st)+erro;
             if(ui->comboBoxTipodeControle->currentText() == "PI-D")
-                val = pid.Controle(erro,outAlt,0.1);
+                tensao = pid.Controle(erro,pv,0.1);
             else
-                val = pid.Controle(erro, 0.1);
+                tensao = pid.Controle(erro, 0.1);
 
-            valCalculado = val;
 
-            //Trava #1
-            if(val > 3.9)
-                val = 4;
-            if(val<-3.9)
-                val = -4;
-            //Trava #2 e #3
-            if(outAlt <= 1.5 && val < 0){
-                val = 0;
-            }else if(outAlt >= 30 && val > 0){
-                val = 2.75; //tensao de equilibrio
+            tensaoCalculado = tensao;
+
+            //Travas e saturacao
+            if(tensao > 3.9)
+                tensao = 4;
+            if(tensao<-3.9)
+                tensao = -4;
+
+            if(pv <= 1.5 && tensao < 0){
+                tensao = 0;
+            }else if(pv >= 30 && tensao > 0){
+                tensao = 2.75; //tensao de equilibrio
             }
 
-            quanser->writeDA(canal, val);
+            quanser->writeDA(canal, tensao);
         }
-        ui->customPlot->graph(0)->addData(tempo, val);
-        ui->customPlot->graph(1)->addData(tempo, valCalculado);
+        ui->customPlot->graph(0)->addData(tempo, tensao);
+        ui->customPlot->graph(1)->addData(tempo, tensaoCalculado);
 
         //qDebug() << std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now()-now).count() << "us\n";
         double t= std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now()-now).count()/1000.0;
-        //qDebug() << valCalculado << endl;
+        //qDebug() << tensaoCalculado << endl;
         //qDebug() << 0.1-t << endl;
         tempo+=0.1;
         //tempo+=0.1;

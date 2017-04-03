@@ -49,6 +49,8 @@ private slots:
 
     void on_comboBoxTipodeControle_activated(const QString &arg1);
 
+    void on_comboBoxSinalOrdem_activated(const QString &arg1);
+
 private:
     Quanser* quanser;
     Ui::MainWindow *ui;

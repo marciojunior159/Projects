@@ -126,6 +126,7 @@ void MainWindow::on_radioButtonMalhaFechada_clicked()
         ui->radioButtonTempo->setEnabled(true);
 
         ui->SpinBoxPeriodoOffset->setEnabled(true);
+        ui->comboBoxSinalOrdem->setEnabled(true);
     }
 }
 
@@ -286,6 +287,10 @@ void MainWindow::Controle()
             }else{
 
                 pv = funcSensor(sensores[1]);
+
+                if(fuc == "Degrau" || fuc == "Onda quadrada" || fuc == "Aleatorio"){
+                    ui->lcdNumber_tr->display(tempo);
+                }
             }
             erro = st - pv;
             //tensao = funcAlturaTensao(st)+erro;
@@ -451,5 +456,22 @@ void MainWindow::on_comboBoxTipodeControle_activated(const QString &arg1)
         ui->doubleSpinBox_ki->setEnabled(true);
         ui->doubleSpinBox_kd->setEnabled(true);
 
+    }
+}
+
+void MainWindow::on_comboBoxSinalOrdem_activated(const QString &arg1)
+{
+    QString ordem = ui->comboBoxSinalOrdem->currentText();
+
+    if(ordem == "Primeira"){
+        ui->lcdNumber_mp->setEnabled(false);
+        ui->lcdNumber_tr->setEnabled(false);
+        ui->lcdNumber_ts->setEnabled(false);
+        ui->lcdNumber_tp->setEnabled(false);
+    }else if(ordem == "Segunda"){
+        ui->lcdNumber_mp->setEnabled(true);
+        ui->lcdNumber_tr->setEnabled(true);
+        ui->lcdNumber_ts->setEnabled(true);
+        ui->lcdNumber_tp->setEnabled(true);
     }
 }

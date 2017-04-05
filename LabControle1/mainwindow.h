@@ -62,6 +62,22 @@ private:
     double A =0;
     double T = 0;
     double offset = 0;
+    float tempoInicial; //tempo de subida
+    float pv_ant = 0;
+    float ts = 0; //tempo de acomodacao
+    float trs = 0; //tempo de subida
+    float mp = 0; //overshoot absoluto
+    float tp = 0; //tempo de pico
+    bool flag_tr = false; //flag tempo de subida
+    bool flag_ts = false; //flag tempo de acomodacao
+    bool flag_mp = false; //flag overshoot
+    bool flag_tp = false; //flag tempo de pico
+    bool flag_2ordem = false;
+    double st_ant=0;
+    double tolerancia_ts = 0.05; //faixa de tolerancia do tempo de acomodacao
+    bool subida = true;
+    int contFaixa = 0;
+
 };
 
 #endif // MAINWINDOW_H

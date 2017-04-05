@@ -103,6 +103,7 @@ void MainWindow::on_radioButtonMalhaAberta_clicked()
         ui->radioButtonTempo->setDisabled(true);
 
         ui->SpinBoxPeriodoOffset->setEnabled(true);
+        ui->comboBoxSinalOrdem->setEnabled(false);
     }
 }
 
@@ -203,7 +204,7 @@ auto now = std::chrono::high_resolution_clock::now();
 
 void MainWindow::Controle()
 {
-    double tensaoCalculado;
+    double tensaoCalculado, dt;
     now = std::chrono::high_resolution_clock::now();
     while(1)
     {
@@ -247,7 +248,12 @@ void MainWindow::Controle()
 
         ui->plotS1->graph(0)->addData(tempo, funcSensor(sensores[0]));
         ui->plotS2->graph(0)->addData(tempo, funcSensor(sensores[1]));
-        ui->plotS2->graph(1)->addData(tempo, 30);
+        if(ui->comboBoxSinalOrdem->currentText() == "Segunda"){
+            ui->plotS2->graph(1)->addData(tempo, tensao);
+        }else{
+            ui->plotS2->graph(1)->addData(tempo, 0);
+        }
+
 
         ui->label_altura->setText(QString::number(funcSensor(sensores[0])));
 
@@ -276,21 +282,18 @@ void MainWindow::Controle()
         }
         else if(ui->radioButtonMalhaFechada->isChecked())
         {
-            ui->plotS1->graph(1)->addData(tempo, tensao);
-
             st = tensao;
 
             if(ui->comboBoxSinalOrdem->currentText() == "Primeira"){
 
                 pv = funcSensor(sensores[0]);
+                ui->plotS1->graph(1)->addData(tempo, tensao);
 
             }else{
 
                 pv = funcSensor(sensores[1]);
+                ui->plotS1->graph(1)->addData(tempo, 0);
 
-                if(fuc == "Degrau" || fuc == "Onda quadrada" || fuc == "Aleatorio"){
-                    ui->lcdNumber_tr->display(tempo);
-                }
             }
             erro = st - pv;
             //tensao = funcAlturaTensao(st)+erro;
@@ -316,16 +319,81 @@ void MainWindow::Controle()
 
             quanser->writeDA(canal, tensao);
         }
+
         ui->customPlot->graph(0)->addData(tempo, tensao);
         ui->customPlot->graph(1)->addData(tempo, tensaoCalculado);
 
+        //tempo de subida
+        if(pv >= 0.1*st && trs == 0 && flag_tr == false){
+            tempoInicial = tempo;
+            flag_tr = true;
+        }
+
+        if(pv >=  0.9*st && flag_tr == true){
+            trs = tempo - tempoInicial;
+            ui->lcdNumber_tr->display(trs);
+            flag_tr = false;
+        }
+
+        //mp
+        if(pv >= st && mp == 0 && flag_mp == false && st_ant < st){
+            flag_mp = pv > pv_ant? false: true;
+
+
+            if(st!=0 && flag_mp == true){
+                mp = 100.0*(pv_ant - st)/st;
+                ui->lcdNumber_mp->display(mp);
+
+                if(flag_tp == false){
+                    tp = tempo - tempoInicial;
+                    ui->lcdNumber_tp->display(tp);
+                    flag_tp = true;
+                }
+            }
+        }
+        if(pv <= st && mp == 0 && flag_mp == false && st_ant > st){
+            flag_mp = pv < pv_ant? false: true;
+            qDebug() << flag_mp << endl;
+
+            if(st!=0 && flag_mp == true){
+
+                mp = 100.0*(st - pv_ant)/(st_ant - st);
+                ui->lcdNumber_mp->display(mp);
+
+            }
+        }
+
+        //tempo de acomodacao
+        if(pv >= (1-tolerancia_ts)*st && pv_ant < (1-tolerancia_ts)*st){
+            contFaixa++; //entrou por baixo
+            ts = tempo;
+        }
+        if(pv >= (1+tolerancia_ts)*st && pv_ant < (1+tolerancia_ts)*st){
+            contFaixa++; // saiu por cima
+            ts = tempo;
+        }
+        if(pv <= (1-tolerancia_ts)*st && pv_ant > (1-tolerancia_ts)*st){
+            contFaixa++; //saiu por baixo
+            ts = tempo;
+        }
+        if(pv <= (1+tolerancia_ts)*st && pv_ant > (1+tolerancia_ts)*st){
+            contFaixa++; // entrou por cima
+            ts = tempo;
+        }
+        if(contFaixa%2==1){
+            ui->lcdNumber_ts->display(ts-tempoInicial);
+        }
+
+
+
         //qDebug() << std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now()-now).count() << "us\n";
         double t= std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now()-now).count()/1000.0;
-        //qDebug() << tensaoCalculado << endl;
+        qDebug() << pv << " " << pv_ant << " " << " " << st_ant << " " << st << endl;
         //qDebug() << 0.1-t << endl;
         tempo+=0.1;
         //tempo+=0.1;
         usleep((0.1)*10E5);
+        pv_ant = pv;
     }
 }
 
@@ -378,10 +446,16 @@ void MainWindow::on_checkBox_8_clicked()
 
 void MainWindow::on_pushButtonEnviar_clicked()
 {
+    st_ant = A;
     fuc= ui->comboBoxSinal->currentText().toStdString();
     A = ui->SpinBoxTensaoNivel->value();
     T = ui->SpinBoxPeriodo->value();
     offset=ui->SpinBoxPeriodoOffset->value();
+
+    trs = 0;
+    mp = 0;
+    flag_mp = false;
+
 
     if(ui->radioButtonGanho->isChecked()){
         pid.setConstantes(ui->doubleSpinBox_kp->isEnabled()?ui->doubleSpinBox_kp->value():0,
@@ -394,6 +468,12 @@ void MainWindow::on_pushButtonEnviar_clicked()
 
     }
 
+    if(ui->comboBoxSinalOrdem->currentText()=="Segunda"){
+        flag_2ordem = true;
+    }else{
+        flag_2ordem = false;
+    }
+
 
 }
 
@@ -403,6 +483,7 @@ void MainWindow::on_pushButtonCancel_clicked()
     A = 0;
     T = 0;
     offset=0;
+    flag_tp = false;
 }
 
 void MainWindow::on_radioButtonGanho_clicked(bool checked)

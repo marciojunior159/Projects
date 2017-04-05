@@ -104,6 +104,9 @@ void MainWindow::on_radioButtonMalhaAberta_clicked()
 
         ui->SpinBoxPeriodoOffset->setEnabled(true);
         ui->comboBoxSinalOrdem->setEnabled(false);
+
+        ui->comboBoxSinalfaixats->setEnabled(false);
+        ui->comboBoxSinalfaixa_tr->setEnabled(false);
     }
 }
 
@@ -128,6 +131,7 @@ void MainWindow::on_radioButtonMalhaFechada_clicked()
 
         ui->SpinBoxPeriodoOffset->setEnabled(true);
         ui->comboBoxSinalOrdem->setEnabled(true);
+
     }
 }
 
@@ -324,12 +328,12 @@ void MainWindow::Controle()
         ui->customPlot->graph(1)->addData(tempo, tensaoCalculado);
 
         //tempo de subida
-        if(pv >= 0.1*st && trs == 0 && flag_tr == false){
+        if(pv >= faixa_tr*st && trs == 0 && flag_tr == false){
             tempoInicial = tempo;
             flag_tr = true;
         }
 
-        if(pv >=  0.9*st && flag_tr == true){
+        if(pv >= (1-faixa_tr)*st && flag_tr == true){
             trs = tempo - tempoInicial;
             ui->lcdNumber_tr->display(trs);
             flag_tr = false;
@@ -341,11 +345,11 @@ void MainWindow::Controle()
 
 
             if(st!=0 && flag_mp == true){
-                mp = 100.0*(pv_ant - st)/st;
+                mp = 100.0*(pv_ant - st)/(st - st_ant);
                 ui->lcdNumber_mp->display(mp);
 
                 if(flag_tp == false){
-                    tp = tempo - tempoInicial;
+                    tp = tempo - tempoInicialAcom;
                     ui->lcdNumber_tp->display(tp);
                     flag_tp = true;
                 }
@@ -381,14 +385,14 @@ void MainWindow::Controle()
             ts = tempo;
         }
         if(contFaixa%2==1){
-            ui->lcdNumber_ts->display(ts-tempoInicial);
+            ui->lcdNumber_ts->display(ts-tempoInicialAcom);
         }
 
 
 
         //qDebug() << std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now()-now).count() << "us\n";
         double t= std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now()-now).count()/1000.0;
-        qDebug() << pv << " " << pv_ant << " " << " " << st_ant << " " << st << endl;
+        //qDebug() << pv << " " << pv_ant << " " << " " << st_ant << " " << st << endl;
         //qDebug() << 0.1-t << endl;
         tempo+=0.1;
         //tempo+=0.1;
@@ -455,6 +459,10 @@ void MainWindow::on_pushButtonEnviar_clicked()
     trs = 0;
     mp = 0;
     flag_mp = false;
+    contFaixa = 0;
+    flag_tp = false;
+    tp = 0;
+    tempoInicialAcom = tempo;
 
 
     if(ui->radioButtonGanho->isChecked()){
@@ -472,6 +480,35 @@ void MainWindow::on_pushButtonEnviar_clicked()
         flag_2ordem = true;
     }else{
         flag_2ordem = false;
+    }
+
+    switch(ui->comboBoxSinalfaixats->currentIndex()){
+        case 0:
+            tolerancia_ts = 0.02;
+            break;
+        case 1:
+            tolerancia_ts = 0.05;
+            break;
+        case 2:
+            tolerancia_ts = 0.07;
+            break;
+        case 3:
+            tolerancia_ts = 0.1;
+            break;
+    }
+
+
+    switch(ui->comboBoxSinalfaixa_tr->currentIndex()){
+        case 0:
+            faixa_tr = 0.0;
+            break;
+        case 1:
+            faixa_tr = 0.05;
+            break;
+        case 2:
+            faixa_tr = 0.1;
+            break;
+
     }
 
 
@@ -549,10 +586,18 @@ void MainWindow::on_comboBoxSinalOrdem_activated(const QString &arg1)
         ui->lcdNumber_tr->setEnabled(false);
         ui->lcdNumber_ts->setEnabled(false);
         ui->lcdNumber_tp->setEnabled(false);
+
+        ui->comboBoxSinalfaixats->setEnabled(false);
+        ui->comboBoxSinalfaixa_tr->setEnabled(false);
     }else if(ordem == "Segunda"){
         ui->lcdNumber_mp->setEnabled(true);
         ui->lcdNumber_tr->setEnabled(true);
         ui->lcdNumber_ts->setEnabled(true);
         ui->lcdNumber_tp->setEnabled(true);
+
+        ui->comboBoxSinalfaixats->setEnabled(true);
+        ui->comboBoxSinalfaixa_tr->setEnabled(true);
+
+
     }
 }

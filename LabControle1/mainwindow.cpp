@@ -9,8 +9,8 @@ MainWindow::MainWindow(QWidget *parent) :
     pid(0,0,0),
     ui(new Ui::MainWindow)
 {
-    //quanser= new Quanser("10.13.99.69", 20081);
-    quanser= new Quanser("127.0.0.1", 20074);
+    quanser= new Quanser("10.13.99.69", 20081);
+    //quanser= new Quanser("127.0.0.1", 20074);
 
     fuc= "WAIT";
     tempo= 0;
@@ -233,9 +233,9 @@ void MainWindow::timerEvent(QTimerEvent *e)
     ui->plotS2->replot();
 
     mutex_.lock();
-    ui->customPlot->graph(0)->removeDataBefore(tempo-35);
-    ui->plotS1->graph(0)->removeDataBefore(tempo-35);
-    ui->plotS2->graph(0)->removeDataBefore(tempo-35);
+    ui->customPlot->graph(0)->removeDataBefore(tempo-30);
+    ui->plotS1->graph(0)->removeDataBefore(tempo-30);
+    ui->plotS2->graph(0)->removeDataBefore(tempo-30);
     mutex_.unlock();
 
     if(canais[0])

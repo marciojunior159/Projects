@@ -14,7 +14,11 @@ void PID::setConstantes(double Kp, double Ki, double Kd)
     this->Kd= Kd;
 }
 
-void PID::setConstantesT(double K, double Ti, double Td)
+#include <iostream>
+using namespace std;
+
+
+void PID::setConstantesT(double Kp, double Ti, double Td)
 {
     this->Kp= Kp;
     this->Ki= Kp/Ti;

@@ -98,8 +98,8 @@ CURSO DE ENGENHARIA DE COMPUTAÇÃO
 
 \vspace{3.6cm}
 
-{\bf{\large RELATÓRIO DA 2ª EXPERIÊNCIA\\
-CONTROLE DE SISTEMAS DINÂMICOS: SISTEMA DE PRIMEIRA ORDEM\\
+{\bf{\large RELATÓRIO DA 3ª EXPERIÊNCIA\\
+CONTROLE DE SISTEMAS DINÂMICOS: SISTEMA DE SEGUNDA ORDEM\\
 }}
 \vspace{1.5cm}
 {\large TURMA: 01 A\\
@@ -148,7 +148,7 @@ MÁRCIO LUIZ BEZERRA LOPES JÚNIOR: 20160154326\\
 \end{center}
 \vspace{3cm}
 
-{\bf{\large {\centering CONTROLE DE SISTEMAS DINÂMICOS: SISTEMA DE PRIMEIRA ORDEM\\}}}
+{\bf{\large {\centering CONTROLE DE SISTEMAS DINÂMICOS: SISTEMA DE SEGUNDA ORDEM\\}}}
 
 \vspace{4cm}
 
@@ -156,7 +156,7 @@ MÁRCIO LUIZ BEZERRA LOPES JÚNIOR: 20160154326\\
 
 {\normalsize
 
-Segundo Relatório apresentado à disciplina de
+Terceiro Relatório apresentado à disciplina de
 Laboratório de Sistemas de Controle, correspondente à
 avaliação da 1º unidade do semestre 2017.1 do 8º período
 do curso de Engenharia de Computação da
@@ -232,11 +232,13 @@ Professor:  Fábio Meneghetti Ugulino de Araújo.
 \section{INTRODUÇÃO}
 
 \begin{flushleft}
-\hspace{4ex}O trabalho descrito neste relatório é uma continuação do programa desenvolvido na primeira experiência.
+\hspace{4ex}As práticas de laboratório feitas anteriormente tinham o foco no controle da planta \textit{Quanser} visando apenas o tanque de cima, ou seja, utilizando um sistema de primeira ordem. Neste relatório, também será apresentado um controle usando PID, de acordo com a escolha do usuário, porém, o foco será no controle do nível do tanque de baixo, o qual é caracterizado como de segunda ordem.
 
-\hspace{4ex}Além do usuário possuir a opção de malha aberta e malha fechada, onde antes era apenas informado o sinal e a tensão ou nível desejado, agora é possível escolher entre os controladores Proporcional(P), Proporcional Integral(PI), Proporcional Derivativo(PD), Proporcional Integral Derivativo(PID) e (Proporcional+Integral)+Derivativo(PI-D), e assim, de acordo com o controlador escolhido, a determinação de Kp, Ki e Kd, ou    $\tau_i$ e $\tau_d.$
+\hspace{4ex}Assim como anteriormente, o usuário poderá escolher a opção entre malha aberta e malha fechada, o sinal de referência a ser enviado, o offset, como também, o tipo do controlador (P, PI, PD, PID ou PI-D),os ganhos dos controladores Kp, Ki e ou Kd, ou $\tau_i$ e $\tau_d.$ 
 
-\hspace{4ex}No relatório é apresentado como foi implementado os controladores, bem como, os resultados e conclusões dos testes realizados.
+\hspace{4ex}Agora, o usuário também poderá escolher qual análise da resposta do sistema será utilizada para o tempo de subida (t$_r$), por exemplo, de 5\% à 95\%, e o tempo de acomodação (t$_s$), para as faixas de 2\%, 5\% e 10\% do degrau. Além, de ser possível saber os valores do t$_r$, t$_s$, tempo de pico (t$_p$) e o sobressinal (Mp) do sistema de segunda ordem.
+
+\hspace{4ex}No relatório é apresentado em que consiste essa dinâmica, como foi a metodologia, os resultados dos testes e suas conclusões.
 \end{flushleft}
 
 \newpage

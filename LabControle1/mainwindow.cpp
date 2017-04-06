@@ -31,7 +31,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->customPlot->graph(1)->setPen(QPen(Qt::red));
     ui->customPlot->xAxis->setLabel("tempo(ms)");
     ui->customPlot->yAxis->setLabel("tensão(V)");
-    ui->customPlot->yAxis->setRange(-7, 10);
+    ui->customPlot->yAxis->setRange(-5, 5);
     ui->customPlot->legend->setVisible(true);
     ui->customPlot->legend->setFont(QFont("Helvetica", 9));
     ui->customPlot->legend->setRowSpacing(-5);
@@ -40,14 +40,15 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->customPlot->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignLeft|Qt::AlignTop);
 
 
-
     ui->plotS1->addGraph();
     ui->plotS1->addGraph();    
     ui->plotS1->graph(0)->setPen(QPen(Qt::blue));
     ui->plotS1->graph(1)->setPen(QPen(Qt::red));
     ui->plotS1->xAxis->setLabel("tempo(ms)");
     ui->plotS1->yAxis->setLabel("altura(cm)");
-    ui->plotS1->yAxis->setRange(-1, 31);
+    ui->plotS1->yAxis->setAutoTickStep(false);
+    ui->plotS1->yAxis->setTickStep(5);
+    ui->plotS1->yAxis->setRange(-1, 30);
     ui->plotS1->legend->setVisible(true);
     ui->plotS1->legend->setFont(QFont("Helvetica", 9));
     ui->plotS1->legend->setRowSpacing(-5);
@@ -62,7 +63,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->plotS2->graph(1)->setPen(QPen(Qt::red));
     ui->plotS2->xAxis->setLabel("tempo(ms)");
     ui->plotS2->yAxis->setLabel("altura(cm)");
-    ui->plotS2->yAxis->setRange(-1, 31);
+    ui->plotS2->yAxis->setAutoTickStep(false);
+    ui->plotS2->yAxis->setTickStep(5);
+    ui->plotS2->yAxis->setRange(-1, 30);
     ui->plotS2->legend->setVisible(true);
     ui->plotS2->legend->setFont(QFont("Helvetica", 9));
     ui->plotS2->legend->setRowSpacing(-3);
@@ -74,7 +77,8 @@ MainWindow::MainWindow(QWidget *parent) :
     controle= new std::thread(&MainWindow::Controle, this);
     recebe= new std::thread(&MainWindow::Recebe, this);
     canais[0]= true;
-    for(int i=1; i<8; i++)
+    canais[1]= true;
+    for(int i=2; i<8; i++)
         canais[i]= false;
 
     startTimer(0);
@@ -90,6 +94,8 @@ void MainWindow::on_radioButtonMalhaAberta_clicked()
     ui->labelTensaoNivel->setText("Tensão");
     ui->spinBoxCanal->setEnabled(true);
     ui->comboBoxSinal->setEnabled(true);
+    ui->SpinBoxTensaoNivel->setValue(0);
+    A= 0;
     ui->SpinBoxTensaoNivel->setMaximum(4);
     on_comboBoxSinal_activated(QString());
 
@@ -103,6 +109,15 @@ void MainWindow::on_radioButtonMalhaAberta_clicked()
     ui->SpinBoxPeriodoOffset->setEnabled(true);
     ui->comboBoxSinalOrdem->setEnabled(false);
 
+    ui->lcdNumber_mp->setEnabled(false);
+    ui->lcdNumber_tr->setEnabled(false);
+    ui->lcdNumber_ts->setEnabled(false);
+    ui->lcdNumber_tp->setEnabled(false);
+
+    ui->comboBoxSinalfaixats->setEnabled(false);
+    ui->comboBoxSinalfaixa_tr->setEnabled(false);
+
+
     ui->radioButtonMalhaAberta->setChecked(true);
     ui->radioButtonMalhaFechada->setChecked(false);
 }
@@ -112,6 +127,8 @@ void MainWindow::on_radioButtonMalhaFechada_clicked()
     ui->labelTensaoNivel->setText("Nivel");
     ui->spinBoxCanal->setEnabled(true);
     ui->comboBoxSinal->setEnabled(true);
+    A= 0;
+    ui->SpinBoxTensaoNivel->setValue(0);
     ui->SpinBoxTensaoNivel->setMaximum(30);
     on_comboBoxSinal_activated(QString());
 
@@ -139,31 +156,72 @@ void MainWindow::on_comboBoxSinal_activated(const QString &arg1)
     {
         ui->SpinBoxTensaoNivel->setEnabled(true);
         ui->SpinBoxPeriodo->setEnabled(false);
+
+        ui->lcdNumber_mp->setEnabled(true);
+        ui->lcdNumber_tr->setEnabled(true);
+        ui->lcdNumber_ts->setEnabled(true);
+        ui->lcdNumber_tp->setEnabled(true);
+
+        ui->comboBoxSinalfaixats->setEnabled(true);
+        ui->comboBoxSinalfaixa_tr->setEnabled(true);
     }
     else if(sinal == "Senoidal")
     {
         ui->SpinBoxTensaoNivel->setEnabled(true);
         ui->SpinBoxPeriodo->setEnabled(true);
+
+        ui->lcdNumber_mp->setEnabled(false);
+        ui->lcdNumber_tr->setEnabled(false);
+        ui->lcdNumber_ts->setEnabled(false);
+        ui->lcdNumber_tp->setEnabled(false);
+
+        ui->comboBoxSinalfaixats->setEnabled(false);
+        ui->comboBoxSinalfaixa_tr->setEnabled(false);
     }
     else if(sinal == "Onda quadrada")
     {
         ui->SpinBoxTensaoNivel->setEnabled(true);
         ui->SpinBoxPeriodo->setEnabled(true);
+
+        ui->lcdNumber_mp->setEnabled(true);
+        ui->lcdNumber_tr->setEnabled(true);
+        ui->lcdNumber_ts->setEnabled(true);
+        ui->lcdNumber_tp->setEnabled(true);
+
+        ui->comboBoxSinalfaixats->setEnabled(true);
+        ui->comboBoxSinalfaixa_tr->setEnabled(true);
     }
     else if(sinal == "Dente de serra")
     {
         ui->SpinBoxTensaoNivel->setEnabled(true);
         ui->SpinBoxPeriodo->setEnabled(true);
+
+        ui->lcdNumber_mp->setEnabled(false);
+        ui->lcdNumber_tr->setEnabled(false);
+        ui->lcdNumber_ts->setEnabled(false);
+        ui->lcdNumber_tp->setEnabled(false);
+
+        ui->comboBoxSinalfaixats->setEnabled(false);
+        ui->comboBoxSinalfaixa_tr->setEnabled(false);
     }
     else if(sinal == "Aleatorio")
     {
         ui->SpinBoxTensaoNivel->setEnabled(false);
         ui->SpinBoxPeriodo->setEnabled(false);
+
+        ui->lcdNumber_mp->setEnabled(true);
+        ui->lcdNumber_tr->setEnabled(true);
+        ui->lcdNumber_ts->setEnabled(true);
+        ui->lcdNumber_tp->setEnabled(true);
+
+        ui->comboBoxSinalfaixats->setEnabled(true);
+        ui->comboBoxSinalfaixa_tr->setEnabled(true);
     }
 }
 
 void MainWindow::timerEvent(QTimerEvent *e)
 {
+    ui->label_altura->update();
     ui->customPlot->xAxis->setRange(tempo + 0.25, 25, Qt::AlignRight);
     ui->plotS1->xAxis->setRange(tempo + 0.25, 25, Qt::AlignRight);
     ui->plotS2->xAxis->setRange(tempo + 0.25, 25, Qt::AlignRight);
@@ -251,15 +309,12 @@ void MainWindow::Controle()
         mutex_.lock();
         ui->plotS1->graph(0)->addData(tempo, funcSensor(sensores[0]));
         ui->plotS2->graph(0)->addData(tempo, funcSensor(sensores[1]));
-        if(ui->comboBoxSinalOrdem->currentText() == "Segunda"){
-            ui->plotS2->graph(1)->addData(tempo, tensao);
-        }else{
-            ui->plotS2->graph(1)->addData(tempo, 0);
-        }
         mutex_.unlock();
 
 
         ui->label_altura->setText(QString::number(funcSensor(sensores[0])));
+        //
+        //qDebug() << funcSensor(sensores[0]) << endl;
 
 //        ui->plotS3->graph(0)->addData(tempo, sensores[4]);
 //        ui->plotS3->graph(1)->addData(tempo, sensores[6]);
@@ -268,6 +323,10 @@ void MainWindow::Controle()
 
         if(ui->radioButtonMalhaAberta->isChecked())
         {
+            mutex_.lock();
+            ui->plotS1->graph(1)->addData(tempo, 0);
+            ui->plotS2->graph(1)->addData(tempo, 0);
+            mutex_.unlock();
             pv = funcSensor(sensores[0]);
             //Trava #1
             tensaoCalculado = tensao;
@@ -289,15 +348,17 @@ void MainWindow::Controle()
             st = tensao;
 
             if(ui->comboBoxSinalOrdem->currentText() == "Primeira"){
-
                 pv = funcSensor(sensores[0]);
-                ui->plotS1->graph(1)->addData(tempo, tensao);
-
+                mutex_.lock();
+                ui->plotS2->graph(1)->addData(tempo, 0);
+                ui->plotS1->graph(1)->addData(tempo, st);
+                mutex_.unlock();
             }else{
-
                 pv = funcSensor(sensores[1]);
+                mutex_.lock();
                 ui->plotS1->graph(1)->addData(tempo, 0);
-
+                ui->plotS2->graph(1)->addData(tempo, tensao);
+                mutex_.unlock();
             }
             erro = st - pv;
             //tensao = funcAlturaTensao(st)+erro;
@@ -306,18 +367,16 @@ void MainWindow::Controle()
             else
                 tensao = pid.Controle(erro, 0.1);
 
-
             tensaoCalculado = tensao;
-
             //Travas e saturacao
             if(tensao > 3.9)
                 tensao = 4;
             if(tensao<-3.9)
                 tensao = -4;
 
-            if(pv <= 1.5 && tensao < 0){
+            if(funcSensor(sensores[0]) <= 1.5 && tensao < 0){
                 tensao = 0;
-            }else if(pv >= 30 && tensao > 0){
+            }else if(funcSensor(sensores[0]) >= 30 && tensao > 0){
                 tensao = 2.75; //tensao de equilibrio
             }
 
@@ -330,43 +389,41 @@ void MainWindow::Controle()
         mutex_.unlock();
 
         //tempo de subida
-        if(pv >= 0.1*st && trs == 0 && flag_tr == false){
+        if( fabs(pv-st_ant) >= fabs(faixa_tr*(st-st_ant)) && trs == 0 && flag_tr == false){
             tempoInicial = tempo;
             flag_tr = true;
         }
 
-        if(pv >=  0.9*st && flag_tr == true){
+        if( fabs(pv-st_ant) >= fabs((1-faixa_tr)*(st-st_ant)) && flag_tr == true){
             trs = tempo - tempoInicial;
             ui->lcdNumber_tr->display(trs);
             flag_tr = false;
         }
-
         //mp
-        if(pv >= st && mp == 0 && flag_mp == false && st_ant < st){
-            flag_mp = pv > pv_ant? false: true;
-
+        if( fabs(pv-st_ant) >= fabs(st-st_ant) && mp == 0 && flag_mp == false){
+            flag_mp = fabs(pv) > fabs(pv_ant)? false: true;
             if(st!=0 && flag_mp == true){
-                mp = 100.0*(pv_ant - st)/st;
+                mp = 100.0*(pv_ant - st)/(st - st_ant);
                 ui->lcdNumber_mp->display(mp);
 
                 if(flag_tp == false){
-                    tp = tempo - tempoInicial;
+                    tp = tempo - tempoInicialAcom;
                     ui->lcdNumber_tp->display(tp);
                     flag_tp = true;
                 }
             }
         }
+        /*
         if(pv <= st && mp == 0 && flag_mp == false && st_ant > st){
             flag_mp = pv < pv_ant? false: true;
             qDebug() << flag_mp << endl;
 
             if(st!=0 && flag_mp == true){
-
                 mp = 100.0*(st - pv_ant)/(st_ant - st);
                 ui->lcdNumber_mp->display(mp);
-
             }
         }
+        */
 
         //tempo de acomodacao
         if(pv >= (1-tolerancia_ts)*st && pv_ant < (1-tolerancia_ts)*st){
@@ -386,7 +443,7 @@ void MainWindow::Controle()
             ts = tempo;
         }
         if(contFaixa%2==1){
-            ui->lcdNumber_ts->display(ts-tempoInicial);
+            ui->lcdNumber_ts->display(ts-tempoInicialAcom);
         }
 
         //qDebug() << std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now()-now).count() << "us\n";
@@ -459,6 +516,10 @@ void MainWindow::on_pushButtonEnviar_clicked()
     trs = 0;
     mp = 0;
     flag_mp = false;
+    contFaixa = 0;
+    flag_tp = false;
+    tp = 0;
+    tempoInicialAcom = tempo;
 
 
     if(ui->radioButtonGanho->isChecked()){
@@ -469,13 +530,41 @@ void MainWindow::on_pushButtonEnviar_clicked()
         pid.setConstantesT(ui->doubleSpinBox_kp->isEnabled()?ui->doubleSpinBox_kp->value():0,
                            ui->doubleSpinBox_ki->isEnabled()?ui->doubleSpinBox_ki->value():0,
                            ui->doubleSpinBox_kd->isEnabled()?ui->doubleSpinBox_kd->value():0);
-
     }
 
     if(ui->comboBoxSinalOrdem->currentText()=="Segunda"){
         flag_2ordem = true;
     }else{
         flag_2ordem = false;
+    }
+
+    switch(ui->comboBoxSinalfaixats->currentIndex()){
+        case 0:
+            tolerancia_ts = 0.02;
+            break;
+        case 1:
+            tolerancia_ts = 0.05;
+            break;
+        case 2:
+            tolerancia_ts = 0.07;
+            break;
+        case 3:
+            tolerancia_ts = 0.1;
+            break;
+    }
+
+
+    switch(ui->comboBoxSinalfaixa_tr->currentIndex()){
+        case 2:
+            faixa_tr = 0.0;
+            break;
+        case 1:
+            faixa_tr = 0.05;
+            break;
+        case 0:
+            faixa_tr = 0.1;
+            break;
+
     }
 
 
@@ -487,7 +576,12 @@ void MainWindow::on_pushButtonCancel_clicked()
     A = 0;
     T = 0;
     offset=0;
+    contFaixa= 0;
     flag_tp = false;
+    ui->lcdNumber_tr->display(0);
+    ui->lcdNumber_mp->display(0);
+    ui->lcdNumber_tp->display(0);
+    ui->lcdNumber_ts->display(0);
 }
 
 void MainWindow::on_radioButtonGanho_clicked(bool checked)
@@ -548,15 +642,11 @@ void MainWindow::on_comboBoxSinalOrdem_activated(const QString &arg1)
 {
     QString ordem = ui->comboBoxSinalOrdem->currentText();
 
-    if(ordem == "Primeira"){
-        ui->lcdNumber_mp->setEnabled(false);
-        ui->lcdNumber_tr->setEnabled(false);
-        ui->lcdNumber_ts->setEnabled(false);
-        ui->lcdNumber_tp->setEnabled(false);
-    }else if(ordem == "Segunda"){
-        ui->lcdNumber_mp->setEnabled(true);
-        ui->lcdNumber_tr->setEnabled(true);
-        ui->lcdNumber_ts->setEnabled(true);
-        ui->lcdNumber_tp->setEnabled(true);
-    }
+    ui->lcdNumber_mp->setEnabled(true);
+    ui->lcdNumber_tr->setEnabled(true);
+    ui->lcdNumber_ts->setEnabled(true);
+    ui->lcdNumber_tp->setEnabled(true);
+
+    ui->comboBoxSinalfaixats->setEnabled(true);
+    ui->comboBoxSinalfaixa_tr->setEnabled(true);
 }

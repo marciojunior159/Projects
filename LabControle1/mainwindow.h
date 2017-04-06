@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <quanser.h>
 #include <thread>
+#include <mutex>
 #include <QTime>
 #include <pid.h>
 
@@ -77,6 +78,7 @@ private:
     double tolerancia_ts = 0.05; //faixa de tolerancia do tempo de acomodacao
     bool subida = true;
     int contFaixa = 0;
+    std::mutex mutex_;
 
 };
 

@@ -38,6 +38,9 @@
     <property name="text">
      <string>Malha Aberta</string>
     </property>
+    <property name="autoExclusive">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QRadioButton" name="radioButtonMalhaFechada">
     <property name="geometry">
@@ -50,6 +53,9 @@
     </property>
     <property name="text">
      <string>Malha Fechada</string>
+    </property>
+    <property name="autoExclusive">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QGroupBox" name="groupBoxSaida">
@@ -76,7 +82,7 @@
        <x>20</x>
        <y>30</y>
        <width>168</width>
-       <height>111</height>
+       <height>112</height>
       </rect>
      </property>
      <layout class="QFormLayout" name="formLayout">
@@ -389,7 +395,7 @@
       </item>
      </layout>
     </widget>
-    <widget class="QWidget" name="">
+    <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
        <x>170</x>
@@ -606,7 +612,7 @@
       <x>270</x>
       <y>310</y>
       <width>159</width>
-      <height>24</height>
+      <height>25</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_3">
@@ -852,7 +858,7 @@
      <x>0</x>
      <y>0</y>
      <width>1200</width>
-     <height>25</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

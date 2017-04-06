@@ -87,48 +87,48 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_radioButtonMalhaAberta_clicked()
 {
-    if(ui->radioButtonMalhaAberta->isChecked())
-    {
-        ui->labelTensaoNivel->setText("Tensão");
-        ui->spinBoxCanal->setEnabled(true);
-        ui->comboBoxSinal->setEnabled(true);
-        ui->SpinBoxTensaoNivel->setMaximum(4);
-        on_comboBoxSinal_activated(QString());
+    ui->labelTensaoNivel->setText("Tensão");
+    ui->spinBoxCanal->setEnabled(true);
+    ui->comboBoxSinal->setEnabled(true);
+    ui->SpinBoxTensaoNivel->setMaximum(4);
+    on_comboBoxSinal_activated(QString());
 
-        ui->comboBoxTipodeControle->setDisabled(true);
-        ui->doubleSpinBox_kp->setDisabled(true);
-        ui->doubleSpinBox_ki->setDisabled(true);
-        ui->doubleSpinBox_kd->setDisabled(true);
-        ui->radioButtonGanho->setDisabled(true);
-        ui->radioButtonTempo->setDisabled(true);
+    ui->comboBoxTipodeControle->setDisabled(true);
+    ui->doubleSpinBox_kp->setDisabled(true);
+    ui->doubleSpinBox_ki->setDisabled(true);
+    ui->doubleSpinBox_kd->setDisabled(true);
+    ui->radioButtonGanho->setDisabled(true);
+    ui->radioButtonTempo->setDisabled(true);
 
-        ui->SpinBoxPeriodoOffset->setEnabled(true);
-        ui->comboBoxSinalOrdem->setEnabled(false);
-    }
+    ui->SpinBoxPeriodoOffset->setEnabled(true);
+    ui->comboBoxSinalOrdem->setEnabled(false);
+
+    ui->radioButtonMalhaAberta->setChecked(true);
+    ui->radioButtonMalhaFechada->setChecked(false);
 }
 
 void MainWindow::on_radioButtonMalhaFechada_clicked()
 {
-    if(ui->radioButtonMalhaFechada->isChecked())
-    {
-        ui->labelTensaoNivel->setText("Nivel");
-        ui->spinBoxCanal->setEnabled(true);
-        ui->comboBoxSinal->setEnabled(true);
-        ui->SpinBoxTensaoNivel->setMaximum(30);
-        on_comboBoxSinal_activated(QString());
+    ui->labelTensaoNivel->setText("Nivel");
+    ui->spinBoxCanal->setEnabled(true);
+    ui->comboBoxSinal->setEnabled(true);
+    ui->SpinBoxTensaoNivel->setMaximum(30);
+    on_comboBoxSinal_activated(QString());
 
 
-        ui->comboBoxTipodeControle->setEnabled(true);
-        ui->comboBoxTipodeControle->setCurrentIndex(0);
-        ui->doubleSpinBox_kp->setEnabled(true);
-        //ui->doubleSpinBox_ki->setEnabled(true);
-        //ui->doubleSpinBox_kd->setEnabled(true);
-        ui->radioButtonGanho->setEnabled(true);
-        ui->radioButtonTempo->setEnabled(true);
+    ui->comboBoxTipodeControle->setEnabled(true);
+    ui->comboBoxTipodeControle->setCurrentIndex(0);
+    ui->doubleSpinBox_kp->setEnabled(true);
+    //ui->doubleSpinBox_ki->setEnabled(true);
+    //ui->doubleSpinBox_kd->setEnabled(true);
+    ui->radioButtonGanho->setEnabled(true);
+    ui->radioButtonTempo->setEnabled(true);
 
-        ui->SpinBoxPeriodoOffset->setEnabled(true);
-        ui->comboBoxSinalOrdem->setEnabled(true);
-    }
+    ui->SpinBoxPeriodoOffset->setEnabled(true);
+    ui->comboBoxSinalOrdem->setEnabled(true);
+
+    ui->radioButtonMalhaAberta->setChecked(false);
+    ui->radioButtonMalhaFechada->setChecked(true);
 }
 
 void MainWindow::on_comboBoxSinal_activated(const QString &arg1)
@@ -164,17 +164,19 @@ void MainWindow::on_comboBoxSinal_activated(const QString &arg1)
 
 void MainWindow::timerEvent(QTimerEvent *e)
 {
+    ui->customPlot->xAxis->setRange(tempo + 0.25, 25, Qt::AlignRight);
+    ui->plotS1->xAxis->setRange(tempo + 0.25, 25, Qt::AlignRight);
+    ui->plotS2->xAxis->setRange(tempo + 0.25, 25, Qt::AlignRight);
+
     ui->customPlot->replot();
-    ui->customPlot->graph(0)->removeDataBefore(tempo-120);
-    ui->customPlot->xAxis->setRange(tempo + 0.25, 100, Qt::AlignRight);
-
     ui->plotS1->replot();
-    ui->plotS1->graph(0)->removeDataBefore(tempo-120);
-    ui->plotS1->xAxis->setRange(tempo + 0.25, 100, Qt::AlignRight);
-
     ui->plotS2->replot();
-    ui->plotS2->graph(0)->removeDataBefore(tempo-120);
-    ui->plotS2->xAxis->setRange(tempo + 0.25, 100, Qt::AlignRight);
+
+    mutex_.lock();
+    ui->customPlot->graph(0)->removeDataBefore(tempo-35);
+    ui->plotS1->graph(0)->removeDataBefore(tempo-35);
+    ui->plotS2->graph(0)->removeDataBefore(tempo-35);
+    mutex_.unlock();
 
     if(canais[0])
         ui->plotS1->graph(0)->setVisible(1);
@@ -208,7 +210,7 @@ void MainWindow::Controle()
     now = std::chrono::high_resolution_clock::now();
     while(1)
     {
-        now = std::chrono::high_resolution_clock::now();
+        //now = std::chrono::high_resolution_clock::now();
         int canal= ui->spinBoxCanal->value();
 
         double sensores[8];
@@ -246,6 +248,7 @@ void MainWindow::Controle()
             tensao= 0;
         }
 
+        mutex_.lock();
         ui->plotS1->graph(0)->addData(tempo, funcSensor(sensores[0]));
         ui->plotS2->graph(0)->addData(tempo, funcSensor(sensores[1]));
         if(ui->comboBoxSinalOrdem->currentText() == "Segunda"){
@@ -253,6 +256,7 @@ void MainWindow::Controle()
         }else{
             ui->plotS2->graph(1)->addData(tempo, 0);
         }
+        mutex_.unlock();
 
 
         ui->label_altura->setText(QString::number(funcSensor(sensores[0])));
@@ -320,8 +324,10 @@ void MainWindow::Controle()
             quanser->writeDA(canal, tensao);
         }
 
+        mutex_.lock();
         ui->customPlot->graph(0)->addData(tempo, tensao);
         ui->customPlot->graph(1)->addData(tempo, tensaoCalculado);
+        mutex_.unlock();
 
         //tempo de subida
         if(pv >= 0.1*st && trs == 0 && flag_tr == false){
@@ -338,7 +344,6 @@ void MainWindow::Controle()
         //mp
         if(pv >= st && mp == 0 && flag_mp == false && st_ant < st){
             flag_mp = pv > pv_ant? false: true;
-
 
             if(st!=0 && flag_mp == true){
                 mp = 100.0*(pv_ant - st)/st;
@@ -384,12 +389,11 @@ void MainWindow::Controle()
             ui->lcdNumber_ts->display(ts-tempoInicial);
         }
 
-
-
         //qDebug() << std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now()-now).count() << "us\n";
         double t= std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now()-now).count()/1000.0;
-        qDebug() << pv << " " << pv_ant << " " << " " << st_ant << " " << st << endl;
-        //qDebug() << 0.1-t << endl;
+        now = std::chrono::high_resolution_clock::now();
+        //qDebug() << pv << " " << pv_ant << " " << " " << st_ant << " " << st << endl;
+        //qDebug() << t << endl;
         tempo+=0.1;
         //tempo+=0.1;
         usleep((0.1)*10E5);

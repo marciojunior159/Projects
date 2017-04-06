@@ -9,8 +9,8 @@ MainWindow::MainWindow(QWidget *parent) :
     pid(0,0,0),
     ui(new Ui::MainWindow)
 {
-    quanser= new Quanser("10.13.99.69", 20081);
-    //quanser= new Quanser("127.0.0.1", 20074);
+    //quanser= new Quanser("10.13.99.69", 20081);
+    quanser= new Quanser("127.0.0.1", 20074);
 
     fuc= "WAIT";
     tempo= 0;
@@ -96,6 +96,7 @@ void MainWindow::on_radioButtonMalhaAberta_clicked()
     ui->comboBoxSinal->setEnabled(true);
     ui->SpinBoxTensaoNivel->setValue(0);
     A= 0;
+    ui->SpinBoxTensaoNivel->setMinimum(-4);
     ui->SpinBoxTensaoNivel->setMaximum(4);
     on_comboBoxSinal_activated(QString());
 
@@ -129,6 +130,7 @@ void MainWindow::on_radioButtonMalhaFechada_clicked()
     ui->comboBoxSinal->setEnabled(true);
     A= 0;
     ui->SpinBoxTensaoNivel->setValue(0);
+    ui->SpinBoxTensaoNivel->setMinimum(0);
     ui->SpinBoxTensaoNivel->setMaximum(30);
     on_comboBoxSinal_activated(QString());
 
@@ -400,7 +402,7 @@ void MainWindow::Controle()
             flag_tr = false;
         }
         //mp
-        if( fabs(pv-st_ant) > fabs(st-st_ant))
+        if(fabs(pv-st_ant) > fabs(st-st_ant) && trs != 0)
         {
             if(fabs(pv-st)>max_mp)
             {
@@ -523,19 +525,24 @@ void MainWindow::on_checkBox_8_clicked()
 void MainWindow::on_pushButtonEnviar_clicked()
 {
     st_ant = A;
-    max_mp= 0;
     fuc= ui->comboBoxSinal->currentText().toStdString();
     A = ui->SpinBoxTensaoNivel->value();
     T = ui->SpinBoxPeriodo->value();
     offset=ui->SpinBoxPeriodoOffset->value();
 
+    max_mp= 0;
     trs = 0;
     mp = 0;
-    flag_mp = false;
-    contFaixa = 0;
-    flag_tp = false;
     tp = 0;
+    contFaixa = 0;
+    flag_mp = false;
+    flag_tp = false;
     tempoInicialAcom = tempo;
+
+    ui->lcdNumber_tr->display(0);
+    ui->lcdNumber_mp->display(0);
+    ui->lcdNumber_tp->display(0);
+    ui->lcdNumber_ts->display(0);
 
 
     if(ui->radioButtonGanho->isChecked()){
@@ -594,6 +601,7 @@ void MainWindow::on_pushButtonCancel_clicked()
     offset=0;
     contFaixa= 0;
     max_mp= 0;
+    trs=0;
     flag_tp = false;
     ui->lcdNumber_tr->display(0);
     ui->lcdNumber_mp->display(0);

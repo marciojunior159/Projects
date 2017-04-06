@@ -9,8 +9,8 @@ MainWindow::MainWindow(QWidget *parent) :
     pid(0,0,0),
     ui(new Ui::MainWindow)
 {
-    //quanser= new Quanser("10.13.99.69", 20081);
-    quanser= new Quanser("127.0.0.1", 20074);
+    quanser= new Quanser("10.13.99.69", 20081);
+    //quanser= new Quanser("127.0.0.1", 20074);
 
     fuc= "WAIT";
     tempo= 0;
@@ -81,7 +81,7 @@ MainWindow::MainWindow(QWidget *parent) :
     for(int i=2; i<8; i++)
         canais[i]= false;
 
-    startTimer(0);
+    startTimer(100);
 }
 
 MainWindow::~MainWindow()
@@ -400,8 +400,24 @@ void MainWindow::Controle()
             flag_tr = false;
         }
         //mp
+        if( fabs(pv-st_ant) > fabs(st-st_ant))
+        {
+            if(fabs(pv-st)>max_mp)
+            {
+                max_mp= fabs(pv-st);
+                mp = 100.0*(pv - st)/(st - st_ant);
+                tp = tempo - tempoInicialAcom;
+                ui->lcdNumber_tp->display(tp);
+                ui->lcdNumber_mp->display(mp);
+            }
+        }
+        /*
         if( fabs(pv-st_ant) >= fabs(st-st_ant) && mp == 0 && flag_mp == false){
-            flag_mp = fabs(pv) > fabs(pv_ant)? false: true;
+            flag_mp = fabs(pv-st) > fabs(pv_ant-st)? false: true;
+            if(fabs(pv-st)>max)
+            {
+                max= fabs(pv-st);
+            }
             if(st!=0 && flag_mp == true){
                 mp = 100.0*(pv_ant - st)/(st - st_ant);
                 ui->lcdNumber_mp->display(mp);
@@ -413,7 +429,6 @@ void MainWindow::Controle()
                 }
             }
         }
-        /*
         if(pv <= st && mp == 0 && flag_mp == false && st_ant > st){
             flag_mp = pv < pv_ant? false: true;
             qDebug() << flag_mp << endl;
@@ -508,6 +523,7 @@ void MainWindow::on_checkBox_8_clicked()
 void MainWindow::on_pushButtonEnviar_clicked()
 {
     st_ant = A;
+    max_mp= 0;
     fuc= ui->comboBoxSinal->currentText().toStdString();
     A = ui->SpinBoxTensaoNivel->value();
     T = ui->SpinBoxPeriodo->value();
@@ -577,6 +593,7 @@ void MainWindow::on_pushButtonCancel_clicked()
     T = 0;
     offset=0;
     contFaixa= 0;
+    max_mp= 0;
     flag_tp = false;
     ui->lcdNumber_tr->display(0);
     ui->lcdNumber_mp->display(0);

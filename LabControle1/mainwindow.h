@@ -78,6 +78,7 @@ private:
     double st_ant=0;
     double tolerancia_ts = 0.05; //faixa de tolerancia do tempo de acomodacao
     double faixa_tr = 0;
+    double max_mp=0;
     int contFaixa = 0;
     std::mutex mutex_;
 

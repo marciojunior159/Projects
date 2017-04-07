@@ -15,13 +15,13 @@ void PID::setConstantes(double Kp, double Ki, double Kd)
 }
 
 #include <iostream>
-using namespace std;
 
+using namespace std;
 
 void PID::setConstantesT(double Kp, double Ti, double Td)
 {
     this->Kp= Kp;
-    this->Ki= Kp/Ti;
+    this->Ki= Ti==0?0:(Kp/Ti);
     this->Kd= Kp*Td;
 }
 double PID::Controle(double e, double h)

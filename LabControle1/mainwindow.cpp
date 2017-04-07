@@ -9,8 +9,8 @@ MainWindow::MainWindow(QWidget *parent) :
     pid(0,0,0),
     ui(new Ui::MainWindow)
 {
-    quanser= new Quanser("10.13.99.69", 20081);
-    //quanser= new Quanser("127.0.0.1", 20074);
+    //quanser= new Quanser("10.13.99.69", 20081);
+    quanser= new Quanser("127.0.0.1", 20074);
 
     fuc= "WAIT";
     tempo= 0;
@@ -224,6 +224,7 @@ void MainWindow::on_comboBoxSinal_activated(const QString &arg1)
 void MainWindow::timerEvent(QTimerEvent *e)
 {
     ui->label_altura->update();
+    ui->label_altura_2->update();
     ui->customPlot->xAxis->setRange(tempo + 0.25, 25, Qt::AlignRight);
     ui->plotS1->xAxis->setRange(tempo + 0.25, 25, Qt::AlignRight);
     ui->plotS2->xAxis->setRange(tempo + 0.25, 25, Qt::AlignRight);
@@ -315,6 +316,7 @@ void MainWindow::Controle()
 
 
         ui->label_altura->setText(QString::number(funcSensor(sensores[0])));
+        ui->label_altura_2->setText(QString::number(funcSensor(sensores[1])));
         //
         //qDebug() << funcSensor(sensores[0]) << endl;
 

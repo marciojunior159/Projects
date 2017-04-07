@@ -195,7 +195,7 @@ Professor:  Fábio Meneghetti Ugulino de Araújo.
 
 \begin{flushleft}
 
-\hspace{4ex}O presente trabalho é uma continuação ao que foi previamente realizado na primeira prática. Consiste no desenvolvimento de um software que se comunica com um sistema de tanques, uma planta Quanser, e seu simulador, com canais para leitura e escrita de sinais. Nesta etapa do trabalho, foi-se adicionado ao software desenvolvido na primeira experiência as ações de controle proporcional (P), integral (I) e derivativo (D), possibilitando ao usuário a opção de escolher entre controladores P, PI, PD, PID e PI-D. As funções teóricas utilizadas para formular o controlador estão explicitadas no texto deste relatório, bem como os algoritmos que simulam seus funcionamentos. O comportamento do sistema pode ser observado pelo usuário através de três gráficos presentes na interface do software, um para o sinal de entrada e os demais para os canais de saída.\\
+\hspace{4ex}O presente trabalho é a terceira etapa da construção de um microcontrolador para controle de sistemas. Consiste no desenvolvimento de um software que se comunica com um sistema de tanques, uma planta Quanser, e seu simulador, com canais para leitura e escrita de sinais. Nesta etapa do trabalho, o objetivo foi a implementação de controladores P, PI, PD, PID e PI-D de segunda ordem. Também foram adicionados ao controlador quatro medidas para análise do sistema de tanques: tempos de subida, pico e acomodação, além do sobre-sinal máximo do sistema. As equações teóricas utilizadas para formular o controlador estão explicitadas no texto deste relatório, bem como os algoritmos que simulam seus funcionamentos. O comportamento do sistema pode ser observado pelo usuário através de três gráficos presentes na interface do software, um para o sinal de entrada e os demais para os canais de saída.\\
 
 \end{flushleft}
 
@@ -360,92 +360,48 @@ if(contFaixa%2==1){
 
 \section{RESULTADOS}
 
-\hspace{4ex}Para a análise do comportamento dos controladores foi realizado vários testes diversificando o tipo de controlador e suas variáveis, esses testes podem ser encontrados nos seguintes subtópicos.
+\hspace{4ex}A análise feita teve como foco a análise do desempenho do sistema de segunda ordem através de tempos específicos. Ou seja, o objetivo era controlar o segundo tanque do sistema, as leituras do nível aparecem no gráfico localizado inferior da janela.
 
-\subsection{Controle P}
-\hspace{4ex}Utilizando o Controle Proporcional foram obtidos vários resultados variando o valor de Kp, como também o nível desejado, observe a figura \ref{fig:ControleP}.
+\hspace{4ex}O primeiro teste foi feito utilizando o controle PI, na figura \ref{<figureP1>} se pode perceber o efeito do sobressinal negativo, onde se alcançou cerca de quase 18\% de  abaixo do nível estabelecido. Essa porcentagem é em relação a diferença do nível anterior para o nível configurado atualmente. No caso, alterou-se de 20 cm para 10 cm.
 
-\hspace{4ex}Notou-se que com o aumento do ganho o sistema se aproxima da referência, mas nunca a alcança. Além disso, a partir de um certo valor de Kp, o sistema começa a ficar instável, como pode ser observado nas figuras \ref{<figureP6>} e \ref{<figureP7>}.
+\hspace{4ex}Na figura \ref{<figureP2>}, nota-se claramente o tempo de subida de 12,3 s. Alguns valores como sobressinal e tempo de acomodação são atualizados constamente e mostrados durante o cálculo, então o valor real só extraído quando o sistema entra em regime permanente.
 \begin{figure}[H]
      \centering
-     \subfloat[][]{\includegraphics[width=8cm]{resultados/P/00}\label{<figureP1>}}\hspace{4ex}
-     \subfloat[][]{\includegraphics[width=8cm]{resultados/P/01}\label{<figureP2>}}\\
-     \subfloat[][]{\includegraphics[width=8cm]{resultados/P/02}\label{<figureP3>}}\hspace{4ex}
-     \subfloat[][]{\includegraphics[width=8cm]{resultados/P/03}\label{<figureP4>}}\\
-     \subfloat[][]{\includegraphics[width=8cm]{resultados/P/04}\label{<figureP5>}}\hspace{4ex}
-     \subfloat[][]{\includegraphics[width=8cm]{resultados/P/05}\label{<figureP6>}}\\
-     \subfloat[][]{\includegraphics[width=8cm]{resultados/P/06}\label{<figureP7>}}\hspace{4ex}
-     \subfloat[][]{\includegraphics[width=8cm]{resultados/P/07}\label{<figureP8>}}
-     \caption{Controle P}
-     \label{fig:ControleP}
+     \subfloat[][]{\includegraphics[width=10cm]{resultados-lab3/03}\label{<figureP1>}}\hspace{4ex}
+     \subfloat[][]{\includegraphics[width=10cm]{resultados-lab3/04}\label{<figureP2>}}\\
+     
+     \caption{Análise do Controle PI}
+     \label{fig:ControlePI}
 \end{figure}
 
-\subsection{Controle PI}
-\hspace{4ex}Abaixo, na figura \ref{controlePI}, é possível analisar resultados obtidos pela utilização do controle Proporcional Integral.
+\hspace{4ex}Já no primeiro teste, notou-se que o controle do segundo tanque levou mais tempo para responder aos níveis de referência.
 
-\hspace{4ex}Como esperado, o nível do tanque consegue atingir o sinal de referência, pois o controlado PI zera o erro de regime para uma entrada degrau.
+\hspace{4ex}Na \ref{<figurePID1>}, vê-se novamente o sobressinal agora positivo. O tempo de pico é calculado junto com o sobressinal e é mostrado logo acima do $M_p$ na parte de resultados do programa.
 
-\hspace{4ex}Também foi verificado que com o aumento do Ki houve um aumento do overshoot, isso pode ser notado nas figuras \ref{<figurePI3>} e \ref{<figurePI4>}.
+\hspace{4ex}Nas figuras \ref{<figurePID2>} e \ref{<figurePID3>}, mostra-se o tempo de acomodação obtido, 35 s. Foi considerado uma faixa de tolerância de 2\% que pode ser alterada pelo usuário. Percebe-se que os valores obtidos são uma boa aproximação, já que não se pode obter um tempo mais preciso devido à taxa de leitura dos sensores e resposta do sistema.
 \begin{figure}[H]
      \centering
-     \subfloat[][]{\includegraphics[width=8cm]{resultados/PI/00}\label{<figurePI1>}}\hspace{4ex}
-     \subfloat[][]{\includegraphics[width=8cm]{resultados/PI/01}\label{<figurePI2>}}\\
-     \subfloat[][]{\includegraphics[width=8cm]{resultados/PI/02}\label{<figurePI3>}}\hspace{4ex}
-     \subfloat[][]{\includegraphics[width=8cm]{resultados/PI/03}\label{<figurePI4>}}\\
-     \subfloat[][]{\includegraphics[width=8cm]{resultados/PI/04}\label{<figurePI5>}}\hspace{4ex}
-     \subfloat[][]{\includegraphics[width=8cm]{resultados/PI/05}\label{<figurePI6>}}\\
-     \subfloat[][]{\includegraphics[width=8cm]{resultados/PI/06}\label{<figurePI7>}}
-     \caption{Controle PI}
-     \label{controlePI}
+     \subfloat[][]{\includegraphics[width=10cm]{resultados-lab3/05}\label{<figurePID1>}}\hspace{4ex}
+     \subfloat[][]{\includegraphics[width=10cm]{resultados-lab3/06}\label{<figurePID2>}}\\
+     \subfloat[][]{\includegraphics[width=10cm]{resultados-lab3/07}\label{<figurePID3>}}
+     
+     \caption{Análise do Controle PID}
+     \label{controlePID}
 \end{figure}
 
-\subsection{Controle PD}
-\hspace{4ex}O controlador PD tenta prever variações no sinal, dessa forma, melhorando o transitório, veja a figura \ref{controlePD}.
+\hspace{4ex} O efeito dos controladores no sistema continua o mesmo encontrado no sistema de primeira ordem. A oscilação do efeito derivativo e a resposta mais agressiva do efeito da integração. Sendo que como o sistema tem uma resposta mais lenta, faz-se necessário a análise dos tempos de subida, sobressinal e tempo de acomodação para os devidos ajustes nas constantes $K_p$, $K_D$ e $K_I$. Por exemplo, se o tempo de subida foi muito longo, é necessário o aumento do $K_I$ para uma resposta mais rápida. Mas devido aos efeitos de wind up do integrador e a amplificação do ruído no derivativo, o controlador precisa de filtros. No programa não foi implementado esse filtros, o que limita as faixas de uso das constantes. 
 
-\hspace{4ex}Como também, quando há o aumento do valor do Kd, o sinal de controle fica muito oscilatório como visto na figura \ref{<figurePD4>}.
+
 \begin{figure}[H]
      \centering
-     \subfloat[][]{\includegraphics[width=8cm]{resultados/PD/00}\label{<figurePD1>}}\hspace{4ex}
-     \subfloat[][]{\includegraphics[width=8cm]{resultados/PD/01}\label{<figurePD2>}}\\
-     \subfloat[][]{\includegraphics[width=8cm]{resultados/PD/02}\label{<figurePD3>}}\hspace{4ex}
-     \subfloat[][]{\includegraphics[width=8cm]{resultados/PD/03}\label{<figurePD4>}}\\
-     \subfloat[][]{\includegraphics[width=8cm]{resultados/PD/04}\label{<figurePD5>}}\hspace{4ex}
-     \subfloat[][]{\includegraphics[width=8cm]{resultados/PD/05}\label{<figurePD6>}}\\
-     \subfloat[][]{\includegraphics[width=8cm]{resultados/PD/06}\label{<figurePD7>}}
-     \caption{Controle PD}
+     \includegraphics[width=10cm]{resultados-lab3/19}\label{<figurePD1>}
+     \caption{Análise do Controle PD}
      \label{controlePD}
 \end{figure}
 
-\subsection{Controle PID}
-\hspace{4ex}Usando o controlador PID é possível constatar uma diminuição do overshoot e no tempo de resposta.
-\begin{figure}[H]
-     \centering
-     \subfloat[][]{\includegraphics[width=8cm]{resultados/PID/00}\label{<figurePID1>}}\hspace{4ex}
-     \subfloat[][]{\includegraphics[width=8cm]{resultados/PID/01}\label{<figurePID2>}}\\
-     \subfloat[][]{\includegraphics[width=8cm]{resultados/PID/02}\label{<figurePID3>}}\hspace{4ex}
-     \subfloat[][]{\includegraphics[width=8cm]{resultados/PID/03}\label{<figurePID4>}}\\
-     \subfloat[][]{\includegraphics[width=8cm]{resultados/PID/04}\label{<figurePID5>}}\hspace{4ex}
-     \subfloat[][]{\includegraphics[width=8cm]{resultados/PID/05}\label{<figurePID6>}}\\
-     \subfloat[][]{\includegraphics[width=8cm]{resultados/PID/06}\label{<figurePID7>}}
-     \caption{Controle PID}
-     \label{steady_state}
-\end{figure}
+Por fim o teste feito com o controlador PD. Foi usado uma constante $K_D$ baixa para evitar os efeitos negativos.
 
-\subsection{Controle PI-D}
-\hspace{4ex}Fazendo uso do controlador PI-D é possível ver que existe menos variações bruscas no sinal de controle, além do tempo de resposta ser mais rápido, veja a figura \ref{controlePI-D}. Esse sinal parece ser melhor para sinais que possuem uma maior variancia.
-\begin{figure}[H]
-     \centering
-     \subfloat[][]{\includegraphics[width=8cm]{resultados/PI-D/00}\label{<figurePI_D1>}}\hspace{4ex}
-     \subfloat[][]{\includegraphics[width=8cm]{resultados/PI-D/01}\label{<figurePI_D2>}}\\
-     \subfloat[][]{\includegraphics[width=8cm]{resultados/PI-D/02}\label{<figurePI_D3>}}\hspace{4ex}
-     \subfloat[][]{\includegraphics[width=8cm]{resultados/PI-D/03}\label{<figurePI_D4>}}\\
-     \subfloat[][]{\includegraphics[width=8cm]{resultados/PI-D/04}\label{<figurePI_D5>}}\hspace{4ex}
-     \subfloat[][]{\includegraphics[width=8cm]{resultados/PI-D/05}\label{<figurePI_D6>}}\\
-     \subfloat[][]{\includegraphics[width=8cm]{resultados/PI-D/06}\label{<figurePI_D7>}}\hspace{4ex}
-     \subfloat[][]{\includegraphics[width=8cm]{resultados/PI-D/07}\label{<figurePI_D8>}}
-     \caption{Controle PI-D}
-     \label{controlePI-D}
-\end{figure}
+
 
 \newpage
 
@@ -456,21 +412,18 @@ if(contFaixa%2==1){
 \section{CONCLUSÃO}
 
 
-\hspace{4ex}Através dos testes realizados, é possível perceber a menor eficiência dos controladores P e PI na administração da resposta transitória. Por um lado, ambos melhoram a resposta em regime, com o PI apresentando erro quase zero do sinal de controle em relação ao sinal de referência, por outro, essa maior aproximação ao valor desejado vem às custas da manipulação de variáveis que podem: instabilizar o sistema – caso de Kp – ou aumentar o overshoot – caso de Ki. O controlador PD, que se mostra visivelmente melhor na resposta transitória, apresenta um maior erro na resposta em regime, e sua variável Kd pode deixar o sistema muito oscilatório.
-
-Os controladores PID e PI-D mostraram-se capazes de produzir bons resultados tanto na resposta transitória quanto na resposta em regime: houve diminuição do overshoot, menor tempo de resposta e sinal de controle muito próximo ao sinal de referência. Os testes com o PI-D revelam também a atuação deste na redução de variações bruscas no sinal de controle. 
-
+\hspace{4ex}Os testes realizados num sistema de segunda ordem mostraram a importância da análise dos tempo de subida, tempo de pico, sobressinal e tempo de acomodação para o controle de um sistema. Estes valores obtidos experimentalmente podem ser aplicados no modelo matemático, para então encontrar a função que rege o sistema podendo assim ser mais fácil sintonizar o controlador e projetar. Como foi utilizado teorias aplicadas para sistemas lineares, essas soluções podem ser generalizadas e adaptadas para qualquer sistema linear. 
 \newpage
 
 %%%%%%%% REFERÊNCIAS %%%%%%%%%%%%%%%%%
 
-\thispagestyle{empty}
-\section{BIBLIOGRAFIA}
- .
+%\thispagestyle{empty}
+%\section{BIBLIOGRAFIA}
+ %.
  
-Dorf, R.; Bishop, R. Sistemas de controle modernos. Rio de Janeiro (RJ): LTC, 2009. 
+%Dorf, R.; Bishop, R. Sistemas de controle modernos. Rio de Janeiro (RJ): LTC, 2009. 
 
-Ogata, K. Modern control engineering. Boston: Prentice Hall, 2010.
+%Ogata, K. Modern control engineering. Boston: Prentice Hall, 2010.
 
 
 %Referências bibliogáficas (geradas automaticamente)

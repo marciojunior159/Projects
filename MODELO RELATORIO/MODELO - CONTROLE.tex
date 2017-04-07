@@ -249,57 +249,49 @@ Professor:  Fábio Meneghetti Ugulino de Araújo.
 
 \section{REFERENCIAL TEÓRICO}
 
-\subsection{LUGAR GEOMÉTRICO DAS RAÍZES}
-\hspace{4ex}Lugar geométrico das raízes é a representação gráfica dos lugares dos pólos e zeros da função de transferência de malha fechada quando os paramêtros da função, também chamado de ganho, são variados de zero a infinito.
- 
-%\[ \frac{k_m}{A}u(t)= \frac{a\sqrt{2gh(t)}}{A} \]
-%\[ u(t)=  \frac{a\sqrt{2gh(t)}}{k_m}\]
-Pode se obter esses lugares através da função de transferência de malha fechada do sistema:
-\begin{equation}\label{eq:1}
-1 + kG(s)H(s) = 0
-\end{equation}
+\hspace{4ex}O sistema de controle da planta mostrada na figura \ref{quaser} é caracterizado como sistema de segunda ordem quando se pretende controlar o nível do tanque de baixo, pois sua alimentação é a vazão do tanque de cima.
 
-\subsection{CONTROLADOR DE TRÊS TERMOS (PID)}
-O controlador PID é o mais utilizado na indústria (DorfBishop, 2009) um dos motivos para que isso ocorra é devido a facilidade de ser controlado no local. Além disso, é amplamente discutido na literatura, com várias publicações de ajustes e ajustes finos (Ogata, 2010). PID modificados como o PI-D também é bastante utilizado. Pode também ser usado em situações em que não se conhece a função de transferência sistema e ainda conseguir um bom resultado. Porém há ressalvas e em alguns sistemas pode se não obter um controle ótimo.
-
-O PID tem como função de transferência a seguinte expressão:
-
-\begin{equation}\label{eq:1}
-G_c(s) = K_p + \frac{K_I}{s} + K_D s
-\end{equation}
-
-Na equação podemos ver três parâmetros. Quando se atribui zero ao parâmetro derivativo, obtém-se o controlador PI, controlador proporcional e integral:  \[K_D = 0 \] 
-Logo, \[G_c(s) = K_p + \frac{K_I}{s} \]
-Da mesma forma para o parâmetro da integral:
-\[K_I = 0 \] 
-Tem-se o controlador proporcional derivativo, ou PD: \[G_c(s) = K_p + K_D s \]
-
-\begin{figure}[!h]
+\begin{figure}[h]
 \centering
-\includegraphics[scale=1]{controlador-malha-fechada.JPG}
-\caption{Sistema de malha fechada com controlador}
-\label{fig:sistema}
-{Fonte: DorfBishop, 2009}
+\includegraphics[width=5cm]{fotosLab3/planta.png}
+\caption{Planta Quaser}
+\label{quaser}
 \end{figure}
 
-A função de transferência do PID insere no sistema uma pólo na origem e dois zeros em lugares a serem determinados. Se for adicionado zeros complexos no sistema, têm-se um lugar geométrico das raízes como o exemplo a seguir: 
+\hspace{4ex}Tendo o objetivo de comparar controladores, utiliza-se algumas medidas de desempenho, como, o tempo de subida, o tempo de acomodação, o tempo de pico e o overshoot.
 
-\begin{figure}[!h]
+\hspace{4ex}O tempo de subida(t$_r$) é o tempo em que a variável manipulada sai da referência atual e chega na nova referência. Para um sistema de segunda ordem ideal:
+
+\begin{center}
+$ t_r = \frac{\pi - \beta}{w_d} $
+\end{center} 
+
+\hspace{4ex}O tempo de acomodação é o tempo em que é a variável manipulada levou para entrar em uma região de acomodação e não sair mais.
+
+\begin{center}
+$ t_s=\frac{3}{\xi w_n} $
+\end{center}
+
+\hspace{4ex}O tempo de pico é o tempo em que o sinal levou para atingir o seu maior valor, e o overshoot é a porcentagem do erro com relação ao setpoint.
+
+\begin{center}
+$ t_p=\frac{\pi}{w_d} $\\
+$ M_p(\%)=100( e^{- \frac{\xi\pi}{\sqrt{1-\xi^{2}}} } ) $
+\end{center}
+
+Na figura \ref{curva} pode ser visto a representação desses tempos mencionados acima.
+
+\begin{figure}[H]
 \centering
-\includegraphics[scale=1]{lugar-das-raizes-pid.JPG}
-\caption{Lugar das raízes com zeros complexos}
-\label{fig:lgr}
-{Fonte: DorfBishop, 2009}
+\includegraphics[width=15cm]{fotosLab3/ref.png}
+\caption{Curva}
+\label{curva}
 \end{figure}
 
 
-\subsection{EFEITOS DO CONTROLE DERIVATIVO E INTEGRAL NA PERFORMANCE DO SISTEMA}
-\hspace{4ex}
-Para um sistema com controle apenas proporcional, dada uma entrada degrau, o erro de regime estacionário aparecerá. Esse offset dependerá do ganho proporcional atribuído. Para que seja eliminado esse erro é necessário a adição de um controlador integral, já que ele adiciona um zero ao sistema, mas pode deixar o sistema mais oscilatório.
+\hspace{4ex}Essas medidas também servem para analisar o que acontece quando mudamos os ganhos dos controladores, e elas nos ajudam a decidir qual o melhor controlador segundo as especificações de desempenho.
 
-Já o controle derivativo quando adicionado a um controle proporcional (PD), oferece um controle com alta sensibilidade, devido a responder a taxa de variação do erro, dessa forma o controle atua antes de forma preventiva (Ogata, 2010). Esse tipo de controle não corrige diretamento o erro de regime estacionário, mas adiciona amortecimento ao sistema de forma que permite um uso de um ganho maior.
 
-Portanto, tendo em mente os efeitos e peculiaridades de cada controlador, pode-se projetar um PID mais eficiente.
 \newpage
 
 %%%%%%%%%% METODOLOGIA %%%%%%%%%%%%%%%
@@ -307,30 +299,58 @@ Portanto, tendo em mente os efeitos e peculiaridades de cada controlador, pode-s
 \thispagestyle{main}
 
 \section{METODOLOGIA}
+\hspace{4ex}Com o objetivo de implementar o tempo de subida, tempo de pico, o overshoot e tempo de acomodação no sistema de controle da planta \textit{Quanser}, para ambos os tanques, a lógica desenvolvida teve como base o referencial teórico.
 
-\hspace{4ex}O sistema de controle Proporcional Integral Derivativo (PID) desenvolvido foi implementado no código de acordo com o referencial teórico. Para isso, foi criado uma classe que de acordo com a solicitação do usuário será: apenas Proporcional (P), ou Proporcional Integrativo (PI), ou Proporcional Derivativo (PD), ou PID, ou PI-D. A implementação pode ser observada abaixo:
+\hspace{4ex}Para medir o tempo de subida, o usuário pode escolher entre as faixas de 0 a 100\%, 5 a 95\% e 10 a 90\%. Para isso, foi calculado a diferença do setPoint atual para o setPoint anterior e assim, é checado se a curva já atingiu a porcentagem mínima desse valor, sendo ele o ponto inicial da contagem e o ponto final é quando atinge a porcetagem máxima. Observe o seguinte código:
 
 \begin{lstlisting}
-double PID::Controle(double e, double h)
-{
-    I= I+Ki*e*h;
-    D= Kd*(e-e_ant)/h;
-    e_ant= e;
-    return Kp*e+I+D;
-}
+//faixa_tr eh a porcentagem
+if(|pv-setPointAnterior| >= |faixa_tr*(st-setPointAnterior)|)
+	tempoInicial = tempo;
 
-double PID::Controle(double e, double y, double h)
-{
-    I= I+Ki*e*h;
-    D= Kd*(y-e_ant)/h;
-    e_ant= y;
-    return Kp*e+I+D;
+if(|pv-setPointAnterior| >= |(1-faixa_tr)*(setPoint-setPointAnterior)|)
+	tempoSubida = tempo - tempoInicial;
+\end{lstlisting}
+
+\hspace{4ex}A medição do tempo de pico é feita da seguinte forma: quando a curva ultrapassa setPoint, o valor de pico será o maior valor da curva, a contagem do tempo é feita a partir do momento que o usuário aperta o botão "enviar", até o momento em que o valor de pico é encontrado. Além disso, o valor da curva no tempo de pico é usado para calcular o overshoot. Observe a lógica abaixo:
+
+\begin{lstlisting}
+if(|pv-setPointAnterior| > |setPoint-setPointAnterior|){
+	if(|pv-setPoint|>max_mp){
+		max_overshoot = |pv-setPoint|;
+		overshootPorcentagem = 100.0*(pv - setPoint)/(setPoint - setPointAnterior);
+		tempoPico = tempo - tempoInicialAcom;
+	}
 }
 \end{lstlisting}
 
-\hspace{4ex}O primeiro método é referente ao P, PI, PD e PID, enquanto que o segundo método é o PI-D.
+\hspace{4ex}Sobre o tempo de acomodação, o usuário pode escolher entre 2\%, 5\%, 7\% e 10\%. Para isso, seu cálculo foi utilizado duas retas auxiliares no setPoint +x\% e no setPoint -x\%, além disso, existe uma variável auxiliar a qual é somada a cada vez que a curva cruza uma das retas auxiliares, se o número de vezes que ela cruzou é ímpar significa que a curva está entre as retas auxiliares, ou seja, a curva se estabilizou.
 
-\hspace{4ex}Após essa implementação, foram feitos vários testes utilizando todos os tipos de controladores, como também, variando os ganhos.
+\begin{lstlisting}
+if(pv >= (1-tolerancia_ts)*setPoint
+&& pv_ant < (1-tolerancia_ts)*setPoint){
+	contFaixa++; //entrou por baixo
+	ts = tempo;
+}
+if(pv >= (1+tolerancia_ts)*setPoint
+&& pv_ant < (1+tolerancia_ts)*setPoint){
+	contFaixa++; // saiu por cima
+	ts = tempo;
+}
+if(pv <= (1-tolerancia_ts)*setPoint
+&& pv_ant > (1-tolerancia_ts)*setPoint){
+	contFaixa++; //saiu por baixo
+	ts = tempo;
+}
+if(pv <= (1+tolerancia_ts)*setPoint
+&& pv_ant > (1+tolerancia_ts)*setPoint){
+	contFaixa++; // entrou por cima
+	ts = tempo;
+}
+if(contFaixa%2==1){
+	tempoAcomodacao= ts;
+}
+\end{lstlisting}
 
 \newpage
 

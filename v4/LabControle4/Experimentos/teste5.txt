@@ -1,0 +1,57 @@
+volts : 1
+porta 0
+0.284493
+porta 1
+0.197802
+porta 2
+0.294261
+porta 3
+0.28083
+
+porta 0
+0.286935
+porta 1
+0.199023
+porta 2
+0.29304
+porta 3
+0.283272
+
+porta 0
+0.288156
+porta 1
+0.197802
+porta 2
+0.29304
+porta 3
+0.278388
+
+porta 0
+0.286935
+porta 1
+0.202686
+porta 2
+0.289377
+porta 3
+0.282051
+
+porta 0
+0.285714
+porta 1
+0.20757
+porta 2
+0.291819
+porta 3
+0.282051
+
+porta 0
+0.285714
+porta 1
+0.205128
+porta 2
+0.290598
+porta 3
+0.275946
+
+porta 0
+0.00854701

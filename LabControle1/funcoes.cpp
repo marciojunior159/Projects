@@ -82,3 +82,19 @@ double funcSensor(double leituras){
 }
 
 //Nao esquecer das travas
+
+double trava(double tensao, double nivel)
+{
+    if(tensao > 3.9)
+        return 4;
+    if(tensao<-3.9)
+        return -4;
+
+    if(nivel <= 1.5 && tensao < 0){
+        return 0;
+    }else if(nivel >= 30 && tensao > 0){
+        return 2.75; //tensao de equilibrio
+    }
+
+    return tensao;
+}

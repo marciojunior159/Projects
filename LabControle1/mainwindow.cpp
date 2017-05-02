@@ -1,13 +1,14 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QMessageBox>
+#include <chrono>
 #include "funcoes.h"
 
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    pid(0,0,0),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    pid1(0,0,0), pid2(4,0.1,0.005)
 {
     //quanser= new Quanser("10.13.99.69", 20081);
     quanser= new Quanser("127.0.0.1", 20074);
@@ -221,7 +222,7 @@ void MainWindow::on_comboBoxSinal_activated(const QString &arg1)
     }
 }
 
-void MainWindow::timerEvent(QTimerEvent *e)
+void MainWindow::timerEvent(QTimerEvent *t)
 {
     ui->label_altura->update();
     ui->label_altura_2->update();
@@ -262,68 +263,47 @@ void MainWindow::timerEvent(QTimerEvent *e)
 
 }
 
-#include <chrono>
 auto now = std::chrono::high_resolution_clock::now();
 
 void MainWindow::Controle()
 {
-    double tensaoCalculado, dt;
-    now = std::chrono::high_resolution_clock::now();
+    double tensaoCalculado, dt= 0, st= 0, pv, tensao;
     while(1)
     {
         //now = std::chrono::high_resolution_clock::now();
         int canal= ui->spinBoxCanal->value();
 
-        double sensores[8];
+        double sensores[2];
         for(int i=0; i<2; i++)
             sensores[i]= quanser->readAD(i);
 
         //ST = referencia; //PV = leitura da altura dos tanques
-        double tensao=0, st, erro, pv;
 
         if(fuc == "Degrau")
-        {
-            tensao= funcDegrau(A, tempo, offset);
-        }
+            st= funcDegrau(A, tempo, offset);
         else if(fuc == "Senoidal")
-        {
-            tensao= funcSenoidal(A, T, tempo, offset);
-        }
+            st= funcSenoidal(A, T, tempo, offset);
         else if(fuc == "Onda quadrada")
-        {
-            tensao= funcQuadrada(A, T, tempo, offset);
-        }
+            st= funcQuadrada(A, T, tempo, offset);
         else if(fuc == "Dente de serra")
-        {
-            tensao= funcSerra(A, T, tempo, offset);
-        }
+            st= funcSerra(A, T, tempo, offset);
         else if(fuc == "Aleatorio") // intervalo
         {
             if(ui->radioButtonMalhaAberta->isChecked())
-                tensao= funcAleatoria1(tempo);
+                st= funcAleatoria1(tempo);
             else
-                tensao= funcAleatoria2(tempo);
+                st= funcAleatoria2(tempo);
         }
         else
-        {
-            tensao= 0;
-        }
+            st= 0;
 
         mutex_.lock();
         ui->plotS1->graph(0)->addData(tempo, funcSensor(sensores[0]));
         ui->plotS2->graph(0)->addData(tempo, funcSensor(sensores[1]));
         mutex_.unlock();
 
-
         ui->label_altura->setText(QString::number(funcSensor(sensores[0])));
         ui->label_altura_2->setText(QString::number(funcSensor(sensores[1])));
-        //
-        //qDebug() << funcSensor(sensores[0]) << endl;
-
-//        ui->plotS3->graph(0)->addData(tempo, sensores[4]);
-//        ui->plotS3->graph(1)->addData(tempo, sensores[6]);
-//        ui->plotS4->graph(0)->addData(tempo, sensores[5]);
-//        ui->plotS4->graph(1)->addData(tempo, sensores[7]);
 
         if(ui->radioButtonMalhaAberta->isChecked())
         {
@@ -331,58 +311,59 @@ void MainWindow::Controle()
             ui->plotS1->graph(1)->addData(tempo, 0);
             ui->plotS2->graph(1)->addData(tempo, 0);
             mutex_.unlock();
-            pv = funcSensor(sensores[0]);
-            //Trava #1
-            tensaoCalculado = tensao;
 
-            if(tensao>3.9)
-                tensao = 3.9;
-            if(tensao<-3.9)
-                tensao = -3.9;
-            //Trava #2 e #3
-            if(pv <= 1.5 && tensao < 0){
-                tensao = 0;
-            }else if(pv >= 30 && tensao > 0){
-                tensao = 2.75; //tensao de equilibrio
-            }
+            pv = funcSensor(sensores[0]);
+            tensaoCalculado = st;
+            tensao = trava(st, pv);
+
             quanser->writeDA(canal, tensao);
         }
         else if(ui->radioButtonMalhaFechada->isChecked())
         {
-            st = tensao;
+            double st2, erro1, erro2, pv1;
 
             if(ui->comboBoxSinalOrdem->currentText() == "Primeira"){
                 pv = funcSensor(sensores[0]);
+
                 mutex_.lock();
                 ui->plotS2->graph(1)->addData(tempo, 0);
                 ui->plotS1->graph(1)->addData(tempo, st);
                 mutex_.unlock();
+
+                erro1 = st - pv;
+                cout << st << " " << pv << endl;
+                //tensao = funcAlturaTensao(st)+erro;
+                if(ui->comboBoxTipodeControle->currentText() == "PI-D")
+                    tensao = pid1.Controle(erro1,pv,0.1);
+                else
+                    tensao = pid1.Controle(erro1, 0.1);
+
             }else{
+                pv1 = funcSensor(sensores[0]);
                 pv = funcSensor(sensores[1]);
+
                 mutex_.lock();
                 ui->plotS1->graph(1)->addData(tempo, 0);
-                ui->plotS2->graph(1)->addData(tempo, tensao);
+                ui->plotS2->graph(1)->addData(tempo, st);
                 mutex_.unlock();
+
+                erro1 = st - pv;
+                erro2 = st2 - pv1;
+                //tensao = funcAlturaTensao(st)+erro;
+                if(ui->comboBoxTipodeControle->currentText() == "PI-D")
+                {
+                    st2 = pid1.Controle(erro1,pv1,0.1);
+                    tensao = pid2.Controle(erro2,pv,0.1);
+                }
+                else
+                {
+                    st2 = pid1.Controle(erro1,0.1);
+                    tensao = pid2.Controle(erro2, 0.1);
+                }
             }
-            erro = st - pv;
-            //tensao = funcAlturaTensao(st)+erro;
-            if(ui->comboBoxTipodeControle->currentText() == "PI-D")
-                tensao = pid.Controle(erro,pv,0.1);
-            else
-                tensao = pid.Controle(erro, 0.1);
 
             tensaoCalculado = tensao;
-            //Travas e saturacao
-            if(tensao > 3.9)
-                tensao = 4;
-            if(tensao<-3.9)
-                tensao = -4;
-
-            if(funcSensor(sensores[0]) <= 1.5 && tensao < 0){
-                tensao = 0;
-            }else if(funcSensor(sensores[0]) >= 30 && tensao > 0){
-                tensao = 2.75; //tensao de equilibrio
-            }
+            tensao = trava(tensao, pv);
 
             quanser->writeDA(canal, tensao);
         }
@@ -415,34 +396,6 @@ void MainWindow::Controle()
                 ui->lcdNumber_mp->display(mp);
             }
         }
-        /*
-        if( fabs(pv-st_ant) >= fabs(st-st_ant) && mp == 0 && flag_mp == false){
-            flag_mp = fabs(pv-st) > fabs(pv_ant-st)? false: true;
-            if(fabs(pv-st)>max)
-            {
-                max= fabs(pv-st);
-            }
-            if(st!=0 && flag_mp == true){
-                mp = 100.0*(pv_ant - st)/(st - st_ant);
-                ui->lcdNumber_mp->display(mp);
-
-                if(flag_tp == false){
-                    tp = tempo - tempoInicialAcom;
-                    ui->lcdNumber_tp->display(tp);
-                    flag_tp = true;
-                }
-            }
-        }
-        if(pv <= st && mp == 0 && flag_mp == false && st_ant > st){
-            flag_mp = pv < pv_ant? false: true;
-            qDebug() << flag_mp << endl;
-
-            if(st!=0 && flag_mp == true){
-                mp = 100.0*(st - pv_ant)/(st_ant - st);
-                ui->lcdNumber_mp->display(mp);
-            }
-        }
-        */
 
         //tempo de acomodacao
         if(pv >= (1-tolerancia_ts)*st && pv_ant < (1-tolerancia_ts)*st){
@@ -466,12 +419,11 @@ void MainWindow::Controle()
         }
 
         //qDebug() << std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now()-now).count() << "us\n";
-        double t= std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now()-now).count()/1000.0;
-        now = std::chrono::high_resolution_clock::now();
-        //qDebug() << pv << " " << pv_ant << " " << " " << st_ant << " " << st << endl;
-        //qDebug() << t << endl;
+        //double t= std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now()-now).count()/1000.0;
+        dt= std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now()-now).count()/1000.0;
+        //qDebug() << dt << endl;
         tempo+=0.1;
-        //tempo+=0.1;
+
         usleep((0.1)*10E5);
         pv_ant = pv;
     }
@@ -546,23 +498,20 @@ void MainWindow::on_pushButtonEnviar_clicked()
     ui->lcdNumber_tp->display(0);
     ui->lcdNumber_ts->display(0);
 
-
     if(ui->radioButtonGanho->isChecked()){
-        pid.setConstantes(ui->doubleSpinBox_kp->isEnabled()?ui->doubleSpinBox_kp->value():0,
+        pid1.setConstantes(ui->doubleSpinBox_kp->isEnabled()?ui->doubleSpinBox_kp->value():0,
                           ui->doubleSpinBox_ki->isEnabled()?ui->doubleSpinBox_ki->value():0,
                           ui->doubleSpinBox_kd->isEnabled()?ui->doubleSpinBox_kd->value():0);
     }else if(ui->radioButtonTempo->isChecked()){
-        pid.setConstantesT(ui->doubleSpinBox_kp->isEnabled()?ui->doubleSpinBox_kp->value():0,
+        pid1.setConstantesT(ui->doubleSpinBox_kp->isEnabled()?ui->doubleSpinBox_kp->value():0,
                            ui->doubleSpinBox_ki->isEnabled()?ui->doubleSpinBox_ki->value():0,
                            ui->doubleSpinBox_kd->isEnabled()?ui->doubleSpinBox_kd->value():0);
     }
-
     if(ui->comboBoxSinalOrdem->currentText()=="Segunda"){
         flag_2ordem = true;
     }else{
         flag_2ordem = false;
     }
-
     switch(ui->comboBoxSinalfaixats->currentIndex()){
         case 0:
             tolerancia_ts = 0.02;
@@ -577,8 +526,6 @@ void MainWindow::on_pushButtonEnviar_clicked()
             tolerancia_ts = 0.1;
             break;
     }
-
-
     switch(ui->comboBoxSinalfaixa_tr->currentIndex()){
         case 2:
             faixa_tr = 0.0;
@@ -591,8 +538,6 @@ void MainWindow::on_pushButtonEnviar_clicked()
             break;
 
     }
-
-
 }
 
 void MainWindow::on_pushButtonCancel_clicked()

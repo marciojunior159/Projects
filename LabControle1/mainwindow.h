@@ -55,11 +55,11 @@ private slots:
 private:
     Quanser* quanser;
     Ui::MainWindow *ui;
+    PID pid1, pid2;
     std::thread* controle, *recebe;
     string fuc;
     float tempo;
     bool canais[8];
-    PID pid;
     double A =0;
     double T = 0;
     double offset = 0;

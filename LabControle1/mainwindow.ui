@@ -773,7 +773,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>Sobressinal (Mp)</string>
+      <string>Sobressinal (Mp%)</string>
      </property>
     </widget>
     <widget class="Line" name="line">
@@ -902,9 +902,6 @@
       </item>
      </layout>
     </widget>
-    <zorder>plotS2</zorder>
-    <zorder>label_18</zorder>
-    <zorder>layoutWidget_2</zorder>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>

@@ -26,6 +26,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->doubleSpinBox_ki->setDecimals(3);
     ui->doubleSpinBox_kd->setDecimals(3);
 
+//    ui->doubleSpinBox_kp->setDecimals(3);
+    ui->doubleSpinBox_ki_2->setDecimals(3);
+    ui->doubleSpinBox_kd_2->setDecimals(3);
+
     ui->customPlot->addGraph();
     ui->customPlot->addGraph();
     ui->customPlot->graph(0)->setPen(QPen(Qt::blue));
@@ -349,6 +353,7 @@ void MainWindow::Controle()
 
                 erro1 = st - pv;
                 erro2 = st2 - pv1;
+                //cout << "st "<< st2 << " pv " << pv1<< " st "<<st<<" pv "<<pv << endl;
                 //tensao = funcAlturaTensao(st)+erro;
                 if(ui->comboBoxTipodeControle->currentText() == "PI-D")
                 {
@@ -507,6 +512,15 @@ void MainWindow::on_pushButtonEnviar_clicked()
                            ui->doubleSpinBox_ki->isEnabled()?ui->doubleSpinBox_ki->value():0,
                            ui->doubleSpinBox_kd->isEnabled()?ui->doubleSpinBox_kd->value():0);
     }
+    if(ui->radioButtonGanho_2->isChecked()){
+        pid2.setConstantes(ui->doubleSpinBox_kp_2->isEnabled()?ui->doubleSpinBox_kp_2->value():0,
+                          ui->doubleSpinBox_ki_2->isEnabled()?ui->doubleSpinBox_ki_2->value():0,
+                          ui->doubleSpinBox_kd_2->isEnabled()?ui->doubleSpinBox_kd_2->value():0);
+    }else if(ui->radioButtonTempo_2->isChecked()){
+        pid2.setConstantesT(ui->doubleSpinBox_kp_2->isEnabled()?ui->doubleSpinBox_kp_2->value():0,
+                           ui->doubleSpinBox_ki_2->isEnabled()?ui->doubleSpinBox_ki_2->value():0,
+                           ui->doubleSpinBox_kd_2->isEnabled()?ui->doubleSpinBox_kd_2->value():0);
+    }
     if(ui->comboBoxSinalOrdem->currentText()=="Segunda"){
         flag_2ordem = true;
     }else{
@@ -614,11 +628,79 @@ void MainWindow::on_comboBoxSinalOrdem_activated(const QString &arg1)
 {
     QString ordem = ui->comboBoxSinalOrdem->currentText();
 
-    ui->lcdNumber_mp->setEnabled(true);
-    ui->lcdNumber_tr->setEnabled(true);
-    ui->lcdNumber_ts->setEnabled(true);
-    ui->lcdNumber_tp->setEnabled(true);
+    if(ordem=="Segunda"){
+        ui->lcdNumber_mp->setEnabled(true);
+        ui->lcdNumber_tr->setEnabled(true);
+        ui->lcdNumber_ts->setEnabled(true);
+        ui->lcdNumber_tp->setEnabled(true);
 
-    ui->comboBoxSinalfaixats->setEnabled(true);
-    ui->comboBoxSinalfaixa_tr->setEnabled(true);
+        ui->comboBoxSinalfaixats->setEnabled(true);
+        ui->comboBoxSinalfaixa_tr->setEnabled(true);
+
+        ui->comboBoxTipodeControle_2->setEnabled(true);
+        ui->comboBoxTipodeControle_2->setCurrentIndex(0);
+
+        ui->doubleSpinBox_kp_2->setEnabled(true);
+
+        ui->radioButtonGanho_2->setEnabled(true);
+        ui->radioButtonTempo_2->setEnabled(true);
+//        ui->doubleSpinBox_ki_2->setEnabled(true);
+//        ui->doubleSpinBox_kd_2->setEnabled(true);
+    }
+
+}
+
+void MainWindow::on_comboBoxTipodeControle_2_activated(const QString &arg1)
+{
+    QString tipo = ui->comboBoxTipodeControle_2->currentText();
+    if(tipo == "P"){
+
+        ui->doubleSpinBox_ki_2->setEnabled(false);
+        ui->doubleSpinBox_kd_2->setEnabled(false);
+
+        ui->doubleSpinBox_ki_2->setValue(0);
+        ui->doubleSpinBox_kd_2->setValue(0);
+
+    }else if(tipo == "PI"){
+
+        ui->doubleSpinBox_ki_2->setEnabled(true);
+        ui->doubleSpinBox_kd_2->setEnabled(false);
+
+        ui->doubleSpinBox_kd_2->setValue(0);
+
+
+    }else if(tipo == "PD"){
+
+        ui->doubleSpinBox_ki_2->setEnabled(false);
+        ui->doubleSpinBox_kd_2->setEnabled(true);
+
+        ui->doubleSpinBox_ki_2->setValue(0);
+
+    }else if(tipo == "PID"){
+        ui->doubleSpinBox_ki_2->setEnabled(true);
+        ui->doubleSpinBox_kd_2->setEnabled(true);
+
+    }else if(tipo == "PI-D"){
+
+        ui->doubleSpinBox_ki_2->setEnabled(true);
+        ui->doubleSpinBox_kd_2->setEnabled(true);
+
+    }
+}
+
+void MainWindow::on_radioButtonGanho_2_clicked(bool checked)
+{
+    if(checked == true){
+        ui->label_kd_2->setText("Ganho (Kd)");
+        ui->label_ki_2->setText("Ganho (Ki)");
+
+    }
+}
+
+void MainWindow::on_radioButtonTempo_2_clicked(bool checked)
+{
+    if(checked == true){
+        ui->label_kd_2->setText("Tempo (Td)");
+        ui->label_ki_2->setText("Tempo (Ti)");
+    }
 }

@@ -52,6 +52,12 @@ private slots:
 
     void on_comboBoxSinalOrdem_activated(const QString &arg1);
 
+    void on_comboBoxTipodeControle_2_activated(const QString &arg1);
+
+    void on_radioButtonGanho_2_clicked(bool checked);
+
+    void on_radioButtonTempo_2_clicked(bool checked);
+
 private:
     Quanser* quanser;
     Ui::MainWindow *ui;

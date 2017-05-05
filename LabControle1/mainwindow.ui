@@ -55,10 +55,10 @@
    <widget class="QGroupBox" name="groupBoxSaida">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>290</y>
-      <width>201</width>
-      <height>151</height>
+      <x>30</x>
+      <y>370</y>
+      <width>421</width>
+      <height>91</height>
      </rect>
     </property>
     <property name="maximumSize">
@@ -70,16 +70,16 @@
     <property name="title">
      <string>Canais de Saida</string>
     </property>
-    <widget class="QWidget" name="layoutWidget">
+    <widget class="QWidget" name="">
      <property name="geometry">
       <rect>
-       <x>20</x>
-       <y>30</y>
-       <width>168</width>
-       <height>112</height>
+       <x>21</x>
+       <y>31</y>
+       <width>371</width>
+       <height>49</height>
       </rect>
      </property>
-     <layout class="QFormLayout" name="formLayout">
+     <layout class="QGridLayout" name="gridLayout_9">
       <item row="0" column="0">
        <widget class="QCheckBox" name="checkBox">
         <property name="text">
@@ -100,42 +100,42 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
+      <item row="0" column="2">
        <widget class="QCheckBox" name="checkBox_3">
         <property name="text">
          <string>Canal 2</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
+      <item row="0" column="3">
        <widget class="QCheckBox" name="checkBox_4">
         <property name="text">
          <string>Canal 3</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
+      <item row="1" column="0">
        <widget class="QCheckBox" name="checkBox_5">
         <property name="text">
          <string>Canal 4</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
+      <item row="1" column="1">
        <widget class="QCheckBox" name="checkBox_6">
         <property name="text">
          <string>Canal 5</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
+      <item row="1" column="2">
        <widget class="QCheckBox" name="checkBox_7">
         <property name="text">
          <string>Canal 6</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
+      <item row="1" column="3">
        <widget class="QCheckBox" name="checkBox_8">
         <property name="text">
          <string>Canal 7</string>
@@ -174,8 +174,8 @@
      <rect>
       <x>40</x>
       <y>80</y>
-      <width>391</width>
-      <height>191</height>
+      <width>191</width>
+      <height>261</height>
      </rect>
     </property>
     <property name="title">
@@ -187,10 +187,10 @@
     <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
-       <x>20</x>
-       <y>40</y>
+       <x>10</x>
+       <y>20</y>
        <width>151</width>
-       <height>131</height>
+       <height>101</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout_5">
@@ -261,16 +261,118 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Tipo</string>
+     </layout>
+    </widget>
+    <widget class="QWidget" name="layoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>130</y>
+       <width>151</width>
+       <height>84</height>
+      </rect>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="1" column="1">
+       <widget class="QDoubleSpinBox" name="SpinBoxPeriodoOffset">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+        <property name="value">
+         <double>0.000000000000000</double>
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
-       <widget class="QComboBox" name="comboBoxTipodeControle">
+      <item row="2" column="1">
+       <widget class="QDoubleSpinBox" name="SpinBoxPeriodo">
         <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+        <property name="value">
+         <double>1.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_8">
+        <property name="text">
+         <string>Offset</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_6">
+        <property name="text">
+         <string>Período</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QDoubleSpinBox" name="SpinBoxTensaoNivel">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="minimum">
+         <double>-4.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>4.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.010000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="labelTensaoNivel">
+        <property name="text">
+         <string>Tensão</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QWidget" name="layoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>220</y>
+       <width>151</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_4">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_15">
+        <property name="text">
+         <string>ts</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="comboBoxSinalfaixats">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="editable">
          <bool>false</bool>
         </property>
         <property name="currentIndex">
@@ -278,206 +380,65 @@
         </property>
         <item>
          <property name="text">
-          <string>P</string>
+          <string>2%</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>PI</string>
+          <string>5%</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>PD</string>
+          <string>7%</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>PID</string>
+          <string>10%</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLabel" name="label_16">
+        <property name="text">
+         <string>tr</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="QComboBox" name="comboBoxSinalfaixa_tr">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="editable">
+         <bool>false</bool>
+        </property>
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <item>
+         <property name="text">
+          <string>90</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>PI-D</string>
+          <string>95</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>100</string>
          </property>
         </item>
        </widget>
       </item>
      </layout>
-    </widget>
-    <widget class="QSplitter" name="splitter_2">
-     <property name="geometry">
-      <rect>
-       <x>220</x>
-       <y>40</y>
-       <width>151</width>
-       <height>131</height>
-      </rect>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <widget class="QWidget" name="layoutWidget">
-      <layout class="QGridLayout" name="gridLayout_2">
-       <item row="1" column="1">
-        <widget class="QDoubleSpinBox" name="SpinBoxPeriodoOffset">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="singleStep">
-          <double>0.100000000000000</double>
-         </property>
-         <property name="value">
-          <double>0.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QDoubleSpinBox" name="SpinBoxPeriodo">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="singleStep">
-          <double>0.100000000000000</double>
-         </property>
-         <property name="value">
-          <double>1.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_8">
-         <property name="text">
-          <string>Offset</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label_6">
-         <property name="text">
-          <string>Período</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QDoubleSpinBox" name="SpinBoxTensaoNivel">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="minimum">
-          <double>-4.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>4.000000000000000</double>
-         </property>
-         <property name="singleStep">
-          <double>0.010000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="labelTensaoNivel">
-         <property name="text">
-          <string>Tensão</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="layoutWidget">
-      <layout class="QGridLayout" name="gridLayout_4">
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_15">
-         <property name="text">
-          <string>ts</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QComboBox" name="comboBoxSinalfaixats">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="editable">
-          <bool>false</bool>
-         </property>
-         <property name="currentIndex">
-          <number>0</number>
-         </property>
-         <item>
-          <property name="text">
-           <string>2%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>5%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>7%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>10%</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="0" column="2">
-        <widget class="QLabel" name="label_16">
-         <property name="text">
-          <string>tr</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="3">
-        <widget class="QComboBox" name="comboBoxSinalfaixa_tr">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="editable">
-          <bool>false</bool>
-         </property>
-         <property name="currentIndex">
-          <number>0</number>
-         </property>
-         <item>
-          <property name="text">
-           <string>90</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>95</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>100</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-      </layout>
-     </widget>
     </widget>
    </widget>
    <widget class="QCustomPlot" name="plotS1" native="true">
@@ -570,95 +531,6 @@
       <string>Cancelar</string>
      </property>
     </widget>
-   </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>260</x>
-      <y>310</y>
-      <width>159</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <layout class="QGridLayout" name="gridLayout_3">
-     <item row="0" column="0">
-      <widget class="QRadioButton" name="radioButtonGanho">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="text">
-        <string>Ganho</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QRadioButton" name="radioButtonTempo">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="text">
-        <string>Tempo</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>260</x>
-      <y>340</y>
-      <width>161</width>
-      <height>101</height>
-     </rect>
-    </property>
-    <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Ganho (Kp)</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QDoubleSpinBox" name="doubleSpinBox_kp">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_ki">
-       <property name="text">
-        <string>Ganho (Ki)</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QDoubleSpinBox" name="doubleSpinBox_ki">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_kd">
-       <property name="text">
-        <string>Ganho (Kd)</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QDoubleSpinBox" name="doubleSpinBox_kd">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
    </widget>
    <widget class="QGroupBox" name="groupBox">
     <property name="geometry">
@@ -903,6 +775,328 @@
      </layout>
     </widget>
    </widget>
+   <widget class="QTabWidget" name="tabWidget">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>80</y>
+      <width>201</width>
+      <height>251</height>
+     </rect>
+    </property>
+    <property name="currentIndex">
+     <number>1</number>
+    </property>
+    <widget class="QWidget" name="tab_3">
+     <attribute name="title">
+      <string>Controlador 1</string>
+     </attribute>
+     <widget class="QWidget" name="layoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>60</y>
+        <width>161</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_3">
+       <item row="0" column="0">
+        <widget class="QRadioButton" name="radioButtonGanho">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string>Ganho</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QRadioButton" name="radioButtonTempo">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string>Tempo</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="layoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>100</y>
+        <width>161</width>
+        <height>101</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Ganho (Kp)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_kp">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_ki">
+         <property name="text">
+          <string>Ganho (Ki)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_ki">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_kd">
+         <property name="text">
+          <string>Ganho (Kd)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_kd">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>10</y>
+        <width>161</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_6">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Tipo</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QComboBox" name="comboBoxTipodeControle">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="currentIndex">
+          <number>0</number>
+         </property>
+         <item>
+          <property name="text">
+           <string>P</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>PI</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>PD</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>PID</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>PI-D</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_4">
+     <attribute name="title">
+      <string>Controlador 2</string>
+     </attribute>
+     <widget class="QWidget" name="layoutWidget_3">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>60</y>
+        <width>161</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_7">
+       <item row="0" column="0">
+        <widget class="QRadioButton" name="radioButtonGanho_2">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string>Ganho</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QRadioButton" name="radioButtonTempo_2">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string>Tempo</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="layoutWidget_4">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>100</y>
+        <width>161</width>
+        <height>101</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_8">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_20">
+         <property name="text">
+          <string>Ganho (Kp)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_kp_2">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_ki_2">
+         <property name="text">
+          <string>Ganho (Ki)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_ki_2">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_kd_2">
+         <property name="text">
+          <string>Ganho (Kd)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_kd_2">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="layoutWidget_5">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>10</y>
+        <width>161</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_10">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_19">
+         <property name="text">
+          <string>Tipo</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QComboBox" name="comboBoxTipodeControle_2">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="currentIndex">
+          <number>0</number>
+         </property>
+         <item>
+          <property name="text">
+           <string>P</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>PI</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>PD</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>PID</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>PI-D</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </widget>
+   <zorder>radioButtonMalhaAberta</zorder>
+   <zorder>radioButtonMalhaFechada</zorder>
+   <zorder>groupBoxSaida</zorder>
+   <zorder>label_4</zorder>
+   <zorder>groupBoxEntrada</zorder>
+   <zorder>plotS1</zorder>
+   <zorder>splitter</zorder>
+   <zorder>groupBox</zorder>
+   <zorder>tabWidget</zorder>
+   <zorder>label</zorder>
+   <zorder>comboBoxTipodeControle</zorder>
+   <zorder>frame</zorder>
+   <zorder>frame_3</zorder>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
  </widget>

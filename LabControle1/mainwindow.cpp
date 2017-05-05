@@ -10,8 +10,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     pid1(0,0,0), pid2(4,0.1,0.005)
 {
-    //quanser= new Quanser("10.13.99.69", 20081);
-    quanser= new Quanser("127.0.0.1", 20074);
+    quanser= new Quanser("10.13.99.69", 20081);
+    //quanser= new Quanser("127.0.0.1", 20074);
 
     fuc= "WAIT";
     tempo= 0;

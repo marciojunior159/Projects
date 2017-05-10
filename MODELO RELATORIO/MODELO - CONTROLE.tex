@@ -231,6 +231,26 @@ Professor:  Fábio Meneghetti Ugulino de Araújo.
 
 \section{INTRODUÇÃO}
 
+\begin{flushleft}
+\hspace{4ex}A prática de laboratório 04 tem como objetivo introduzir um sistema de controle em cascata na planta \textit{Quanser}, sendo a figura \ref{r2d2e} o simulador da planta:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=12cm]{simulator.png}
+\caption{R2D2E - Tank Simulator}
+\label{r2d2e}
+\end{figure}
+
+\hspace{4ex}Pretende-se controlar o nível de água de ambos os tanques da planta, para isso, foi implementado os controladores Proporcional (P), Proporcional Integrativo (PI), Proporcional Derivativo (PD), Proporcional Integrativo Derivativo (PID) e … (PI-D). Quem irá escolher qual controle será usado é o usuário, através da interface do programa desenvolvido, como mostrado na figura  ...:
+
+PHOTO da interface
+
+\hspace{4ex}Além dessas opções, o usuário também deve escolher os ganhos dos controladores Kp, Ki e ou Kd, ou $\tau_i$ e $\tau_d$, o  sinal de referência a ser enviado, o offset, a análise da resposta do sistema para o tempo de subida (t$_r$), por exemplo, de 5\% à 95\%, e o tempo de acomodação (t$_s$), para as faixas de 2\%, 5\% e 10\% do degrau. Ademais, é possível saber os valores do  t$_r$, t$_s$, tempo de pico (t$_p$) e o sobressinal (Mp) do sistema de segunda ordem.
+
+\hspace{4ex}No relatório é apresentado como foi a metodologia, os resultados obtidos através de testes e as conclusões a partir da comparação do comportamento do sistema com uma e com duas malhas.
+
+\end{flushleft}
+
 \newpage
 
 %%%%%%%%%% REFERENCIAL TEÓRICO %%%%%%%

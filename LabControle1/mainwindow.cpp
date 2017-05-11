@@ -10,8 +10,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     pid1(0,0,0), pid2(4,0.1,0.005)
 {
-    quanser= new Quanser("10.13.99.69", 20081);
-    //quanser= new Quanser("127.0.0.1", 20074);
+    //quanser= new Quanser("10.13.99.69", 20081);
+    quanser= new Quanser("127.0.0.1", 20074);
+    //quanser= new Quanser("192.168.0.8", 20081);
 
     fuc= "WAIT";
     tempo= 0;
@@ -30,52 +31,94 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->doubleSpinBox_ki_2->setDecimals(3);
     ui->doubleSpinBox_kd_2->setDecimals(3);
 
-    ui->customPlot->addGraph();
-    ui->customPlot->addGraph();
-    ui->customPlot->graph(0)->setPen(QPen(Qt::blue));
-    ui->customPlot->graph(1)->setPen(QPen(Qt::red));
-    ui->customPlot->xAxis->setLabel("tempo(ms)");
-    ui->customPlot->yAxis->setLabel("tensão(V)");
-    ui->customPlot->yAxis->setRange(-5, 5);
-    ui->customPlot->legend->setVisible(true);
-    ui->customPlot->legend->setFont(QFont("Helvetica", 9));
-    ui->customPlot->legend->setRowSpacing(-5);
-    ui->customPlot->graph(0)->setName("Saturada");
-    ui->customPlot->graph(1)->setName("Calculada");
-    ui->customPlot->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignLeft|Qt::AlignTop);
+//    ui->customPlot->addGraph();
+//    ui->customPlot->addGraph();
+//    ui->customPlot->graph(0)->setPen(QPen(Qt::blue));
+//    ui->customPlot->graph(1)->setPen(QPen(Qt::red));
+//    ui->customPlot->xAxis->setLabel("tempo(ms)");
+//    ui->customPlot->yAxis->setLabel("tensão(V)");
+//    ui->customPlot->yAxis->setRange(-5, 5);
+//    ui->customPlot->legend->setVisible(true);
+//    ui->customPlot->legend->setFont(QFont("Helvetica", 9));
+//    ui->customPlot->legend->setRowSpacing(-5);
+//    ui->customPlot->graph(0)->setName("Saturada");
+//    ui->customPlot->graph(1)->setName("Calculada");
+//    ui->customPlot->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignLeft|Qt::AlignTop);
 
 
     ui->plotS1->addGraph();
-    ui->plotS1->addGraph();    
+    ui->plotS1->addGraph();
+    ui->plotS1->addGraph();
+    ui->plotS1->addGraph();
+    ui->plotS1->addGraph();
+    ui->plotS1->addGraph();
     ui->plotS1->graph(0)->setPen(QPen(Qt::blue));
     ui->plotS1->graph(1)->setPen(QPen(Qt::red));
+    ui->plotS1->graph(2)->setPen(QPen(Qt::green));
+    ui->plotS1->graph(3)->setPen(QPen(Qt::yellow));
+    ui->plotS1->graph(4)->setPen(QPen(Qt::magenta));
+    ui->plotS1->graph(5)->setPen(QPen(Qt::cyan));
     ui->plotS1->xAxis->setLabel("tempo(ms)");
-    ui->plotS1->yAxis->setLabel("altura(cm)");
+//    ui->plotS1->yAxis->setLabel("altura(cm)");
     ui->plotS1->yAxis->setAutoTickStep(false);
     ui->plotS1->yAxis->setTickStep(5);
     ui->plotS1->yAxis->setRange(-1, 30);
     ui->plotS1->legend->setVisible(true);
     ui->plotS1->legend->setFont(QFont("Helvetica", 9));
     ui->plotS1->legend->setRowSpacing(-5);
-    ui->plotS1->graph(0)->setName("Sensor 1");
-    ui->plotS1->graph(1)->setName("Set Point");
+    ui->plotS1->graph(0)->setName("L1");
+    ui->plotS1->graph(1)->setName("SP1");
+    ui->plotS1->graph(2)->setName("L2");
+    ui->plotS1->graph(3)->setName("SP2");
+    ui->plotS1->graph(4)->setName("E1");
+    ui->plotS1->graph(5)->setName("E2");
     ui->plotS1->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignLeft|Qt::AlignTop);
 
 
     ui->plotS2->addGraph();
     ui->plotS2->addGraph();
+    ui->plotS2->addGraph();
+
+    ui->plotS2->addGraph();
+    ui->plotS2->addGraph();
+    ui->plotS2->addGraph();
+
+    ui->plotS2->addGraph();
+    ui->plotS2->addGraph();
+    ui->plotS2->addGraph();
+
     ui->plotS2->graph(0)->setPen(QPen(Qt::blue));
     ui->plotS2->graph(1)->setPen(QPen(Qt::red));
+    ui->plotS2->graph(2)->setPen(QPen(Qt::green));
+
+    ui->plotS2->graph(3)->setPen(QPen(Qt::magenta));
+    ui->plotS2->graph(4)->setPen(QPen(Qt::cyan));
+    ui->plotS2->graph(5)->setPen(QPen(Qt::yellow));
+
+    ui->plotS2->graph(6)->setPen(QPen(Qt::darkMagenta));
+    ui->plotS2->graph(7)->setPen(QPen(Qt::darkCyan));
+    ui->plotS2->graph(8)->setPen(QPen(Qt::darkYellow));
+
     ui->plotS2->xAxis->setLabel("tempo(ms)");
-    ui->plotS2->yAxis->setLabel("altura(cm)");
+
     ui->plotS2->yAxis->setAutoTickStep(false);
-    ui->plotS2->yAxis->setTickStep(5);
-    ui->plotS2->yAxis->setRange(-1, 30);
+    ui->plotS2->yAxis->setTickStep(1);
+    ui->plotS2->yAxis->setRange(-5, 5);
     ui->plotS2->legend->setVisible(true);
     ui->plotS2->legend->setFont(QFont("Helvetica", 9));
     ui->plotS2->legend->setRowSpacing(-3);
-    ui->plotS2->graph(0)->setName("Sensor 2");
-    ui->plotS2->graph(1)->setName("Set Point");
+
+    ui->plotS2->graph(0)->setName("Tensão saturada");
+    ui->plotS2->graph(1)->setName("Tensão calculada");
+    ui->plotS2->graph(2)->setName("PV2");
+
+    ui->plotS2->graph(3)->setName("P (mestre)");
+    ui->plotS2->graph(4)->setName("I (mestre)");
+    ui->plotS2->graph(5)->setName("D (mestre)");
+
+    ui->plotS2->graph(6)->setName("P (escravo)");
+    ui->plotS2->graph(7)->setName("I (escravo)");
+    ui->plotS2->graph(8)->setName("D (escravo)");
     ui->plotS2->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignLeft|Qt::AlignTop);
 
 
@@ -230,16 +273,16 @@ void MainWindow::timerEvent(QTimerEvent *t)
 {
     ui->label_altura->update();
     ui->label_altura_2->update();
-    ui->customPlot->xAxis->setRange(tempo + 0.25, 25, Qt::AlignRight);
+    //ui->customPlot->xAxis->setRange(tempo + 0.25, 25, Qt::AlignRight);
     ui->plotS1->xAxis->setRange(tempo + 0.25, 25, Qt::AlignRight);
     ui->plotS2->xAxis->setRange(tempo + 0.25, 25, Qt::AlignRight);
 
-    ui->customPlot->replot();
+    //ui->customPlot->replot();
     ui->plotS1->replot();
     ui->plotS2->replot();
 
     mutex_.lock();
-    ui->customPlot->graph(0)->removeDataBefore(tempo-30);
+    //ui->customPlot->graph(0)->removeDataBefore(tempo-30);
     ui->plotS1->graph(0)->removeDataBefore(tempo-30);
     ui->plotS2->graph(0)->removeDataBefore(tempo-30);
     mutex_.unlock();
@@ -303,7 +346,7 @@ void MainWindow::Controle()
 
         mutex_.lock();
         ui->plotS1->graph(0)->addData(tempo, funcSensor(sensores[0]));
-        ui->plotS2->graph(0)->addData(tempo, funcSensor(sensores[1]));
+        ui->plotS1->graph(2)->addData(tempo, funcSensor(sensores[1]));
         mutex_.unlock();
 
         ui->label_altura->setText(QString::number(funcSensor(sensores[0])));
@@ -313,7 +356,7 @@ void MainWindow::Controle()
         {
             mutex_.lock();
             ui->plotS1->graph(1)->addData(tempo, 0);
-            ui->plotS2->graph(1)->addData(tempo, 0);
+            ui->plotS1->graph(3)->addData(tempo, 0);
             mutex_.unlock();
 
             pv = funcSensor(sensores[0]);
@@ -334,7 +377,7 @@ void MainWindow::Controle()
                 ui->plotS1->graph(1)->addData(tempo, st);
                 mutex_.unlock();
 
-                erro1 = st - pv;
+
                 cout << st << " " << pv << endl;
                 //tensao = funcAlturaTensao(st)+erro;
                 if(ui->comboBoxTipodeControle->currentText() == "PI-D")
@@ -347,14 +390,23 @@ void MainWindow::Controle()
                 pv = funcSensor(sensores[1]);
 
                 mutex_.lock();
-                ui->plotS1->graph(1)->addData(tempo, 0);
-                ui->plotS2->graph(1)->addData(tempo, st);
+                ui->plotS1->graph(1)->addData(tempo, st);
+                ui->plotS1->graph(3)->addData(tempo, st2);
                 mutex_.unlock();
 
                 erro1 = st - pv;
                 erro2 = st2 - pv1;
                 //cout << "st "<< st2 << " pv " << pv1<< " st "<<st<<" pv "<<pv << endl;
                 //tensao = funcAlturaTensao(st)+erro;
+
+                erro1 = st - pv;
+                cout << "erro 1" << erro1 << endl;
+
+                mutex_.lock();
+                ui->plotS1->graph(4)->addData(tempo, abs(erro1));
+                ui->plotS1->graph(5)->addData(tempo, abs(erro2));
+                mutex_.unlock();
+
                 if(ui->comboBoxTipodeControle->currentText() == "PI-D")
                 {
                     st2 = pid1.Controle(erro1,pv1,0.1);
@@ -364,6 +416,27 @@ void MainWindow::Controle()
                 {
                     st2 = pid1.Controle(erro1,0.1);
                     tensao = pid2.Controle(erro2, 0.1);
+
+//                    pid1.getP();
+//                    pid1.getI();
+//                    pid1.getD();
+
+//                    pid2.getP();
+//                    pid2.getI();
+//                    pid2.getD();
+//                    mutex_.lock();
+//                    ui->plotS1->graph(4)->addData(tempo, abs(erro1));
+//                    ui->plotS1->graph(5)->addData(tempo, abs(erro2));
+//                    mutex_.unlock();
+                      mutex_.lock();
+                      ui->plotS2->graph(3)->addData(tempo, pid1.getP());
+                      ui->plotS2->graph(4)->addData(tempo, pid1.getI());
+                      ui->plotS2->graph(5)->addData(tempo, pid1.getD());
+
+                      ui->plotS2->graph(6)->addData(tempo, pid2.getP());
+                      ui->plotS2->graph(7)->addData(tempo, pid2.getI());
+                      ui->plotS2->graph(8)->addData(tempo, pid2.getD());
+                      mutex_.unlock();
                 }
             }
 
@@ -374,8 +447,8 @@ void MainWindow::Controle()
         }
 
         mutex_.lock();
-        ui->customPlot->graph(0)->addData(tempo, tensao);
-        ui->customPlot->graph(1)->addData(tempo, tensaoCalculado);
+        ui->plotS2->graph(0)->addData(tempo, tensao);
+        ui->plotS2->graph(1)->addData(tempo, tensaoCalculado);
         mutex_.unlock();
 
         //tempo de subida

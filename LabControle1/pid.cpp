@@ -29,6 +29,9 @@ double PID::Controle(double e, double h)
     I= I+Ki*e*h; //  simpsons (e+e_ant)*h/2
     D= Kd*(e-e_ant)/h;
     e_ant= e;
+    this->p =Kp;
+    this->i = I;
+    this->d = D;
     return Kp*e+I+D;
 }
 
@@ -37,5 +40,20 @@ double PID::Controle(double e, double y, double h)
     I= I+Ki*e*h;
     D= Kd*(y-e_ant)/h;
     e_ant= y;
+    this->p = Kp;
+    this->i = I;
+    this->d = D;
     return Kp*e+I+D;
+}
+
+double PID::getP(){
+    return p;
+}
+
+double PID::getI(){
+    return i;
+}
+
+double PID::getD(){
+    return d;
 }

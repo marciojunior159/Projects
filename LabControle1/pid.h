@@ -10,9 +10,13 @@ public:
     void setConstantesT(double K, double Ti, double Td);
     double Controle(double e, double h);
     double Controle(double e, double y, double h);
+    double getP();
+    double getI();
+    double getD();
 private:
     double Kp, Ki, Kd;
     double I, D, e_ant;
+    double p, i, d;
 };
 
 #endif // PID_H

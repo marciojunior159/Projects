@@ -270,9 +270,31 @@ Lucas Costa Pereira Cavalcante.
 >>>>>>> e036813f4b138ba545be2d5d925bbacb5f3c8a27
 \end{figure}
 
-\hspace{4ex}Além dessas opções, o usuário também deve escolher os ganhos dos controladores Kp, Ki e ou Kd, ou $\tau_i$ e $\tau_d$, o  sinal de referência a ser enviado, o offset, a análise da resposta do sistema para o tempo de subida (t$_r$), por exemplo, de 5\% à 95\%, e o tempo de acomodação (t$_s$), para as faixas de 2\%, 5\% e 10\% do degrau. Ademais, é possível saber os valores do  t$_r$, t$_s$, tempo de pico (t$_p$) e o sobressinal (Mp) do sistema de segunda ordem.
+\hspace{4ex}Além dessas opções, o usuário também deve escolher os ganhos dos controladores Kp, Ki e ou Kd, ou $\tau_i$ e $\tau_d$, os quais são necessários para o controlador, como também, o  sinal de referência a ser enviado, o offset, a análise da resposta do sistema para o tempo de subida (t$_r$), por exemplo, de 5\% à 95\%, e o tempo de acomodação (t$_s$), para as faixas de 2\%, 5\% e 10\% do degrau. Ademais, é possível saber os valores do  t$_r$, t$_s$, tempo de pico (t$_p$) e o sobressinal (Mp) do sistema de segunda ordem.
 
-\hspace{4ex}No relatório é apresentado como foi a metodologia, os resultados obtidos através de testes e as conclusões a partir da comparação do comportamento do sistema com uma e com duas malhas.
+\hspace{4ex}O controle da planta se dará de duas formas: utilizando apenas uma malha de controle, como também, o controle em cascata. A configuração da planta mostrada na figura \ref{r2d2e} fazendo uso do controle de uma malha será da seguinte maneira:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=11cm]{ImagensLab4/umamalha.png}
+\caption{Configuração da planta utilizando uma malha de controle.}
+\label{umamalha}
+\end{figure}
+
+\hspace{4ex}No caso mostrado acima, na figura \ref{umamalha}, a tensão enviada para a bomba está sendo manipulada para o tanque de baixo da planta alcançar o nível desejado pelo usuário, isso é possível por causa da relação entre os dois tanques: a vazão de saída do tanque de cima é a vazão de entrada do tanque de baixo. Através do cálculo do erro do sinal de referência e a medição do segundo tanque será fornecida uma tensão que deixe o tanque de cima com um nível de água a qual levará o tanque de baixo para o valor desejado.
+
+\hspace{4ex}Com a configuração de duas malhas de controle, ou seja, utilizando o controle em cascata, teremos a seguinte configuração:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=11cm]{ImagensLab4/duasmalhas.png}
+\caption{Configuração da planta utilizando o controle em cascata.}
+\label{duasmalha}
+\end{figure}
+
+\hspace{4ex}Nesse caso, além de controlar o nível do tanque de baixo, pode-se controlar o nível do tanque de cima. Nessa configuração, denominamos o controlador mais externo de controlador mestre, o qual controla o nível do tanque de baixo da mesma forma que ocorre no controle com uma malha, e o controlador da malha interna é o controlador escravo, que a partir do erro entre o nível desejado do tanque de cima e seu nível real, irá determinar a tensão enviada para a bomba.
+
+\hspace{4ex}No relatório é apresentado a metodologia utilizada nessa experiência, os resultados obtidos através de testes e as conclusões a partir da comparação do comportamento do sistema com uma e com duas malhas.
 
 \end{flushleft}
 
@@ -315,11 +337,11 @@ Uma das desvantagens de se utilizar o controle em cascata é que, ao adicionar m
 
 \hspace{4ex}Utilizando o simulador R2D2E, foram feitos testes com o controlador mestre e o escravo, como também, com apenas um controlador para alcançar determinados níveis dos tanques da planta, os quais serão expostos nos resultados.
 
-\hspace{4ex}Para isso, foi implementado uma classe controlador a qual é determinada de acordo com as escolhas do usuário, ou seja, se é P, PI, PD, PID ou PI-D. Por exemplo, se o usuário escolhe o controlador PD, ele fornecerá apenas os valores de Kp e Kd, ou Kp e $\tau_d$, e a partir desses valores a classe assumirá que Ki ou $\tau_i$ não existe, ou seja, o valor da integral será zero. O mesmo acontece se for escolhido o PI, nesse caso, o valor da derivada do erro será zero. Observe o método abaixo:
-\\
+\hspace{4ex}Para isso, foi implementado uma classe controlador a qual é determinada de acordo com as escolhas do usuário, ou seja, se é P, PI, PD, PID ou PI-D. Por exemplo, se o usuário escolhe o controlador PD, ele fornecerá apenas os valores de Kp e Kd, ou Kp e $\tau_d$, e a partir desses valores a classe assumirá que Ki ou $\tau_i$ não existe, ou seja, o valor da integral será zero. O mesmo acontece se for escolhido o PI, nesse caso, o valor da derivada do erro será zero.
+
+\hspace{4ex}Observe os métodos abaixo, o primeiro é para os casos em que o usuário escolher os controladores P, PI, PD ou PID, enquanto que o segundo método foi criado para o caso em que se quer usar o PI-D, pois utiliza o sinal do processo (y) ao invés de usar o erro.
 \begin{lstlisting}
-double PID::Controle(double e, double h)
-//Metodo para os controladores P, PI, PD e PID
+double PID::Controle(double e, double h)//Controladores P, PI, PD e PID
 {
     I= I+Ki*e*h; //Simpsons (e+e_ant)*h/2 - integral do erro
     D= Kd*(e-e_ant)/h; //Derivada do erro
@@ -327,16 +349,14 @@ double PID::Controle(double e, double h)
     return Kp*e+I+D; //Sinal de controle
 }
 
-double PID::Controle(double e, double y, double h)
-//Metodo para o controlador PI-D
+double PID::Controle(double e, double y, double h)//Controlador PI-D
 {
-    I= I+Ki*e*h;
-    D= Kd*(y-e_ant)/h;
-    e_ant= y;
-    return Kp*e+I+D;
+    I= I+Ki*e*h; //Integral do erro
+    D= Kd*(y-e_ant)/h; //Derivada do sinal do processo
+    e_ant= y; //Sinal do processo
+    return Kp*e+I+D; //Sinal de controle
 }
 \end{lstlisting}
-
 \hspace{4ex}No software desenvolvido, esses valores podem ser escolhidos como mostrado na figura \ref{controladores}.
 
 \begin{figure}[H]
@@ -388,7 +408,7 @@ double PID::Controle(double e, double y, double h)
      \label{controlePID}
 \end{figure}
 
-\hspace{4ex} O efeito dos controladores no sistema continua o mesmo encontrado no sistema de primeira ordem. A oscilação do efeito derivativo e a resposta mais agressiva do efeito da integração. Sendo que como o sistema tem uma resposta mais lenta, faz-se necessário a análise dos tempos de subida, sobressinal e tempo de acomodação para os devidos ajustes nas constantes $K_p$, $K_D$ e $K_I$. Por exemplo, se o tempo de subida foi muito longo, é necessário o aumento do $K_I$ para uma resposta mais rápida. Mas devido aos efeitos de wind up do integrador e a amplificação do ruído no derivativo, o controlador precisa de filtros. No programa não foi implementado esse filtros, o que limita as faixas de uso das constantes.  \cite{book-lamport94}
+\hspace{4ex} O efeito dos controladores no sistema continua o mesmo encontrado no sistema de primeira ordem. A oscilação do efeito derivativo e a resposta mais agressiva do efeito da integração. Sendo que como o sistema tem uma resposta mais lenta, faz-se necessário a análise dos tempos de subida, sobressinal e tempo de acomodação para os devidos ajustes nas constantes $K_p$, $K_D$ e $K_I$. Por exemplo, se o tempo de subida foi muito longo, é necessário o aumento do $K_I$ para uma resposta mais rápida. Mas devido aos efeitos de wind up do integrador e a amplificação do ruído no derivativo, o controlador precisa de filtros. No programa não foi implementado esse filtros, o que limita as faixas de uso das constantes.
 
 
 \begin{figure}[H]
@@ -398,7 +418,7 @@ double PID::Controle(double e, double y, double h)
      \label{controlePD}
 \end{figure}
 
-Por fim o teste feito com o controlador PD. Foi usado uma constante $K_D$ baixa para evitar os efeitos negativos.\cite{LATEX04} 
+Por fim o teste feito com o controlador PD. Foi usado uma constante $K_D$ baixa para evitar os efeitos negativos.
 
 
 

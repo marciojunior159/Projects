@@ -26,7 +26,7 @@ u20= 0.0
 a= math.pi*pow((0.56*math.pow(10,-2))/2,2)
 A= math.pi*pow((4.45*math.pow(10,-2))/2,2)
 c1= math.sqrt(2*9.81)*a/A
-c2= 4.1*math.pow(10,-5)/A
+c2= 2.1*math.pow(10,-5)/A
 #parar= False
 
 def simulacao(threadName, delay):

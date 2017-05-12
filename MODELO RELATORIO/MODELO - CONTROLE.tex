@@ -98,12 +98,12 @@ CURSO DE ENGENHARIA DE COMPUTAÇÃO
 
 \vspace{3.6cm}
 
-{\bf{\large RELATÓRIO DA 3ª EXPERIÊNCIA\\
+{\bf{\large RELATÓRIO DA 4ª EXPERIÊNCIA\\
 CONTROLE DE SISTEMAS DINÂMICOS: SISTEMA DE SEGUNDA ORDEM\\
 }}
 \vspace{1.5cm}
 {\large TURMA: 01 A\\
-	GRUPO Nº}
+	GRUPO Nº02}
 
 \vspace{3.6cm}
 
@@ -236,14 +236,19 @@ Professor:  Fábio Meneghetti Ugulino de Araújo.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=12cm]{simulator.png}
+\includegraphics[width=10cm]{simulator.png}
 \caption{R2D2E - Tank Simulator}
 \label{r2d2e}
 \end{figure}
 
-\hspace{4ex}Pretende-se controlar o nível de água de ambos os tanques da planta, para isso, foi implementado os controladores Proporcional (P), Proporcional Integrativo (PI), Proporcional Derivativo (PD), Proporcional Integrativo Derivativo (PID) e Proporcional Integrativo Derivativo em controle de ação baseado no sinal do processo (PI-D). Quem irá escolher qual controle será usado é o usuário, através da interface do programa desenvolvido, como mostrado na figura  ...:
+\hspace{4ex}Pretende-se controlar o nível de água de ambos os tanques da planta, para isso, foi implementado os controladores Proporcional (P), Proporcional Integrativo (PI), Proporcional Derivativo (PD), Proporcional Integrativo Derivativo (PID) e Proporcional Integrativo Derivativo em controle de ação baseado no sinal do processo (PI-D). Quem irá escolher qual controle será usado é o usuário, através da interface do programa desenvolvido, como mostrado na figura  \ref{interface4}:
 
-PHOTO da interface
+\begin{figure}[H]
+\centering
+\includegraphics[width=13cm]{ImagensLab4/interface-versao4.png}
+\caption{Interface gráfica}
+\label{interface4}
+\end{figure}
 
 \hspace{4ex}Além dessas opções, o usuário também deve escolher os ganhos dos controladores Kp, Ki e ou Kd, ou $\tau_i$ e $\tau_d$, o  sinal de referência a ser enviado, o offset, a análise da resposta do sistema para o tempo de subida (t$_r$), por exemplo, de 5\% à 95\%, e o tempo de acomodação (t$_s$), para as faixas de 2\%, 5\% e 10\% do degrau. Ademais, é possível saber os valores do  t$_r$, t$_s$, tempo de pico (t$_p$) e o sobressinal (Mp) do sistema de segunda ordem.
 
@@ -259,47 +264,25 @@ PHOTO da interface
 
 \section{REFERENCIAL TEÓRICO}
 
-\hspace{4ex}O sistema de controle da planta mostrada na figura \ref{quaser} é caracterizado como sistema de segunda ordem quando se pretende controlar o nível do tanque de baixo, pois sua alimentação é a vazão do tanque de cima.
+\subsection{CONTROLE EM CASCATA}
+\hspace{4ex}O controle em cascata é uma estratégia de controle que utiliza dois controladores aninhados de modo que a identificação de pequenos distúrbios aconteça de forma mais rápida e, consequentemente, a correção seja feita antes de o sistema sofrer grandes alterações. De forma genérica, o controle em cascata pode ser representando pelo diagrama da figura \ref{cascata}. Pode-se perceber que é necessário medir duas variáveis de processos, o da malha interna (chamada de malha escrava) e o da malha externa (chamada de malha mestre). Essas medidas, feitas através de uso de sensores, é comparada com a referência de cada malha. Sendo que a referência da malha externa, ou set point, é uma entrada do sistema. Já na malha interna, quem determina qual vai ser o "nível" a ser alcaçado é o controlador da malha externa. Então a malha do processo secundário recebe o erro, é feito o cálculo do nível para aquele processo que é enviado através de uma sinal de controle para o atuador, modificando o processo da malha interna.     
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=5cm]{fotosLab3/planta.png}
-\caption{Planta Quaser}
-\label{quaser}
+\includegraphics[width=17cm]{ImagensLab4/controle-em-cascata.png}
+\caption{Diagrama de bloco do controle em cascata}
+\label{cascata}
 \end{figure}
 
-\hspace{4ex}Tendo o objetivo de comparar controladores, utiliza-se algumas medidas de desempenho, como, o tempo de subida, o tempo de acomodação, o tempo de pico e o overshoot.
+Esse tipo de configuração é eficiente devido a dependência entre o processo primário e o secundário. Por exemplo, numa planta onde o gás que passa por um cano é resposável pelo aquecimento da água de um tanque, a atuação é feita controlando a quantidade de vazão do gás no cano. Há uma relação nesse processo em que quanto maior a vazão, mais quente ficará a água. Então a malha mestre seria o tanque com a água, e a malha escrava, a tubulação com gás. 
 
-\hspace{4ex}O tempo de subida(t$_r$) é o tempo em que a variável manipulada sai da referência atual e chega na nova referência. Para um sistema de segunda ordem ideal:
+Outro aspecto importante a ser levado em consideração é a velocidade de cada processo. O processo primário tem que ser mais lento que o processo secundário. Como a temperatura varia de forma mais lenta que a vazão de um gás por uma tubulação, então não haveria conflito entre os sinais de controle. 
 
-\begin{center}
-$ t_r = \frac{\pi - \beta}{w_d} $
-\end{center} 
+A questão de utilizar dois controladores vem dessa diferença de velocidades entre os processos, visto que uma diferença pequena de temperatura geraria um pequeno sinal de erro, logo, se tivesse apenas um controlador, o sinal enviado para controlar a vazão seria pequeno, o que não surtiria muito efeito na temperatura, quase não alteraria ou demoraria muito tempo. Já dois controladores conseguem mapear a relaçao entre o processo lento e um processo mais rápido. 
 
-\hspace{4ex}O tempo de acomodação é o tempo em que é a variável manipulada levou para entrar em uma região de acomodação e não sair mais.
-
-\begin{center}
-$ t_s=\frac{3}{\xi w_n} $
-\end{center}
-
-\hspace{4ex}O tempo de pico é o tempo em que o sinal levou para atingir o seu maior valor, e o overshoot é a porcentagem do erro com relação ao setpoint.
-
-\begin{center}
-$ t_p=\frac{\pi}{w_d} $\\
-$ M_p(\%)=100( e^{- \frac{\xi\pi}{\sqrt{1-\xi^{2}}} } ) $
-\end{center}
-
-Na figura \ref{curva} pode ser visto a representação desses tempos mencionados acima.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=15cm]{fotosLab3/ref.png}
-\caption{Curva}
-\label{curva}
-\end{figure}
+Uma das desvantagens de se utilizar o controle em cascata é que, ao adicionar mais um controlador, aumenta a complexidade de controle, pois é necessário sintonizar um quantidade dobrada de ganhos, gerando uma quantidade maior de combinações entre tipos de controle e ganhos possíveis. 
 
 
-\hspace{4ex}Essas medidas também servem para analisar o que acontece quando mudamos os ganhos dos controladores, e elas nos ajudam a decidir qual o melhor controlador segundo as especificações de desempenho.
 
 
 \newpage
@@ -410,13 +393,12 @@ Por fim o teste feito com o controlador PD. Foi usado uma constante $K_D$ baixa 
 
 %%%%%%%% REFERÊNCIAS %%%%%%%%%%%%%%%%%
 
-%\thispagestyle{empty}
-%\section{BIBLIOGRAFIA}
- %.
- 
-%Dorf, R.; Bishop, R. Sistemas de controle modernos. Rio de Janeiro (RJ): LTC, 2009. 
+\thispagestyle{empty}
+\section{BIBLIOGRAFIA}
 
-%Ogata, K. Modern control engineering. Boston: Prentice Hall, 2010.
+Fundamentals of cascade control | Control Engineering. Disponível em: <http://www.controleng.com/single-article/fundamentals-of-cascade-control/bcedad6518aec409f583ba6bc9b72854.html>. Acesso em: 10 maio. 2017.
+
+
 
 
 %Referências bibliogáficas (geradas automaticamente)

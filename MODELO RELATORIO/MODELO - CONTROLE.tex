@@ -357,49 +357,91 @@ double PID::Controle(double e, double y, double h)//Controlador PI-D
 
 \section{RESULTADOS}
 
-\hspace{4ex}A análise feita teve como foco a análise do desempenho do sistema de segunda ordem através de tempos específicos. Ou seja, o objetivo era controlar o segundo tanque do sistema, as leituras do nível aparecem no gráfico localizado inferior da janela.
+\hspace{4ex}A análise do projeto desenvolvido foi realizada através da verificação das alterações do sistema quando testados diferentes valores e diferentes tipos de controladores.
+Para o teste inicial, foram testados os controladores ambos com PIs de kp = 1 e ki = 0,03. Como pode ser observado na imagem a seguir (figura \ref{img1}), os níveis dos tanques (L1 e L2) ficaram bem abaixo do valor de finido de 10 cm e enquanto o nível no tanque 1 teve um tempo de subida inferior a 1s, o nível no tanque 2 teve um tempo de subida de quase 5s.
+%img1
 
-\hspace{4ex}O primeiro teste foi feito utilizando o controle PI, na figura \ref{<figureP1>} se pode perceber o efeito do sobressinal negativo, onde se alcançou cerca de quase 18\% de  abaixo do nível estabelecido. Essa porcentagem é em relação a diferença do nível anterior para o nível configurado atualmente. No caso, alterou-se de 20 cm para 10 cm.
+\begin{figure}[!h]
+\centering
+\includegraphics[width=11cm]{ImagensLab4/1.png}
+\caption{Controle PI no mestre e no escravo}
+\label{img1}
+\end{figure}
 
-\hspace{4ex}Na figura \ref{<figureP2>}, nota-se claramente o tempo de subida de 12,3 s. Alguns valores como sobressinal e tempo de acomodação são atualizados constamente e mostrados durante o cálculo, então o valor real só extraído quando o sistema entra em regime permanente.
+
+No segundo teste foi aumentado o kp do controlador 1, de 1 para 3. O resultado percebido por essa alteração foi um nível em ambos os tanques mais próximo do esperado, um maior sobressinal para o tanque 1 e um tempo de subida consideravelmente mais alto para o tanque 2.
+%[img0]
+\newpage
+\begin{figure}[!h]
+\centering
+\includegraphics[width=11cm]{ImagensLab4/0.png}
+\caption{Controle PI no mestre e no escravo com kp maior}
+\label{img1}
+\end{figure}
+
+No terceiro teste, o kp do controlador 2 foi aumentado para 3. Esta mudança causou uma alta instabilidade no sistema, principalmente do tanque 1, cujo nível variou bastante entre 5 e 10 cm. A instabilidade causada pelo kp2 foi verificada novamente ao testar o sistema com dois PIs de variáveis kp=2, ki=0,05.
+%[img9][img4]
+
 \begin{figure}[H]
      \centering
-     \subfloat[][]{\includegraphics[width=10cm]{resultados-lab3/03}\label{<figureP1>}}\hspace{4ex}
-     \subfloat[][]{\includegraphics[width=10cm]{resultados-lab3/04}\label{<figureP2>}}\\
+     \subfloat[]{\includegraphics[width=7cm]{ImagensLab4/9.png}\label{img9}}    
+\hspace{1cm}
+     \subfloat[]{\includegraphics[width=7cm]{ImagensLab4/4.png}\label{img4}}
      
-     \caption{Análise do Controle PI}
-     \subfloat[][]{\includegraphics[width=10cm]{resultados-lab3/04}\label{<figureP2>}}\\
-     
-     \caption{Análise do Controle PI}
+     \caption{Aumento do kp}
      \label{fig:ControlePI}
 \end{figure}
 
-\hspace{4ex}Já no primeiro teste, notou-se que o controle do segundo tanque levou mais tempo para responder aos níveis de referência.
-
-\hspace{4ex}Na \ref{<figurePID1>}, vê-se novamente o sobressinal agora positivo. O tempo de pico é calculado junto com o sobressinal e é mostrado logo acima do $M_p$ na parte de resultados do programa.
-
-\hspace{4ex}Nas figuras \ref{<figurePID2>} e \ref{<figurePID3>}, mostra-se o tempo de acomodação obtido, 35 s. Foi considerado uma faixa de tolerância de 2\% que pode ser alterada pelo usuário. Percebe-se que os valores obtidos são uma boa aproximação, já que não se pode obter um tempo mais preciso devido à taxa de leitura dos sensores e resposta do sistema.
+Trocando o controlador 1 do segundo teste por um controlador PD (kp=3, kd=0,003), foi possível observar uma leve baixa do nível do tanque, com alterações pouco perceptíveis na fase transitória.
+%[img10][img0]
 \begin{figure}[H]
      \centering
-     \subfloat[][]{\includegraphics[width=10cm]{resultados-lab3/05}\label{<figurePID1>}}\hspace{4ex}
-     \subfloat[][]{\includegraphics[width=10cm]{resultados-lab3/06}\label{<figurePID2>}}\\
-     \subfloat[][]{\includegraphics[width=10cm]{resultados-lab3/07}\label{<figurePID3>}}
+     \subfloat[]{\includegraphics[width=7cm]{ImagensLab4/10.png}\label{img10}}    
+\hspace{1cm}
+     \subfloat[]{\includegraphics[width=7cm]{ImagensLab4/0.png}\label{img00}}
      
-     \caption{Análise do Controle PID}
-     \label{controlePID}
+     \caption{Comparação entre Controle PD no escravo e PI no mestre e PI/PI}
+     \label{fig:ControlePIPD}
 \end{figure}
 
-\hspace{4ex} O efeito dos controladores no sistema continua o mesmo encontrado no sistema de primeira ordem. A oscilação do efeito derivativo e a resposta mais agressiva do efeito da integração. Sendo que como o sistema tem uma resposta mais lenta, faz-se necessário a análise dos tempos de subida, sobressinal e tempo de acomodação para os devidos ajustes nas constantes $K_p$, $K_D$ e $K_I$. Por exemplo, se o tempo de subida foi muito longo, é necessário o aumento do $K_I$ para uma resposta mais rápida. Mas devido aos efeitos de wind up do integrador e a amplificação do ruído no derivativo, o controlador precisa de filtros. No programa não foi implementado esse filtros, o que limita as faixas de uso das constantes.
-
+Em seguida, foi realizado um teste com uma dupla de controladores PID com kp=1, ki=0,01 e kd=0,001. Ao comparar com a dupla de PIs do primeiro teste, percebe-se um overshoot bem menor, com tempo de subida próximos e um nível mais baixo para a dupla de PIDs.
+%[img5][img1]
 
 \begin{figure}[H]
      \centering
-     \includegraphics[width=10cm]{resultados-lab3/19}\label{<figurePD1>}
-     \caption{Análise do Controle PD}
-     \label{controlePD}
+     \subfloat[]{\includegraphics[width=7cm]{ImagensLab4/5.png}\label{img5}}    
+\hspace{1cm}
+     \subfloat[]{\includegraphics[width=7cm]{ImagensLab4/1.png}\label{img1}}
+     
+     \caption{Controle PID no escravo e PID no mestre}
+     \label{fig:ControlePIDPID}
+\end{figure}
+Ao testar uma combinação P-PD, P com kp=3 e PD com kp=1 e kd=0,001, obtivemos um valor de nível bem mais próximo do desejado, com o sistema apresentando uma forma menos ondulatória do que nos testes anteriores. Ao trocar o PD por um PID, obtivemos uma fase transitória um pouco reduzida e uma queda considerável no nível do tanque.
+%[img17][img8]
+
+\begin{figure}[H]
+     \centering
+     \subfloat[]{\includegraphics[width=7cm]{ImagensLab4/17.png}\label{img10}}    
+\hspace{1cm}
+     \subfloat[]{\includegraphics[width=7cm]{ImagensLab4/8.png}\label{img00}}
+     
+     \caption{Controle P no escravo e PD no mestre}
+     \label{fig:ControleP-PD}
 \end{figure}
 
-Por fim o teste feito com o controlador PD. Foi usado uma constante $K_D$ baixa para evitar os efeitos negativos.
+Como último teste, foram realizadas combinações PI-PID, usando um PI similar ao controlador 1 do segundo teste e um PID com kp=1, ki=0,01 e kd=0,005, foram obtidos curvas menos ondulatórias que no segundo teste, com nível mais próximo do esperado e fase transitória de duração praticamente igual.
+%[img3][img0]
+\begin{figure}[H]
+     \centering
+     \subfloat[]{\includegraphics[width=7cm]{ImagensLab4/3.png}\label{img3}}    
+\hspace{1cm}
+     \subfloat[]{\includegraphics[width=7cm]{ImagensLab4/0.png}\label{img000}}
+     
+     \caption{Controle PI no escravo e PID no mestre}
+     \label{fig:ControlePI}
+\end{figure}
+
+
 
 
 

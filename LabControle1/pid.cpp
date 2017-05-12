@@ -44,7 +44,7 @@ double PID::Controle(double e, double y, double h)
 }
 void PID::antWindUP(double cal, double sat)
 {
-    if(cal != sat)
+    if(cal != sat || cal == 0)
         windUp= true;
     else
         windUp= false;

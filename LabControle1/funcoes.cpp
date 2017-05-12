@@ -77,7 +77,6 @@ double funcAlturaTensao(double alt){
 
 //funcao que retorna a altura a partir das leituras do sensor de pressao
 double funcSensor(double leituras){
-
     return 6.1*leituras;
 }
 
@@ -85,16 +84,14 @@ double funcSensor(double leituras){
 
 double trava(double tensao, double nivel)
 {
-    if(tensao > 2.9)
-        return 2.9;
-    if(tensao<-2.9)
-        return -2.9;
-
     if(nivel <= 1.0 && tensao < 0){
         return 0;
     }else if(nivel >= 30 && tensao > 0){
         return 1.5; //tensao de equilibrio
     }
-
+    if(tensao > 2.9)
+        return 2.9;
+    if(tensao<-2.9)
+        return -2.9;
     return tensao;
 }

@@ -251,9 +251,31 @@ Lucas Costa Pereira Cavalcante.
 \label{interface}
 \end{figure}
 
-\hspace{4ex}Além dessas opções, o usuário também deve escolher os ganhos dos controladores Kp, Ki e ou Kd, ou $\tau_i$ e $\tau_d$, o  sinal de referência a ser enviado, o offset, a análise da resposta do sistema para o tempo de subida (t$_r$), por exemplo, de 5\% à 95\%, e o tempo de acomodação (t$_s$), para as faixas de 2\%, 5\% e 10\% do degrau. Ademais, é possível saber os valores do  t$_r$, t$_s$, tempo de pico (t$_p$) e o sobressinal (Mp) do sistema de segunda ordem.
+\hspace{4ex}Além dessas opções, o usuário também deve escolher os ganhos dos controladores Kp, Ki e ou Kd, ou $\tau_i$ e $\tau_d$, os quais são necessários para o controlador, como também, o  sinal de referência a ser enviado, o offset, a análise da resposta do sistema para o tempo de subida (t$_r$), por exemplo, de 5\% à 95\%, e o tempo de acomodação (t$_s$), para as faixas de 2\%, 5\% e 10\% do degrau. Ademais, é possível saber os valores do  t$_r$, t$_s$, tempo de pico (t$_p$) e o sobressinal (Mp) do sistema de segunda ordem.
 
-\hspace{4ex}No relatório é apresentado como foi a metodologia, os resultados obtidos através de testes e as conclusões a partir da comparação do comportamento do sistema com uma e com duas malhas.
+\hspace{4ex}O controle da planta se dará de duas formas: utilizando apenas uma malha de controle, como também, o controle em cascata. A configuração da planta mostrada na figura \ref{r2d2e} fazendo uso do controle de uma malha será da seguinte maneira:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=11cm]{ImagensLab4/umamalha.png}
+\caption{Configuração da planta utilizando uma malha de controle.}
+\label{umamalha}
+\end{figure}
+
+\hspace{4ex}No caso mostrado acima, na figura \ref{umamalha}, a tensão enviada para a bomba está sendo manipulada para o tanque de baixo da planta alcançar o nível desejado pelo usuário, isso é possível por causa da relação entre os dois tanques: a vazão de saída do tanque de cima é a vazão de entrada do tanque de baixo. Através do cálculo do erro do sinal de referência e a medição do segundo tanque será fornecida uma tensão que deixe o tanque de cima com um nível de água a qual levará o tanque de baixo para o valor desejado.
+
+\hspace{4ex}Com a configuração de duas malhas de controle, ou seja, utilizando o controle em cascata, teremos a seguinte configuração:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=11cm]{ImagensLab4/duasmalhas.png}
+\caption{Configuração da planta utilizando o controle em cascata.}
+\label{duasmalha}
+\end{figure}
+
+\hspace{4ex}Nesse caso, além de controlar o nível do tanque de baixo, pode-se controlar o nível do tanque de cima. Nessa configuração, denominamos o controlador mais externo de controlador mestre, o qual controla o nível do tanque de baixo da mesma forma que ocorre no controle com uma malha, e o controlador da malha interna é o controlador escravo, que a partir do erro entre o nível desejado do tanque de cima e seu nível real, irá determinar a tensão enviada para a bomba.
+
+\hspace{4ex}No relatório é apresentado a metodologia utilizada nessa experiência, os resultados obtidos através de testes e as conclusões a partir da comparação do comportamento do sistema com uma e com duas malhas.
 
 \end{flushleft}
 

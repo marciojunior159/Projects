@@ -408,7 +408,7 @@ double PID::Controle(double e, double y, double h)//Controlador PI-D
      \label{controlePID}
 \end{figure}
 
-\hspace{4ex} O efeito dos controladores no sistema continua o mesmo encontrado no sistema de primeira ordem. A oscilação do efeito derivativo e a resposta mais agressiva do efeito da integração. Sendo que como o sistema tem uma resposta mais lenta, faz-se necessário a análise dos tempos de subida, sobressinal e tempo de acomodação para os devidos ajustes nas constantes $K_p$, $K_D$ e $K_I$. Por exemplo, se o tempo de subida foi muito longo, é necessário o aumento do $K_I$ para uma resposta mais rápida. Mas devido aos efeitos de wind up do integrador e a amplificação do ruído no derivativo, o controlador precisa de filtros. No programa não foi implementado esse filtros, o que limita as faixas de uso das constantes.  \cite{book-lamport94}
+\hspace{4ex} O efeito dos controladores no sistema continua o mesmo encontrado no sistema de primeira ordem. A oscilação do efeito derivativo e a resposta mais agressiva do efeito da integração. Sendo que como o sistema tem uma resposta mais lenta, faz-se necessário a análise dos tempos de subida, sobressinal e tempo de acomodação para os devidos ajustes nas constantes $K_p$, $K_D$ e $K_I$. Por exemplo, se o tempo de subida foi muito longo, é necessário o aumento do $K_I$ para uma resposta mais rápida. Mas devido aos efeitos de wind up do integrador e a amplificação do ruído no derivativo, o controlador precisa de filtros. No programa não foi implementado esse filtros, o que limita as faixas de uso das constantes.
 
 
 \begin{figure}[H]
@@ -418,7 +418,7 @@ double PID::Controle(double e, double y, double h)//Controlador PI-D
      \label{controlePD}
 \end{figure}
 
-Por fim o teste feito com o controlador PD. Foi usado uma constante $K_D$ baixa para evitar os efeitos negativos.\cite{LATEX04} 
+Por fim o teste feito com o controlador PD. Foi usado uma constante $K_D$ baixa para evitar os efeitos negativos.
 
 
 

@@ -10,10 +10,12 @@ public:
     void setConstantesT(double K, double Ti, double Td);
     double Controle(double e, double h);
     double Controle(double e, double y, double h);
+    void antWindUP(double cal, double sat);
     double getP();
     double getI();
     double getD();
 private:
+    bool windUp= false;
     double Kp, Ki, Kd;
     double I, D, e_ant;
     double p, i, d;

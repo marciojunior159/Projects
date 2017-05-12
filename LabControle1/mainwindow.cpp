@@ -100,7 +100,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->plotS2->graph(8)->setPen(QPen(Qt::darkYellow));
 
     ui->plotS2->xAxis->setLabel("tempo(ms)");
-
     ui->plotS2->yAxis->setAutoTickStep(false);
     ui->plotS2->yAxis->setTickStep(1);
     ui->plotS2->yAxis->setRange(-5, 5);
@@ -306,8 +305,6 @@ void MainWindow::timerEvent(QTimerEvent *t)
         ui->plotS2->graph(1)->setVisible(1);
     else
         ui->plotS2->graph(1)->setVisible(0);
-
-
 }
 
 auto now = std::chrono::high_resolution_clock::now();
@@ -370,41 +367,42 @@ void MainWindow::Controle()
             double st2, erro1, erro2, pv1;
 
             if(ui->comboBoxSinalOrdem->currentText() == "Primeira"){
-                pv = funcSensor(sensores[0]);
+                pv=pv1 = funcSensor(sensores[0]);
+                //cout << pv << endl;
 
                 mutex_.lock();
-                ui->plotS2->graph(1)->addData(tempo, 0);
+                //ui->plotS2->graph(1)->addData(tempo, 0);
                 ui->plotS1->graph(1)->addData(tempo, st);
                 mutex_.unlock();
 
+                erro1= st - pv1;
 
-                cout << st << " " << pv << endl;
+                //cout << st << " " << pv << endl;
                 //tensao = funcAlturaTensao(st)+erro;
                 if(ui->comboBoxTipodeControle->currentText() == "PI-D")
-                    tensao = pid1.Controle(erro1,pv,0.1);
+                    tensao = pid1.Controle(erro1,pv1,0.1);
                 else
                     tensao = pid1.Controle(erro1, 0.1);
-
-            }else{
+            }
+            else
+            {
                 pv1 = funcSensor(sensores[0]);
                 pv = funcSensor(sensores[1]);
 
                 mutex_.lock();
-                ui->plotS1->graph(1)->addData(tempo, st);
-                ui->plotS1->graph(3)->addData(tempo, st2);
+                ui->plotS1->graph(1)->addData(tempo, st2);
+                ui->plotS1->graph(3)->addData(tempo, st);
                 mutex_.unlock();
 
                 erro1 = st - pv;
                 erro2 = st2 - pv1;
+                //cout << st2 << " " << pv1 << " " << erro2 << endl;
                 //cout << "st "<< st2 << " pv " << pv1<< " st "<<st<<" pv "<<pv << endl;
                 //tensao = funcAlturaTensao(st)+erro;
 
-                erro1 = st - pv;
-                cout << "erro 1" << erro1 << endl;
-
                 mutex_.lock();
-                ui->plotS1->graph(4)->addData(tempo, abs(erro1));
-                ui->plotS1->graph(5)->addData(tempo, abs(erro2));
+                ui->plotS1->graph(4)->addData(tempo, abs(erro2));
+                ui->plotS1->graph(5)->addData(tempo, abs(erro1));
                 mutex_.unlock();
 
                 if(ui->comboBoxTipodeControle->currentText() == "PI-D")
@@ -416,33 +414,22 @@ void MainWindow::Controle()
                 {
                     st2 = pid1.Controle(erro1,0.1);
                     tensao = pid2.Controle(erro2, 0.1);
+                    mutex_.lock();
+                    ui->plotS2->graph(3)->addData(tempo, pid1.getP());
+                    ui->plotS2->graph(4)->addData(tempo, pid1.getI());
+                    ui->plotS2->graph(5)->addData(tempo, pid1.getD());
 
-//                    pid1.getP();
-//                    pid1.getI();
-//                    pid1.getD();
-
-//                    pid2.getP();
-//                    pid2.getI();
-//                    pid2.getD();
-//                    mutex_.lock();
-//                    ui->plotS1->graph(4)->addData(tempo, abs(erro1));
-//                    ui->plotS1->graph(5)->addData(tempo, abs(erro2));
-//                    mutex_.unlock();
-                      mutex_.lock();
-                      ui->plotS2->graph(3)->addData(tempo, pid1.getP());
-                      ui->plotS2->graph(4)->addData(tempo, pid1.getI());
-                      ui->plotS2->graph(5)->addData(tempo, pid1.getD());
-
-                      ui->plotS2->graph(6)->addData(tempo, pid2.getP());
-                      ui->plotS2->graph(7)->addData(tempo, pid2.getI());
-                      ui->plotS2->graph(8)->addData(tempo, pid2.getD());
-                      mutex_.unlock();
+                    ui->plotS2->graph(6)->addData(tempo, pid2.getP());
+                    ui->plotS2->graph(7)->addData(tempo, pid2.getI());
+                    ui->plotS2->graph(8)->addData(tempo, pid2.getD());
+                    mutex_.unlock();
                 }
             }
-
             tensaoCalculado = tensao;
-            tensao = trava(tensao, pv);
-
+            tensao = trava(tensao, pv1);
+            pid1.antWindUP(tensaoCalculado, tensao);
+            pid2.antWindUP(tensaoCalculado, tensao);
+            //cout << tensaoCalculado << " " << tensao << endl;
             quanser->writeDA(canal, tensao);
         }
 

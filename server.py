@@ -26,12 +26,12 @@ u20= 0.0
 a= math.pi*pow((0.56*math.pow(10,-2))/2,2)
 A= math.pi*pow((4.45*math.pow(10,-2))/2,2)
 c1= math.sqrt(2*9.81)*a/A
-c2= 2.1*math.pow(10,-5)/A
-parar= False
+c2= 4.1*math.pow(10,-5)/A
+#parar= False
 
 def simulacao(threadName, delay):
     global h1, h2, h10, u10, h20, u20, c1, c2
-    while not parar:
+    while True:
         h1= h10+(c2*u10-c1*math.sqrt(h10))*delay
         h2= h20+(c1*math.sqrt(h10)-c1*math.sqrt(h20))*delay
         if h1 < 0:
@@ -41,7 +41,7 @@ def simulacao(threadName, delay):
         h10= h1
         h20= h2
         time.sleep(delay)
-
+thread.start_new_thread(simulacao, ("simulacao", 0.01,))
 while 1:
     h1= 0.0
     h2= 0.0
@@ -49,8 +49,8 @@ while 1:
     u10= 0.0
     h20= 0.0
     u20= 0.0
-    parar= False
-    thread.start_new_thread(simulacao, ("simulacao", 0.01,))
+    #parar= False
+    #thread.start_new_thread(simulacao, ("simulacao", 0.01,))
     connectionSocket, addr = serverSocket.accept() # aceita as conexoes dos clientes
     while 1:
         sentence = connectionSocket.recv(1024) # recebe dados do cliente
@@ -79,7 +79,7 @@ while 1:
             lastRecv= sentence.split(' ')[2]+" \n"
             #lastRecv= lastRecv.replace(".", ",")
             connectionSocket.send("ACK\n")
-    parar= True
+    #parar= True
 
     connectionSocket.close() # encerra o socket com o cliente
 serverSocket.close() # encerra o socket do servidor

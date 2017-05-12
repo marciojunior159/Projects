@@ -114,9 +114,9 @@ ANDRESSA STÉFANY SILVA DE OLIVEIRA: 20160154101\\
 \vspace{0.8cm}
 FERNANDA MONTEIRO DE ALMEIDA: 20160154228\\
 \vspace{0.8cm}
-VITOR RAMOS GOMES DA SILVA: 20160154415\\
-\vspace{0.8cm}
 MÁRCIO LUIZ BEZERRA LOPES JÚNIOR: 20160154326\\
+\vspace{0.8cm}
+VITOR RAMOS GOMES DA SILVA: 20160154415\\
 \end{normalsize}
 \end{flushright}
 
@@ -140,9 +140,9 @@ ANDRESSA STÉFANY SILVA DE OLIVEIRA: 2016015410\\
 \vspace{0.8cm}
 FERNANDA MONTEIRO DE ALMEIDA 20160154228\\
 \vspace{0.8cm}
-VITOR RAMOS GOMES DA SILVA: 20160154415\\
-\vspace{0.8cm}
 MÁRCIO LUIZ BEZERRA LOPES JÚNIOR: 20160154326\\
+\vspace{0.8cm}
+VITOR RAMOS GOMES DA SILVA: 20160154415\\
 
 \end{normalsize}
 \end{center}
@@ -162,7 +162,7 @@ avaliação da 2º unidade do semestre 2017.1 do 8º período
 do curso de Engenharia de Computação da
 Universidade Federal do Rio Grande do Norte, sob
 orientação do {\bf Prof. Fábio Meneghetti Ugulino de
-Araújo.}
+Araújo} e {\bf Prof. Lucas Costa Pereira Cavalcante.}
 
 }
 
@@ -172,7 +172,8 @@ Araújo.}
 
 \begin{center}
 
-Professor:  Fábio Meneghetti Ugulino de Araújo.
+Professores:  Fábio Meneghetti Ugulino de Araújo e\\
+Lucas Costa Pereira Cavalcante.
 
 \vspace{2.5cm}
 
@@ -387,7 +388,7 @@ double PID::Controle(double e, double y, double h)
      \label{controlePID}
 \end{figure}
 
-\hspace{4ex} O efeito dos controladores no sistema continua o mesmo encontrado no sistema de primeira ordem. A oscilação do efeito derivativo e a resposta mais agressiva do efeito da integração. Sendo que como o sistema tem uma resposta mais lenta, faz-se necessário a análise dos tempos de subida, sobressinal e tempo de acomodação para os devidos ajustes nas constantes $K_p$, $K_D$ e $K_I$. Por exemplo, se o tempo de subida foi muito longo, é necessário o aumento do $K_I$ para uma resposta mais rápida. Mas devido aos efeitos de wind up do integrador e a amplificação do ruído no derivativo, o controlador precisa de filtros. No programa não foi implementado esse filtros, o que limita as faixas de uso das constantes. 
+\hspace{4ex} O efeito dos controladores no sistema continua o mesmo encontrado no sistema de primeira ordem. A oscilação do efeito derivativo e a resposta mais agressiva do efeito da integração. Sendo que como o sistema tem uma resposta mais lenta, faz-se necessário a análise dos tempos de subida, sobressinal e tempo de acomodação para os devidos ajustes nas constantes $K_p$, $K_D$ e $K_I$. Por exemplo, se o tempo de subida foi muito longo, é necessário o aumento do $K_I$ para uma resposta mais rápida. Mas devido aos efeitos de wind up do integrador e a amplificação do ruído no derivativo, o controlador precisa de filtros. No programa não foi implementado esse filtros, o que limita as faixas de uso das constantes.  \cite{book-lamport94}
 
 
 \begin{figure}[H]
@@ -397,7 +398,7 @@ double PID::Controle(double e, double y, double h)
      \label{controlePD}
 \end{figure}
 
-Por fim o teste feito com o controlador PD. Foi usado uma constante $K_D$ baixa para evitar os efeitos negativos.
+Por fim o teste feito com o controlador PD. Foi usado uma constante $K_D$ baixa para evitar os efeitos negativos.\cite{LATEX04} 
 
 
 
@@ -409,26 +410,18 @@ Por fim o teste feito com o controlador PD. Foi usado uma constante $K_D$ baixa 
 
 \section{CONCLUSÃO}
 
-
 \hspace{4ex}Os testes realizados num sistema de segunda ordem mostraram a importância da análise dos tempo de subida, tempo de pico, sobressinal e tempo de acomodação para o controle de um sistema. Estes valores obtidos experimentalmente podem ser aplicados no modelo matemático, para então encontrar a função que rege o sistema podendo assim ser mais fácil sintonizar o controlador e projetar. Como foi utilizado teorias aplicadas para sistemas lineares, essas soluções podem ser generalizadas e adaptadas para qualquer sistema linear. 
 \newpage
 
 %%%%%%%% REFERÊNCIAS %%%%%%%%%%%%%%%%%
 
-%\thispagestyle{empty}
-%\section{BIBLIOGRAFIA}
- %.
- 
-%Dorf, R.; Bishop, R. Sistemas de controle modernos. Rio de Janeiro (RJ): LTC, 2009. 
+% Referências bibliogáficas (geradas automaticamente)
+\addcontentsline{toc}{chapter}{Referências bibliográficas}
+\bibliography{bib/bibliografia}
 
-%Ogata, K. Modern control engineering. Boston: Prentice Hall, 2010.
-
-
-%Referências bibliogáficas (geradas automaticamente)
-%\addcontentsline{toc}{chapter}{Referências bibliográficas}
-%\bibliography{bib/bibliografia}
+\appendix
 
 %Apêndice A
-%\include{apendice}
+\include{apendice}
 
 \end{document}

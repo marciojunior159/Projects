@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //quanser= new Quanser("10.13.99.69", 20081);
     quanser= new Quanser("127.0.0.1", 20074);
     //quanser= new Quanser("192.168.0.33", 20081);
+    //quanser= new Quanser("192.168.0.7", 20081);
 
     fuc= "WAIT";
     tempo= 0;

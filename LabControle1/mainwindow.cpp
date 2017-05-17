@@ -11,9 +11,10 @@ MainWindow::MainWindow(QWidget *parent) :
     pid1(0,0,0), pid2(4,0.1,0.005)
 {
     //quanser= new Quanser("10.13.99.69", 20081);
-    quanser= new Quanser("127.0.0.1", 20074);
+    //quanser= new Quanser("127.0.0.1", 20074);
     //quanser= new Quanser("192.168.0.33", 20081);
     //quanser= new Quanser("192.168.0.7", 20081);
+    quanser= new Quanser("192.168.0.5", 20081);
 
     fuc= "WAIT";
     tempo= 0;
@@ -265,25 +266,69 @@ void MainWindow::timerEvent(QTimerEvent *t)
     ui->plotS2->graph(0)->removeDataBefore(tempo-30);
     mutex_.unlock();
 
-    if(canais[0])
+    if(canais[0]){
         ui->plotS1->graph(0)->setVisible(1);
-    else
-        ui->plotS1->graph(0)->setVisible(0);
-
-    if(canais[1])
-        ui->plotS2->graph(0)->setVisible(1);
-    else
-        ui->plotS2->graph(0)->setVisible(0);
-
-    if(canais[0])
         ui->plotS1->graph(1)->setVisible(1);
-    else
+    }else{
+        ui->plotS1->graph(0)->setVisible(0);
         ui->plotS1->graph(1)->setVisible(0);
+    }
 
-    if(canais[1])
-        ui->plotS2->graph(1)->setVisible(1);
+    if(canais[1]){
+        ui->plotS1->graph(2)->setVisible(1);
+        ui->plotS1->graph(3)->setVisible(1);
+    }else{
+        ui->plotS1->graph(2)->setVisible(0);
+        ui->plotS1->graph(3)->setVisible(0);
+    }
+
+    if(canais[2])
+        ui->plotS1->graph(4)->setVisible(1);
     else
+        ui->plotS1->graph(4)->setVisible(0);
+
+    if(canais[3])
+        ui->plotS1->graph(5)->setVisible(1);
+    else
+        ui->plotS1->graph(5)->setVisible(0);
+
+    if(canais[4]){
+        ui->plotS2->graph(6)->setVisible(1);
+        ui->plotS2->graph(7)->setVisible(1);
+        ui->plotS2->graph(8)->setVisible(1);
+    }else{
+        ui->plotS2->graph(6)->setVisible(0);
+        ui->plotS2->graph(7)->setVisible(0);
+        ui->plotS2->graph(8)->setVisible(0);
+    }
+
+    if(canais[5]){
+        ui->plotS2->graph(3)->setVisible(1);
+        ui->plotS2->graph(4)->setVisible(1);
+        ui->plotS2->graph(5)->setVisible(1);
+    }else{
+        ui->plotS2->graph(3)->setVisible(0);
+        ui->plotS2->graph(4)->setVisible(0);
+        ui->plotS2->graph(5)->setVisible(0);
+    }
+
+    if(canais[6]){
+        ui->plotS2->graph(0)->setVisible(1);
+        ui->plotS2->graph(1)->setVisible(1);
+
+    }else{
+        ui->plotS2->graph(0)->setVisible(0);
         ui->plotS2->graph(1)->setVisible(0);
+
+    }
+
+    if(canais[7]){
+        ui->plotS2->graph(2)->setVisible(1);
+
+    }else{
+        ui->plotS2->graph(2)->setVisible(0);
+
+    }
 }
 
 auto now = std::chrono::high_resolution_clock::now();
@@ -364,7 +409,7 @@ void MainWindow::Controle()
                 ui->plotS2->graph(5)->addData(tempo, pid1.getD());
                 mutex_.unlock();
             }
-            else
+            else if(ui->comboBoxSinalOrdem->currentText() == "Segunda (2C)")
             {
                 pv1 = funcSensor(sensores[0]);
                 pv = funcSensor(sensores[1]);
@@ -403,6 +448,46 @@ void MainWindow::Controle()
                     ui->plotS2->graph(8)->addData(tempo, pid2.getD());
                     mutex_.unlock();
                 }
+            }else{
+                //segunda ordem com apenas um controlador
+
+                pv = funcSensor(sensores[1]);
+
+                mutex_.lock();
+                ui->plotS1->graph(3)->addData(tempo, st);
+                mutex_.unlock();
+
+                erro1 = st - pv;
+
+                //cout << st2 << " " << pv1 << " " << erro2 << endl;
+                //cout << "st "<< st2 << " pv " << pv1<< " st "<<st<<" pv "<<pv << endl;
+
+                mutex_.lock();
+                ui->plotS1->graph(5)->addData(tempo, abs(erro1));
+                mutex_.unlock();
+
+                if(ui->comboBoxTipodeControle->currentText() == "PI-D")
+                {
+                    tensao = pid1.Controle(erro1,pv,0.1);
+
+                }
+                else
+                {
+                    tensao = pid1.Controle(erro1,0.1);
+
+                    mutex_.lock();
+                    ui->plotS2->graph(3)->addData(tempo, pid1.getP());
+                    ui->plotS2->graph(4)->addData(tempo, pid1.getI());
+                    ui->plotS2->graph(5)->addData(tempo, pid1.getD());
+
+//                    ui->plotS2->graph(6)->addData(tempo, pid2.getP());
+//                    ui->plotS2->graph(7)->addData(tempo, pid2.getI());
+//                    ui->plotS2->graph(8)->addData(tempo, pid2.getD());
+                    mutex_.unlock();
+                }
+
+
+
             }
             tensaoCalculado = tensao;
             tensao = trava(tensao, pv1);
@@ -560,7 +645,7 @@ void MainWindow::on_pushButtonEnviar_clicked()
                            ui->doubleSpinBox_ki_2->isEnabled()?ui->doubleSpinBox_ki_2->value():0,
                            ui->doubleSpinBox_kd_2->isEnabled()?ui->doubleSpinBox_kd_2->value():0);
     }
-    if(ui->comboBoxSinalOrdem->currentText()=="Segunda"){
+    if(ui->comboBoxSinalOrdem->currentText()=="Segunda (2C)" || ui->comboBoxSinalOrdem->currentText()=="Segunda (1C)"){
         flag_2ordem = true;
     }else{
         flag_2ordem = false;
@@ -667,7 +752,7 @@ void MainWindow::on_comboBoxSinalOrdem_activated(const QString &arg1)
 {
     QString ordem = ui->comboBoxSinalOrdem->currentText();
 
-    if(ordem=="Segunda"){
+    if(ordem=="Segunda (2C)"){
         ui->lcdNumber_mp->setEnabled(true);
         ui->lcdNumber_tr->setEnabled(true);
         ui->lcdNumber_ts->setEnabled(true);
@@ -683,6 +768,17 @@ void MainWindow::on_comboBoxSinalOrdem_activated(const QString &arg1)
 
         ui->radioButtonGanho_2->setEnabled(true);
         ui->radioButtonTempo_2->setEnabled(true);
+    }else if(ordem=="Segunda (1C)"){
+        ui->comboBoxSinalfaixats->setEnabled(true);
+        ui->comboBoxSinalfaixa_tr->setEnabled(true);
+
+        ui->comboBoxTipodeControle_2->setEnabled(false);
+        ui->comboBoxTipodeControle_2->setCurrentIndex(0);
+
+        ui->doubleSpinBox_kp_2->setEnabled(false);
+
+        ui->radioButtonGanho_2->setEnabled(false);
+        ui->radioButtonTempo_2->setEnabled(false);
     }
 
 }

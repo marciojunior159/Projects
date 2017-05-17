@@ -86,8 +86,8 @@ double trava(double tensao, double nivel)
 {
     if(nivel <= 1.0 && tensao < 0){
         return 0;
-    }else if(nivel >= 30 && tensao > 0){
-        return 1.5; //tensao de equilibrio
+    }else if(nivel >= 29 && tensao > 0){
+        return 1.3; //tensao de equilibrio
     }
     if(tensao > 2.9)
         return 2.9;

@@ -57,7 +57,7 @@
      <rect>
       <x>30</x>
       <y>370</y>
-      <width>421</width>
+      <width>441</width>
       <height>91</height>
      </rect>
     </property>
@@ -68,22 +68,22 @@
      </size>
     </property>
     <property name="title">
-     <string>Canais de Saida</string>
+     <string>Opções de visualização do gráfico</string>
     </property>
     <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
-       <x>21</x>
-       <y>31</y>
+       <x>30</x>
+       <y>30</y>
        <width>371</width>
-       <height>49</height>
+       <height>54</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout_9">
       <item row="0" column="0">
        <widget class="QCheckBox" name="checkBox">
         <property name="text">
-         <string>Canal 0</string>
+         <string>L1 e SP1</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -93,7 +93,7 @@
       <item row="0" column="1">
        <widget class="QCheckBox" name="checkBox_2">
         <property name="text">
-         <string>Canal 1</string>
+         <string>L2 e SP2</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -103,42 +103,42 @@
       <item row="0" column="2">
        <widget class="QCheckBox" name="checkBox_3">
         <property name="text">
-         <string>Canal 2</string>
+         <string>E1</string>
         </property>
        </widget>
       </item>
       <item row="0" column="3">
        <widget class="QCheckBox" name="checkBox_4">
         <property name="text">
-         <string>Canal 3</string>
+         <string>E2</string>
         </property>
        </widget>
       </item>
       <item row="1" column="0">
        <widget class="QCheckBox" name="checkBox_5">
         <property name="text">
-         <string>Canal 4</string>
+         <string>PID(Escravo)</string>
         </property>
        </widget>
       </item>
       <item row="1" column="1">
        <widget class="QCheckBox" name="checkBox_6">
         <property name="text">
-         <string>Canal 5</string>
+         <string>PID(Mestre)</string>
         </property>
        </widget>
       </item>
       <item row="1" column="2">
        <widget class="QCheckBox" name="checkBox_7">
         <property name="text">
-         <string>Canal 6</string>
+         <string>Tensões</string>
         </property>
        </widget>
       </item>
       <item row="1" column="3">
        <widget class="QCheckBox" name="checkBox_8">
         <property name="text">
-         <string>Canal 7</string>
+         <string>PV2</string>
         </property>
        </widget>
       </item>
@@ -219,7 +219,12 @@
         </item>
         <item>
          <property name="text">
-          <string>Segunda</string>
+          <string>Segunda (1C)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Segunda (2C)</string>
          </property>
         </item>
        </widget>
@@ -269,7 +274,7 @@
        <x>10</x>
        <y>130</y>
        <width>151</width>
-       <height>84</height>
+       <height>92</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
@@ -353,7 +358,7 @@
        <x>10</x>
        <y>220</y>
        <width>151</width>
-       <height>26</height>
+       <height>27</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout_4">
@@ -543,15 +548,7 @@
        </item>
       </layout>
      </widget>
-     <zorder>layoutWidget</zorder>
-     <zorder>label_18</zorder>
-     <zorder>label_altura_2</zorder>
-     <zorder>label_17</zorder>
-     <zorder>layoutWidget_2</zorder>
     </widget>
-    <zorder>frame_2</zorder>
-    <zorder>layoutWidget</zorder>
-    <zorder>layoutWidget_2</zorder>
    </widget>
    <widget class="QSplitter" name="splitter">
     <property name="geometry">
@@ -581,7 +578,7 @@
      <rect>
       <x>30</x>
       <y>490</y>
-      <width>401</width>
+      <width>441</width>
       <height>151</height>
      </rect>
     </property>
@@ -617,7 +614,7 @@
     <widget class="QLCDNumber" name="lcdNumber_tp">
      <property name="geometry">
       <rect>
-       <x>210</x>
+       <x>230</x>
        <y>50</y>
        <width>81</width>
        <height>31</height>
@@ -656,7 +653,7 @@
     <widget class="QLabel" name="label_13">
      <property name="geometry">
       <rect>
-       <x>206</x>
+       <x>230</x>
        <y>30</y>
        <width>161</width>
        <height>20</height>
@@ -669,7 +666,7 @@
     <widget class="QLCDNumber" name="lcdNumber_mp">
      <property name="geometry">
       <rect>
-       <x>210</x>
+       <x>230</x>
        <y>110</y>
        <width>81</width>
        <height>31</height>
@@ -682,7 +679,7 @@
     <widget class="QLabel" name="label_14">
      <property name="geometry">
       <rect>
-       <x>206</x>
+       <x>230</x>
        <y>90</y>
        <width>161</width>
        <height>20</height>
@@ -695,7 +692,7 @@
     <widget class="Line" name="line">
      <property name="geometry">
       <rect>
-       <x>190</x>
+       <x>200</x>
        <y>30</y>
        <width>21</width>
        <height>111</height>
@@ -710,7 +707,7 @@
       <rect>
        <x>10</x>
        <y>80</y>
-       <width>381</width>
+       <width>421</width>
        <height>16</height>
       </rect>
      </property>
@@ -768,9 +765,6 @@
        <enum>QFrame::Raised</enum>
       </property>
      </widget>
-     <zorder>layoutWidget</zorder>
-     <zorder>layoutWidget_2</zorder>
-     <zorder>frame_4</zorder>
     </widget>
    </widget>
    <widget class="QTabWidget" name="tabWidget">
@@ -778,8 +772,8 @@
      <rect>
       <x>260</x>
       <y>80</y>
-      <width>201</width>
-      <height>251</height>
+      <width>211</width>
+      <height>261</height>
      </rect>
     </property>
     <property name="currentIndex">

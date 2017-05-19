@@ -441,6 +441,127 @@ Como último teste, foram realizadas combinações PI-PID, usando um PI similar 
      \label{fig:ControlePI}
 \end{figure}
 
+\hspace{4ex}Foram realizados posteriormente testes com propósito de comparar os resultados obtidos com um controlador de segunda ordem com os resultados obtidos com dois controladores. Inicialmente, com um controlador PID (kp = 1; ki = 0,05; kd = 0,005), foi obtido um sinal com um alto sobressinal (60,37\%), e tempos de acomodação e subida, respectivamente de 9,2 e 0,9 segundos. Ao adicionar um segundo controlador ao sistema, o sobressinal é praticamente eliminado. Foram utilizados como segundos controladores PI, PD e PID, para os três casos, os tempos de acomodação e subida ficaram, respectivamente, próximos a 90 e 60 segundos. 
+
+%Imagens (2)
+
+\begin{figure}[H]
+     \centering
+     \subfloat[]{\includegraphics[width=11cm]{ImagensLab4/testes/2.png}\label{img2}}    
+\hspace{1cm}
+     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/2-1.png}\label{img2-1}}
+\hspace{1cm}
+     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/2-1-1.png}\label{img2-1-1}}
+\hspace{1cm}
+     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/2-2.png}\label{img2-2}}
+\hspace{1cm}
+     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/2-2-1.png}\label{img2-2-1}}
+\caption{Controle PID com kp=1, ki=0,05 e kd=0,005}
+     \label{fig:ControlePID11}
+\end{figure}
+\begin{figure}[H]
+     \centering
+     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/2-3.png}\label{img2-3}}
+\hspace{1cm}
+     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/2-3-1.png}\label{img2-3-1}}     
+     \caption{Controle PID com kp=1, ki=0,05 e kd=0,005}
+     \label{fig:ControlePID12}
+\end{figure}
+
+
+Foi feito para um controlador PI (kp=1; ki=0,05) o mesmo que o feito com o controlador PID, unindo-o a três controladores diferentes PI, PD e PID - um por vez. O resultado obtido foi parecido com o do teste anterior, com o alto sobressinal do PI (58,91\%) sendo eliminado, e os tempos de subida e acomodação sofrendo grande aumento. Neste exemplo, a diferença nos tempos de subida e acomodação foi um pouco mais visível, com a combinação PI-PI sendo mais rápida que a PI-PID em aproximadamente 3 segundos para tr (tempo de subida) e 4 segundos para ts (tempo de acomodação). A combinação PI-PID por sua vez foi mais rápida que a PI-PD aproximadamente pela mesma diferença – 3s para tr e 4s para ts.
+\\
+%Imagens (3)
+
+
+\begin{figure}[H]
+     \centering
+     \subfloat[]{\includegraphics[width=11cm]{ImagensLab4/testes/3.png}\label{img3}}    
+\caption{Controle PI com kp=1 e ki=0,05}
+     \label{fig:ControlePI}
+\end{figure}
+\begin{figure}[H]
+     \centering
+     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/3-2.png}\label{img3-1}}
+\hspace{1cm}
+     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/3-2-1.png}\label{img3-1-1}}
+\hspace{1cm}
+     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/3-3.png}\label{img3-2}}
+\hspace{1cm}
+     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/3-3-1.png}\label{img3-2-1}}
+\hspace{1cm}
+     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/3-4.png}\label{img3-3}}
+\hspace{1cm}
+     \subfloat[]{\includegraphics[width=8cm]{ImagensLab4/testes/3-4-1.png}\label{img3-3-1}}     
+     \caption{Controle PI com kp=1 e ki=0,05}
+     \label{fig:ControlePI}
+\end{figure}
+
+
+
+No terceiro teste foi usado um PID com kp duas vezes maior que o do primeiro teste, obtendo um sistema de um controlador menos estável. Quando aplicados controladores secundários semelhantes aqueles dos testes anteriores, é possível perceber um maior nível do tanque no curto prazo, com o mesmo chegando a atingir 17cm após 1s. Porém, se por um lado, o nível dos tanques está maior nos primeiros 5s, a velocidade de subida de nível é menor que em kp=1, fazendo com que o tempo de acomodação suba em todos os casos. O tempo de subida também foi alterado, apresentando inclusive uma redução para o caso PID-PID, mas também apresentando aumento para PI e para PD.
+
+%Imagens (4) – menos 4-2
+
+
+\begin{figure}[H]
+     \centering
+     \subfloat[]{\includegraphics[width=11cm]{ImagensLab4/testes/4.png}\label{img4}}    
+\hspace{1cm}
+     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/4-1.png}\label{img4-1}}
+\hspace{1cm}
+     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/4-1-1.png}\label{img4-1-1}}
+\hspace{1cm}
+     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/4-3.png}\label{img4-2}}
+\hspace{1cm}
+     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/4-3-1.png}\label{img4-2-1}}
+\hspace{1cm}
+     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/4-4.png}\label{img4-3}}
+\hspace{1cm}
+     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/4-4-1.png}\label{img4-3-1}}     
+     \caption{PID com kp=2,  ki=0,05 e kd=0,005}
+     \label{fig:ControlePID2}
+\end{figure}
+
+\newpage
+Um pequeno teste para C2 com kp=2 mostrou uma grande instabilidade do sistema para o aumento de kp no controlador secundário.
+\hspace{1cm}
+%Imagem 4-2
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=11cm]{ImagensLab4/testes/4-2.png}
+\caption{PID escravo com kp=2}
+\label{img4-4}
+\end{figure}
+
+Como teste final, foram feitas alterações em ki e kd em um controlador primário PID de kp=2. O controlador secundário foi para todos os casos um PI com kp=1 e ki=0,05. As alterações em ki alteraram largamente os tempos de subida e acomodação, se para ki=0,05, no teste passado, foi obtido ts = 107,8s, para ki=0,03 tivemos ts = 186,2s – 72,7\% de aumento – e para ki=0,01 tivemos ts = 560,9s – 420,3\% de aumento em relação a ki=0,05 – com os tempos de subida seguindo percentuais de aumento próximos. A alteração de kd, de 0,005 para 0,001 teve efeito menor nos tempos ts e tr, com aumento de pouco mais de 3 segundos para ambos.
+
+%Imagens (5)
+
+
+\begin{figure}[H]
+     \centering
+     \subfloat[]{\includegraphics[width=11cm]{ImagensLab4/testes/5.png}\label{img5}}    
+\caption{Controle PID com kp=2 e valores variáveis para ki e kd}
+     \label{fig:ControlePID2 com variação de ki e kd}
+\end{figure}
+\begin{figure}[H]
+     \centering
+     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/5-1.png}\label{img5-1}}
+\hspace{1cm}
+     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/5-1-1.png}\label{img5-1-1}}
+\hspace{1cm}
+     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/5-0-1.png}\label{img5-2}}
+\hspace{1cm}
+     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/5-0-1-1.png}\label{img5-2-1}}
+\hspace{1cm}
+     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/5-0-2.png}\label{img5-3}}
+\hspace{1cm}
+     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/5-0-2-1.png}\label{img5-3-1}}     
+     \caption{Controle PID com kp=2 e valores variáveis para ki e kd}
+     
+\end{figure}
 
 \newpage
 
@@ -452,7 +573,7 @@ Como último teste, foram realizadas combinações PI-PID, usando um PI similar 
 
 \hspace{4ex}Os testes realizados mostram que ao utilizar um controlador em cascata aumenta a estabilidade do sistema diminuindo a sua oscilação do tanque 1 e melhorandado o resultado em geral, mas aumenta a complexidade do projeto pois é necessario sintonizar dois controladores.
 
-
+\newpage
 %%%%%%%% REFERÊNCIAS %%%%%%%%%%%%%%%%%
 
 \thispagestyle{empty}

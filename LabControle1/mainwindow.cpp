@@ -4,17 +4,56 @@
 #include <chrono>
 #include "funcoes.h"
 
+#include <matriz.h>
+#include <observador.h>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     pid1(0,0,0), pid2(4,0.1,0.005)
 {
+//    int cont= 0;
+//    Matriz A(2,2), B(2,1);
+//    for(int i=0; i<2; i++)
+//        for(int j=0; j<2; j++)
+//        {
+//            A[i][j]= cont++;
+//            B[i][j]= 2;
+//        }
+
+//    Matriz C= 3*(A^2)+2*A; //3*(A^2)+2*A
+//    for(uint i=0; i<C.l; i++)
+//    {
+//        for(uint j=0; j<C.c; j++)
+//            cout << C[i][j] << " ";
+//        cout << endl;
+//    }
+    Observador teste;
+    Matriz y(1,1), u(1,1);
+    y[0][0]= 1; u[0][0]= 1;
+    teste.Calcula_L(complex<double>(2,-1), complex<double>(2,1));
+
+    Matriz z= teste.Observa(y, u);
+    for(uint i=0; i<z.l; i++)
+    {
+        for(uint j=0; j<z.c; j++)
+            cout << z[i][j] <<  " ";
+        cout << endl;
+    }
+    z= teste.Observa(y,u);
+    for(uint i=0; i<z.l; i++)
+    {
+        for(uint j=0; j<z.c; j++)
+            cout << z[i][j] <<  " ";
+        cout << endl;
+    }
+
+
     //quanser= new Quanser("10.13.99.69", 20081);
-    //quanser= new Quanser("127.0.0.1", 20074);
+    quanser= new Quanser("127.0.0.1", 20074);
     //quanser= new Quanser("192.168.0.33", 20081);
     //quanser= new Quanser("192.168.0.7", 20081);
-    quanser= new Quanser("192.168.0.5", 20081);
+    //quanser= new Quanser("192.168.0.5", 20081);
 
     fuc= "WAIT";
     tempo= 0;
@@ -463,6 +502,7 @@ void MainWindow::Controle()
                 //cout << "st "<< st2 << " pv " << pv1<< " st "<<st<<" pv "<<pv << endl;
 
                 mutex_.lock();
+                ui->plotS1->graph(4)->addData(tempo, 0);
                 ui->plotS1->graph(5)->addData(tempo, abs(erro1));
                 mutex_.unlock();
 

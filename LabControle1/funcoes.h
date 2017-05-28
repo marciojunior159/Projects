@@ -12,4 +12,6 @@ double funcQuadrada(double A, double T, double t, double offset);
 double funcAlturaTensao(double alt);
 double funcSensor(double leituras);
 
+double trava(double tensao, double nivel);
+
 #endif // FUNCOES_H

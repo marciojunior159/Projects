@@ -16,8 +16,8 @@ Observador::Observador(): G(2,2), H(2,1), C(1,2), L(2,1), x(2,1), W_inv(2,2)
     x[0][0]=0;
     x[1][0]= 0;
 
-    W_inv[0][0]= -0.2; W_inv[0][1]=  0.5;
-    W_inv[1][0]=  0.3; W_inv[1][1]= -0.4;
+    W_inv[0][0]= -1523.61; W_inv[0][1]= 1524.61;
+    W_inv[1][0]= 1; W_inv[1][1]= 0;
 }
 Matriz Observador::Calcula_L(complex<double> p1, complex<double> p2)
 {

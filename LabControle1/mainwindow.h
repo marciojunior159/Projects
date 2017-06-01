@@ -7,6 +7,7 @@
 #include <mutex>
 #include <QTime>
 #include <pid.h>
+#include <observador.h>
 
 namespace Ui {
 class MainWindow;
@@ -62,6 +63,8 @@ private:
     Quanser* quanser;
     Ui::MainWindow *ui;
     PID pid1, pid2;
+    Observador observador;
+
     std::thread* controle, *recebe;
     string fuc;
     float tempo;

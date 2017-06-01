@@ -4,6 +4,9 @@
 #pragma once
 
 #include <vector>
+#include <ostream>
+
+using std::ostream;
 using std::vector;
 
 typedef unsigned int uint;
@@ -25,6 +28,7 @@ public:
     Matriz& operator =(const Matriz& x);
     Matriz(const Matriz& x);
     Matriz(const Matriz&& x);
+    friend ostream & operator <<(ostream& out, Matriz& x);
     static Matriz Identidade(uint ord);
     const uint l, c;
 private:

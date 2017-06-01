@@ -5,6 +5,7 @@
 #include "funcoes.h"
 
 #include <matriz.h>
+#include <math.h>
 #include <observador.h>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -12,46 +13,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     pid1(0,0,0), pid2(4,0.1,0.005)
 {
-//    int cont= 0;
-//    Matriz A(2,2), B(2,1);
-//    for(int i=0; i<2; i++)
-//        for(int j=0; j<2; j++)
-//        {
-//            A[i][j]= cont++;
-//            B[i][j]= 2;
-//        }
-
-//    Matriz C= 3*(A^2)+2*A; //3*(A^2)+2*A
-//    for(uint i=0; i<C.l; i++)
-//    {
-//        for(uint j=0; j<C.c; j++)
-//            cout << C[i][j] << " ";
-//        cout << endl;
-//    }
-    Observador teste;
-    Matriz y(1,1), u(1,1);
-    y[0][0]= 1; u[0][0]= 1;
-    teste.Calcula_L(complex<double>(2,-1), complex<double>(2,1));
-
-    Matriz z= teste.Observa(y, u);
-    for(uint i=0; i<z.l; i++)
-    {
-        for(uint j=0; j<z.c; j++)
-            cout << z[i][j] <<  " ";
-        cout << endl;
-    }
-    z= teste.Observa(y,u);
-    for(uint i=0; i<z.l; i++)
-    {
-        for(uint j=0; j<z.c; j++)
-            cout << z[i][j] <<  " ";
-        cout << endl;
-    }
-
+    Matriz L=observador.Calcula_L(complex<double>(0.97,0.0), complex<double>(0.0,0.0));
 
     //quanser= new Quanser("10.13.99.69", 20081);
     quanser= new Quanser("127.0.0.1", 20074);
-    //quanser= new Quanser("192.168.0.33", 20081);
+//    quanser= new Quanser("192.168.0.33", 20081);
     //quanser= new Quanser("192.168.0.7", 20081);
     //quanser= new Quanser("192.168.0.5", 20081);
 
@@ -77,12 +43,16 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->plotS1->addGraph();
     ui->plotS1->addGraph();
     ui->plotS1->addGraph();
+    ui->plotS1->addGraph();
+    ui->plotS1->addGraph();
     ui->plotS1->graph(0)->setPen(QPen(Qt::blue));
     ui->plotS1->graph(1)->setPen(QPen(Qt::red));
     ui->plotS1->graph(2)->setPen(QPen(Qt::green));
     ui->plotS1->graph(3)->setPen(QPen(Qt::yellow));
     ui->plotS1->graph(4)->setPen(QPen(Qt::magenta));
     ui->plotS1->graph(5)->setPen(QPen(Qt::cyan));
+    ui->plotS1->graph(6)->setPen(QPen(Qt::black));
+    ui->plotS1->graph(7)->setPen(QPen(Qt::black));
 
     ui->plotS1->xAxis->setLabel("tempo(ms)");
     ui->plotS1->yAxis->setAutoTickStep(false);
@@ -97,6 +67,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->plotS1->graph(3)->setName("SP2");
     ui->plotS1->graph(4)->setName("E1");
     ui->plotS1->graph(5)->setName("E2");
+    ui->plotS1->graph(6)->setName("Lo1");
+    ui->plotS1->graph(7)->setName("Lo2");
     ui->plotS1->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignLeft|Qt::AlignTop);
 
     ui->plotS2->addGraph();
@@ -489,7 +461,7 @@ void MainWindow::Controle()
                 }
             }else{
                 //segunda ordem com apenas um controlador
-
+                pv1 = funcSensor(sensores[0]);
                 pv = funcSensor(sensores[1]);
 
                 mutex_.lock();
@@ -509,7 +481,6 @@ void MainWindow::Controle()
                 if(ui->comboBoxTipodeControle->currentText() == "PI-D")
                 {
                     tensao = pid1.Controle(erro1,pv,0.1);
-
                 }
                 else
                 {
@@ -525,9 +496,6 @@ void MainWindow::Controle()
 //                    ui->plotS2->graph(8)->addData(tempo, pid2.getD());
                     mutex_.unlock();
                 }
-
-
-
             }
             tensaoCalculado = tensao;
             tensao = trava(tensao, pv1);
@@ -536,6 +504,13 @@ void MainWindow::Controle()
             //cout << tensaoCalculado << " " << tensao << endl;
             quanser->writeDA(canal, tensao);
         }
+
+        Matriz y(1,1), u(1,1), x(2,1);
+        u[0][0]= tensao;
+        y[0][0]= funcSensor(sensores[1]);
+        x= observador.Observa(y,u);
+        ui->plotS1->graph(6)->addData(tempo, x[0][0]);
+        ui->plotS1->graph(7)->addData(tempo, x[1][0]);
 
         mutex_.lock();
         ui->plotS2->graph(0)->addData(tempo, tensao);

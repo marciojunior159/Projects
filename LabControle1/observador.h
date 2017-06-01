@@ -15,6 +15,7 @@ class Observador
 {
 public:
     Observador();
+    vector<complex<double>> Calcula_Polos(Matriz ll);
     Matriz Calcula_L(complex<double> p1, complex<double> p2);
     Matriz Observa(Matriz y, Matriz u);
 private:

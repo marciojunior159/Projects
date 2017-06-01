@@ -29,9 +29,6 @@ Observador::Observador(): G(2,2), H(2,1), C(1,2), L(2,1), x(2,1), W_inv(2,2)
 
     W_inv[0][0]= -152.3349592213091; W_inv[0][1]= 153.3382486558594;
     W_inv[1][0]= 1; W_inv[1][1]= 0;
-
-    //W_inv[0][0]= 0; W_inv[0][1]=  1;
-    //W_inv[1][0]= 6.560173530668687E-4; W_inv[1][1]= 0.999343767279127;
 }
 vector<complex<double>> Observador::Calcula_Polos(Matriz ll)
 {

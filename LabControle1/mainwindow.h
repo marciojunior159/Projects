@@ -59,6 +59,8 @@ private slots:
 
     void on_radioButtonTempo_2_clicked(bool checked);
 
+    void on_checkBox_observacao_clicked(bool checked);
+
 private:
     Quanser* quanser;
     Ui::MainWindow *ui;

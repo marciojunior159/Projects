@@ -18,6 +18,8 @@ MainWindow::MainWindow(QWidget *parent) :
     //quanser= new Quanser("10.13.99.69", 20081);
     quanser= new Quanser("127.0.0.1", 20074);
 //    quanser= new Quanser("192.168.0.33", 20081);
+    //quanser= new Quanser("127.0.0.1", 20074);
+//    quanser= new Quanser("192.168.0.13", 20081);
     //quanser= new Quanser("192.168.0.7", 20081);
     //quanser= new Quanser("192.168.0.5", 20081);
 
@@ -848,5 +850,15 @@ void MainWindow::on_radioButtonTempo_2_clicked(bool checked)
     if(checked == true){
         ui->label_kd_2->setText("Tempo (Td)");
         ui->label_ki_2->setText("Tempo (Ti)");
+    }
+}
+
+
+void MainWindow::on_checkBox_observacao_clicked(bool checked)
+{
+    if(checked == true){
+        //desativar pid
+    }else{
+        //tudo normal
     }
 }

@@ -1,8 +1,5 @@
 #include "observador.h"
 
-#include <iostream>
-using namespace std;
-
 complex<double> operator *(double k, complex<double> c)
 {
     return complex<double>(k*c.real(), k*c.imag());
@@ -44,9 +41,9 @@ vector<complex<double>> Observador::Calcula_Polos(Matriz ll)
 Matriz Observador::Calcula_L(complex<double> p1, complex<double> p2)
 {
     Matriz I= Matriz::Identidade(2), aux(2,1);
-    double c[2]= {(-p1-p2).real(), (p1*p2).real()};
     aux[0][0]= 0;
     aux[1][0]= 1;
+    double c[2]= {(-p1-p2).real(), (p1*p2).real()};
     Matriz Ackerman= (G^2)+(c[0]*G)+(c[1]*I);
     L= (Ackerman*W_inv)*aux;
     return L;

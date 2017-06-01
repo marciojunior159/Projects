@@ -93,9 +93,9 @@ vector<double>& Matriz::operator[](int p)
 
 ostream & operator <<(ostream& out, Matriz& x)
 {
-    for(int i=0; i<x.l; i++)
+    for(uint i=0; i<x.l; i++)
     {
-        for(int j=0; j<x.c; j++)
+        for(uint j=0; j<x.c; j++)
             out << x[i][j] << " ";
         out << std::endl;
     }

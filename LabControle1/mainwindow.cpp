@@ -1,29 +1,25 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QMessageBox>
-#include <chrono>
 #include "funcoes.h"
 
-#include <matriz.h>
-#include <math.h>
-#include <observador.h>
+#include <QMessageBox>
+#include <chrono>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    pid1(0,0,0), pid2(4,0.1,0.005)
+    pid1(0,0,0), pid2(0,0,0)
 {
     Matriz L=observador.Calcula_L(complex<double>(0.97,0.0), complex<double>(0.0,0.0));
 
     //quanser= new Quanser("10.13.99.69", 20081);
     quanser= new Quanser("127.0.0.1", 20074);
-//    quanser= new Quanser("192.168.0.33", 20081);
-    //quanser= new Quanser("127.0.0.1", 20074);
-//    quanser= new Quanser("192.168.0.13", 20081);
+    //quanser= new Quanser("192.168.0.33", 20081);
+    //quanser= new Quanser("192.168.0.13", 20081);
     //quanser= new Quanser("192.168.0.7", 20081);
     //quanser= new Quanser("192.168.0.5", 20081);
 
-    fuc= "WAIT";
+    fucao= "";
     tempo= 0;
     ui->setupUi(this);
     ui->comboBoxSinal->addItem("Degrau");
@@ -36,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->doubleSpinBox_ki->setDecimals(3);
     ui->doubleSpinBox_kd->setDecimals(3);
 
+    ui->doubleSpinBox_kp_2->setDecimals(3);
     ui->doubleSpinBox_ki_2->setDecimals(3);
     ui->doubleSpinBox_kd_2->setDecimals(3);
 
@@ -107,7 +104,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->plotS2->graph(0)->setName("Tensão saturada");
     ui->plotS2->graph(1)->setName("Tensão calculada");
-    ui->plotS2->graph(2)->setName("PV2");
+    ui->plotS2->graph(2)->setName("Observador");
 
     ui->plotS2->graph(3)->setName("P (mestre)");
     ui->plotS2->graph(4)->setName("I (mestre)");
@@ -118,13 +115,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->plotS2->graph(8)->setName("D (escravo)");
     ui->plotS2->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignLeft|Qt::AlignTop);
 
-
     controle= new std::thread(&MainWindow::Controle, this);
     recebe= new std::thread(&MainWindow::Recebe, this);
-    canais[0]= true;
-    canais[1]= true;
-    for(int i=2; i<8; i++)
-        canais[i]= false;
 
     startTimer(100);
 }
@@ -136,14 +128,14 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_radioButtonMalhaAberta_clicked()
 {
-    A= 0;
+    Amplitude= 0;
     ui->labelTensaoNivel->setText("Tensão");
     ui->spinBoxCanal->setEnabled(true);
     ui->comboBoxSinal->setEnabled(true);
     ui->SpinBoxTensaoNivel->setValue(0);
     ui->SpinBoxTensaoNivel->setMinimum(-4);
     ui->SpinBoxTensaoNivel->setMaximum(4);
-    on_comboBoxSinal_activated(QString());
+    on_comboBoxSinal_activated(QString("Degrau"));
 
     ui->comboBoxTipodeControle->setDisabled(true);
     ui->doubleSpinBox_kp->setDisabled(true);
@@ -151,6 +143,13 @@ void MainWindow::on_radioButtonMalhaAberta_clicked()
     ui->doubleSpinBox_kd->setDisabled(true);
     ui->radioButtonGanho->setDisabled(true);
     ui->radioButtonTempo->setDisabled(true);
+
+    ui->comboBoxTipodeControle_2->setDisabled(true);
+    ui->doubleSpinBox_kp_2->setDisabled(true);
+    ui->doubleSpinBox_ki_2->setDisabled(true);
+    ui->doubleSpinBox_kd_2->setDisabled(true);
+    ui->radioButtonGanho_2->setDisabled(true);
+    ui->radioButtonTempo_2->setDisabled(true);
 
     ui->SpinBoxPeriodoOffset->setEnabled(true);
     ui->comboBoxSinalOrdem->setEnabled(false);
@@ -163,21 +162,20 @@ void MainWindow::on_radioButtonMalhaAberta_clicked()
     ui->comboBoxSinalfaixats->setEnabled(false);
     ui->comboBoxSinalfaixa_tr->setEnabled(false);
 
-
     ui->radioButtonMalhaAberta->setChecked(true);
     ui->radioButtonMalhaFechada->setChecked(false);
 }
 
 void MainWindow::on_radioButtonMalhaFechada_clicked()
 {
-    A= 0;
+    Amplitude= 0;
     ui->labelTensaoNivel->setText("Nivel");
     ui->spinBoxCanal->setEnabled(true);
     ui->comboBoxSinal->setEnabled(true);
     ui->SpinBoxTensaoNivel->setValue(0);
     ui->SpinBoxTensaoNivel->setMinimum(0);
     ui->SpinBoxTensaoNivel->setMaximum(30);
-    on_comboBoxSinal_activated(QString());
+    on_comboBoxSinal_activated(QString("Degrau"));
 
     ui->comboBoxTipodeControle->setEnabled(true);
     ui->comboBoxTipodeControle->setCurrentIndex(0);
@@ -192,10 +190,8 @@ void MainWindow::on_radioButtonMalhaFechada_clicked()
     ui->radioButtonMalhaFechada->setChecked(true);
 }
 
-void MainWindow::on_comboBoxSinal_activated(const QString &arg1)
+void MainWindow::on_comboBoxSinal_activated(const QString &sinal)
 {
-    QString sinal = ui->comboBoxSinal->currentText();
-
     if(sinal == "Degrau")
     {
         ui->SpinBoxTensaoNivel->setEnabled(true);
@@ -279,7 +275,7 @@ void MainWindow::timerEvent(QTimerEvent *t)
     ui->plotS2->graph(0)->removeDataBefore(tempo-30);
     mutex_.unlock();
 
-    if(canais[0]){
+    if(ui->checkBoxL1_SP1->isChecked()){
         ui->plotS1->graph(0)->setVisible(1);
         ui->plotS1->graph(1)->setVisible(1);
     }else{
@@ -287,7 +283,7 @@ void MainWindow::timerEvent(QTimerEvent *t)
         ui->plotS1->graph(1)->setVisible(0);
     }
 
-    if(canais[1]){
+    if(ui->checkBoxL2_SP2->isChecked()){
         ui->plotS1->graph(2)->setVisible(1);
         ui->plotS1->graph(3)->setVisible(1);
     }else{
@@ -295,17 +291,21 @@ void MainWindow::timerEvent(QTimerEvent *t)
         ui->plotS1->graph(3)->setVisible(0);
     }
 
-    if(canais[2])
+    if(ui->checkBox_E1->isChecked()){
         ui->plotS1->graph(4)->setVisible(1);
-    else
+    }
+    else{
         ui->plotS1->graph(4)->setVisible(0);
+    }
 
-    if(canais[3])
+    if(ui->checkBox_E2->isChecked()){
         ui->plotS1->graph(5)->setVisible(1);
-    else
+    }
+    else{
         ui->plotS1->graph(5)->setVisible(0);
+    }
 
-    if(canais[4]){
+    if(ui->checkBox_PIDe->isChecked()){
         ui->plotS2->graph(6)->setVisible(1);
         ui->plotS2->graph(7)->setVisible(1);
         ui->plotS2->graph(8)->setVisible(1);
@@ -315,7 +315,7 @@ void MainWindow::timerEvent(QTimerEvent *t)
         ui->plotS2->graph(8)->setVisible(0);
     }
 
-    if(canais[5]){
+    if(ui->checkBox_PIDm->isChecked()){
         ui->plotS2->graph(3)->setVisible(1);
         ui->plotS2->graph(4)->setVisible(1);
         ui->plotS2->graph(5)->setVisible(1);
@@ -325,22 +325,18 @@ void MainWindow::timerEvent(QTimerEvent *t)
         ui->plotS2->graph(5)->setVisible(0);
     }
 
-    if(canais[6]){
+    if(ui->checkBox_Tensoes->isChecked()){
         ui->plotS2->graph(0)->setVisible(1);
         ui->plotS2->graph(1)->setVisible(1);
-
     }else{
         ui->plotS2->graph(0)->setVisible(0);
         ui->plotS2->graph(1)->setVisible(0);
-
     }
 
-    if(canais[7]){
+    if(ui->checkBox_Observador->isChecked()){
         ui->plotS2->graph(2)->setVisible(1);
-
     }else{
         ui->plotS2->graph(2)->setVisible(0);
-
     }
 }
 
@@ -348,7 +344,7 @@ auto now = std::chrono::high_resolution_clock::now();
 
 void MainWindow::Controle()
 {
-    double tensaoCalculado, dt= 0, st= 0, pv, tensao;
+    double tensaoCalculado, st= 0, pv, tensao; // dt= 0
     while(1)
     {
         int canal= ui->spinBoxCanal->value();
@@ -359,15 +355,15 @@ void MainWindow::Controle()
 
         //ST = referencia; //PV = leitura da altura dos tanques
 
-        if(fuc == "Degrau")
-            st= funcDegrau(A, tempo, offset);
-        else if(fuc == "Senoidal")
-            st= funcSenoidal(A, T, tempo, offset);
-        else if(fuc == "Onda quadrada")
-            st= funcQuadrada(A, T, tempo, offset);
-        else if(fuc == "Dente de serra")
-            st= funcSerra(A, T, tempo, offset);
-        else if(fuc == "Aleatorio") // intervalo
+        if(fucao == "Degrau")
+            st= funcDegrau(Amplitude, tempo, offset);
+        else if(fucao == "Senoidal")
+            st= funcSenoidal(Amplitude, Periodo, tempo, offset);
+        else if(fucao == "Onda quadrada")
+            st= funcQuadrada(Amplitude, Periodo, tempo, offset);
+        else if(fucao == "Dente de serra")
+            st= funcSerra(Amplitude, Periodo, tempo, offset);
+        else if(fucao == "Aleatorio") // intervalo
         {
             if(ui->radioButtonMalhaAberta->isChecked())
                 st= funcAleatoria1(tempo);
@@ -387,36 +383,32 @@ void MainWindow::Controle()
 
         if(ui->radioButtonMalhaAberta->isChecked())
         {
-            mutex_.lock();
-            ui->plotS1->graph(1)->addData(tempo, 0);
-            ui->plotS1->graph(3)->addData(tempo, 0);
-            mutex_.unlock();
-
             pv = funcSensor(sensores[0]);
             tensaoCalculado = st;
             tensao = trava(st, pv);
 
             quanser->writeDA(canal, tensao);
+
+            mutex_.lock();
+            ui->plotS1->graph(1)->addData(tempo, 0);
+            ui->plotS1->graph(3)->addData(tempo, 0);
+            mutex_.unlock();
         }
         else if(ui->radioButtonMalhaFechada->isChecked())
         {
             double st2, erro1, erro2, pv1;
 
             if(ui->comboBoxSinalOrdem->currentText() == "Primeira"){
-                pv=pv1 = funcSensor(sensores[0]);
-
-                mutex_.lock();
-                ui->plotS1->graph(4)->addData(tempo, abs(erro2));
-                ui->plotS1->graph(1)->addData(tempo, st);
-                mutex_.unlock();
-
-                erro1= st - pv1;
+                pv=pv1= funcSensor(sensores[0]);
+                erro1= st - pv;
 
                 if(ui->comboBoxTipodeControle->currentText() == "PI-D")
                     tensao = pid1.Controle(erro1,pv1,0.1);
                 else
                     tensao = pid1.Controle(erro1, 0.1);
+
                 mutex_.lock();
+                ui->plotS1->graph(1)->addData(tempo, st);
                 ui->plotS2->graph(3)->addData(tempo, pid1.getP());
                 ui->plotS2->graph(4)->addData(tempo, pid1.getI());
                 ui->plotS2->graph(5)->addData(tempo, pid1.getD());
@@ -427,20 +419,8 @@ void MainWindow::Controle()
                 pv1 = funcSensor(sensores[0]);
                 pv = funcSensor(sensores[1]);
 
-                mutex_.lock();
-                ui->plotS1->graph(1)->addData(tempo, st2);
-                ui->plotS1->graph(3)->addData(tempo, st);
-                mutex_.unlock();
-
                 erro1 = st - pv;
                 erro2 = st2 - pv1;
-                //cout << st2 << " " << pv1 << " " << erro2 << endl;
-                //cout << "st "<< st2 << " pv " << pv1<< " st "<<st<<" pv "<<pv << endl;
-
-                mutex_.lock();
-                ui->plotS1->graph(4)->addData(tempo, abs(erro2));
-                ui->plotS1->graph(5)->addData(tempo, abs(erro1));
-                mutex_.unlock();
 
                 if(ui->comboBoxTipodeControle->currentText() == "PI-D")
                 {
@@ -451,34 +431,27 @@ void MainWindow::Controle()
                 {
                     st2 = pid1.Controle(erro1,0.1);
                     tensao = pid2.Controle(erro2, 0.1);
-                    mutex_.lock();
-                    ui->plotS2->graph(3)->addData(tempo, pid1.getP());
-                    ui->plotS2->graph(4)->addData(tempo, pid1.getI());
-                    ui->plotS2->graph(5)->addData(tempo, pid1.getD());
-
-                    ui->plotS2->graph(6)->addData(tempo, pid2.getP());
-                    ui->plotS2->graph(7)->addData(tempo, pid2.getI());
-                    ui->plotS2->graph(8)->addData(tempo, pid2.getD());
-                    mutex_.unlock();
                 }
+
+                mutex_.lock();
+                ui->plotS1->graph(1)->addData(tempo, st2);
+                ui->plotS1->graph(3)->addData(tempo, st);
+                ui->plotS1->graph(4)->addData(tempo, abs(erro2));
+                ui->plotS1->graph(5)->addData(tempo, abs(erro1));
+
+                ui->plotS2->graph(3)->addData(tempo, pid1.getP());
+                ui->plotS2->graph(4)->addData(tempo, pid1.getI());
+                ui->plotS2->graph(5)->addData(tempo, pid1.getD());
+                ui->plotS2->graph(6)->addData(tempo, pid2.getP());
+                ui->plotS2->graph(7)->addData(tempo, pid2.getI());
+                ui->plotS2->graph(8)->addData(tempo, pid2.getD());
+                mutex_.unlock();
             }else{
                 //segunda ordem com apenas um controlador
                 pv1 = funcSensor(sensores[0]);
                 pv = funcSensor(sensores[1]);
 
-                mutex_.lock();
-                ui->plotS1->graph(3)->addData(tempo, st);
-                mutex_.unlock();
-
                 erro1 = st - pv;
-
-                //cout << st2 << " " << pv1 << " " << erro2 << endl;
-                //cout << "st "<< st2 << " pv " << pv1<< " st "<<st<<" pv "<<pv << endl;
-
-                mutex_.lock();
-                ui->plotS1->graph(4)->addData(tempo, 0);
-                ui->plotS1->graph(5)->addData(tempo, abs(erro1));
-                mutex_.unlock();
 
                 if(ui->comboBoxTipodeControle->currentText() == "PI-D")
                 {
@@ -487,32 +460,38 @@ void MainWindow::Controle()
                 else
                 {
                     tensao = pid1.Controle(erro1,0.1);
-
-                    mutex_.lock();
-                    ui->plotS2->graph(3)->addData(tempo, pid1.getP());
-                    ui->plotS2->graph(4)->addData(tempo, pid1.getI());
-                    ui->plotS2->graph(5)->addData(tempo, pid1.getD());
-
-//                    ui->plotS2->graph(6)->addData(tempo, pid2.getP());
-//                    ui->plotS2->graph(7)->addData(tempo, pid2.getI());
-//                    ui->plotS2->graph(8)->addData(tempo, pid2.getD());
-                    mutex_.unlock();
                 }
+
+                mutex_.lock();
+                ui->plotS1->graph(3)->addData(tempo, st);
+                ui->plotS1->graph(4)->addData(tempo, 0);
+                ui->plotS1->graph(5)->addData(tempo, abs(erro1));
+
+                ui->plotS2->graph(3)->addData(tempo, pid1.getP());
+                ui->plotS2->graph(4)->addData(tempo, pid1.getI());
+                ui->plotS2->graph(5)->addData(tempo, pid1.getD());
+                mutex_.unlock();
             }
+
             tensaoCalculado = tensao;
             tensao = trava(tensao, pv1);
             pid1.antWindUP(tensaoCalculado, tensao);
             pid2.antWindUP(tensaoCalculado, tensao);
-            //cout << tensaoCalculado << " " << tensao << endl;
+
             quanser->writeDA(canal, tensao);
         }
 
-        Matriz y(1,1), u(1,1), x(2,1);
-        u[0][0]= tensao;
-        y[0][0]= funcSensor(sensores[1]);
-        x= observador.Observa(y,u);
-        ui->plotS1->graph(6)->addData(tempo, x[0][0]);
-        ui->plotS1->graph(7)->addData(tempo, x[1][0]);
+        if(ui->checkBox_Observador->isChecked())
+        {
+            Matriz y(1,1), u(1,1), x(2,1);
+            u[0][0]= tensao;
+            y[0][0]= funcSensor(sensores[1]);
+            x= observador.Observa(y,u);
+            mutex_.lock();
+            ui->plotS1->graph(6)->addData(tempo, x[0][0]);
+            ui->plotS1->graph(7)->addData(tempo, x[1][0]);
+            mutex_.unlock();
+        }
 
         mutex_.lock();
         ui->plotS2->graph(0)->addData(tempo, tensao);
@@ -564,10 +543,8 @@ void MainWindow::Controle()
             ui->lcdNumber_ts->display(ts-tempoInicialAcom);
         }
 
-        //qDebug() << std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now()-now).count() << "us\n";
-        //double t= std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now()-now).count()/1000.0;
-        dt= std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now()-now).count()/1000.0;
-        //qDebug() << dt << endl;
+        //dt= std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now()-now).count()/1000.0;
+        //now = std::chrono::high_resolution_clock::now();
         tempo+=0.1;
 
         usleep((0.1)*10E5);
@@ -583,53 +560,14 @@ void MainWindow::Recebe()
     }
 }
 
-void MainWindow::on_checkBox_clicked()
-{
-    canais[0] = ui->checkBox->isChecked();
-}
-
-void MainWindow::on_checkBox_2_clicked()
-{
-    canais[1] = ui->checkBox_2->isChecked();
-}
-
-void MainWindow::on_checkBox_3_clicked()
-{
-    canais[2] = ui->checkBox_3->isChecked();
-}
-void MainWindow::on_checkBox_4_clicked()
-{
-    canais[3] = ui->checkBox_4->isChecked();
-}
-
-void MainWindow::on_checkBox_5_clicked()
-{
-    canais[4] = ui->checkBox_5->isChecked();
-}
-
-void MainWindow::on_checkBox_6_clicked()
-{
-    canais[5] = ui->checkBox_6->isChecked();
-}
-
-void MainWindow::on_checkBox_7_clicked()
-{
-    canais[6] = ui->checkBox_7->isChecked();
-}
-
-void MainWindow::on_checkBox_8_clicked()
-{
-    canais[7] = ui->checkBox_8->isChecked();
-}
-
 void MainWindow::on_pushButtonEnviar_clicked()
 {
-    st_ant = A;
-    fuc= ui->comboBoxSinal->currentText().toStdString();
-    A = ui->SpinBoxTensaoNivel->value();
-    T = ui->SpinBoxPeriodo->value();
+    fucao= ui->comboBoxSinal->currentText().toStdString();
+    Amplitude = ui->SpinBoxTensaoNivel->value();
+    Periodo = ui->SpinBoxPeriodo->value();
     offset=ui->SpinBoxPeriodoOffset->value();
 
+    st_ant = Amplitude;
     max_mp= 0;
     trs = 0;
     mp = 0;
@@ -697,9 +635,9 @@ void MainWindow::on_pushButtonEnviar_clicked()
 
 void MainWindow::on_pushButtonCancel_clicked()
 {
-    fuc= "";
-    A = 0;
-    T = 0;
+    fucao= "";
+    Amplitude = 0;
+    Periodo = 0;
     offset=0;
     contFaixa= 0;
     max_mp= 0;
@@ -727,9 +665,8 @@ void MainWindow::on_radioButtonTempo_clicked(bool checked)
     }
 }
 
-void MainWindow::on_comboBoxTipodeControle_activated(const QString &arg1)
+void MainWindow::on_comboBoxTipodeControle_activated(const QString &tipo)
 {
-    QString tipo = ui->comboBoxTipodeControle->currentText();
     if(tipo == "P"){
 
         ui->doubleSpinBox_ki->setEnabled(false);
@@ -765,18 +702,37 @@ void MainWindow::on_comboBoxTipodeControle_activated(const QString &arg1)
     }
 }
 
-void MainWindow::on_comboBoxSinalOrdem_activated(const QString &arg1)
+void MainWindow::on_comboBoxSinalOrdem_activated(const QString &ordem)
 {
-    QString ordem = ui->comboBoxSinalOrdem->currentText();
+    if(ordem == "Primeira"){
+        ui->comboBoxTipodeControle_2->setEnabled(false);
+        ui->comboBoxTipodeControle_2->setCurrentIndex(0);
+        ui->doubleSpinBox_kp_2->setEnabled(false);
+        ui->doubleSpinBox_ki_2->setEnabled(false);
+        ui->doubleSpinBox_kd_2->setEnabled(false);
+        ui->radioButtonGanho_2->setEnabled(false);
+        ui->radioButtonTempo_2->setEnabled(false);
+    }
+    else if(ordem=="Segunda (1C)"){
+        ui->comboBoxSinalfaixats->setEnabled(true);
+        ui->comboBoxSinalfaixa_tr->setEnabled(true);
 
-    if(ordem=="Segunda (2C)"){
+        ui->comboBoxTipodeControle_2->setEnabled(false);
+        ui->comboBoxTipodeControle_2->setCurrentIndex(0);
+        ui->doubleSpinBox_kp_2->setEnabled(false);
+        ui->doubleSpinBox_ki_2->setEnabled(false);
+        ui->doubleSpinBox_kd_2->setEnabled(false);
+        ui->radioButtonGanho_2->setEnabled(false);
+        ui->radioButtonTempo_2->setEnabled(false);
+    }
+    else if(ordem=="Segunda (2C)"){
+        ui->comboBoxSinalfaixats->setEnabled(true);
+        ui->comboBoxSinalfaixa_tr->setEnabled(true);
+
         ui->lcdNumber_mp->setEnabled(true);
         ui->lcdNumber_tr->setEnabled(true);
         ui->lcdNumber_ts->setEnabled(true);
         ui->lcdNumber_tp->setEnabled(true);
-
-        ui->comboBoxSinalfaixats->setEnabled(true);
-        ui->comboBoxSinalfaixa_tr->setEnabled(true);
 
         ui->comboBoxTipodeControle_2->setEnabled(true);
         ui->comboBoxTipodeControle_2->setCurrentIndex(0);
@@ -785,24 +741,11 @@ void MainWindow::on_comboBoxSinalOrdem_activated(const QString &arg1)
 
         ui->radioButtonGanho_2->setEnabled(true);
         ui->radioButtonTempo_2->setEnabled(true);
-    }else if(ordem=="Segunda (1C)"){
-        ui->comboBoxSinalfaixats->setEnabled(true);
-        ui->comboBoxSinalfaixa_tr->setEnabled(true);
-
-        ui->comboBoxTipodeControle_2->setEnabled(false);
-        ui->comboBoxTipodeControle_2->setCurrentIndex(0);
-
-        ui->doubleSpinBox_kp_2->setEnabled(false);
-
-        ui->radioButtonGanho_2->setEnabled(false);
-        ui->radioButtonTempo_2->setEnabled(false);
     }
-
 }
 
-void MainWindow::on_comboBoxTipodeControle_2_activated(const QString &arg1)
+void MainWindow::on_comboBoxTipodeControle_2_activated(const QString &tipo)
 {
-    QString tipo = ui->comboBoxTipodeControle_2->currentText();
     if(tipo == "P"){
 
         ui->doubleSpinBox_ki_2->setEnabled(false);
@@ -827,6 +770,7 @@ void MainWindow::on_comboBoxTipodeControle_2_activated(const QString &arg1)
         ui->doubleSpinBox_ki_2->setValue(0);
 
     }else if(tipo == "PID"){
+
         ui->doubleSpinBox_ki_2->setEnabled(true);
         ui->doubleSpinBox_kd_2->setEnabled(true);
 
@@ -852,7 +796,6 @@ void MainWindow::on_radioButtonTempo_2_clicked(bool checked)
         ui->label_ki_2->setText("Tempo (Ti)");
     }
 }
-
 
 void MainWindow::on_checkBox_observacao_clicked(bool checked)
 {

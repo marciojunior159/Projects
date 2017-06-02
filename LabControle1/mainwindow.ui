@@ -56,9 +56,9 @@
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>370</y>
-      <width>451</width>
-      <height>91</height>
+      <y>350</y>
+      <width>231</width>
+      <height>161</height>
      </rect>
     </property>
     <property name="maximumSize">
@@ -70,16 +70,16 @@
     <property name="title">
      <string>Opções de visualização do gráfico</string>
     </property>
-    <widget class="QWidget" name="layoutWidget1">
+    <widget class="QWidget" name="">
      <property name="geometry">
       <rect>
-       <x>30</x>
+       <x>10</x>
        <y>30</y>
-       <width>424</width>
-       <height>54</height>
+       <width>211</width>
+       <height>101</height>
       </rect>
      </property>
-     <layout class="QGridLayout" name="gridLayout_9">
+     <layout class="QFormLayout" name="formLayout">
       <item row="0" column="0">
        <widget class="QCheckBox" name="checkBoxL1_SP1">
         <property name="text">
@@ -100,20 +100,6 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="2">
-       <widget class="QCheckBox" name="checkBox_E1">
-        <property name="text">
-         <string>E1</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="3">
-       <widget class="QCheckBox" name="checkBox_E2">
-        <property name="text">
-         <string>E2</string>
-        </property>
-       </widget>
-      </item>
       <item row="1" column="0">
        <widget class="QCheckBox" name="checkBox_PIDe">
         <property name="text">
@@ -128,7 +114,21 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="2">
+      <item row="2" column="0">
+       <widget class="QCheckBox" name="checkBox_E1">
+        <property name="text">
+         <string>E1</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QCheckBox" name="checkBox_E2">
+        <property name="text">
+         <string>E2</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
        <widget class="QCheckBox" name="checkBox_Tensoes">
         <property name="text">
          <string>Tensões</string>
@@ -138,7 +138,7 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="3">
+      <item row="3" column="1">
        <widget class="QCheckBox" name="checkBox_Observador">
         <property name="text">
          <string>Observador</string>
@@ -553,34 +553,11 @@
      </widget>
     </widget>
    </widget>
-   <widget class="QSplitter" name="splitter">
-    <property name="geometry">
-     <rect>
-      <x>240</x>
-      <y>460</y>
-      <width>191</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Horizontal</enum>
-    </property>
-    <widget class="QPushButton" name="pushButtonEnviar">
-     <property name="text">
-      <string>Enviar</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButtonCancel">
-     <property name="text">
-      <string>Cancelar</string>
-     </property>
-    </widget>
-   </widget>
    <widget class="QGroupBox" name="groupBox_Resultados">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>490</y>
+      <x>40</x>
+      <y>520</y>
       <width>441</width>
       <height>151</height>
      </rect>
@@ -1098,7 +1075,7 @@
        <bool>true</bool>
       </property>
      </widget>
-     <widget class="QDoubleSpinBox" name="doubleSpinBox_kp_3">
+     <widget class="QDoubleSpinBox" name="doubleSpinBox_kp_obs">
       <property name="enabled">
        <bool>false</bool>
       </property>
@@ -1124,7 +1101,7 @@
        <string>Ganho (Kp)</string>
       </property>
      </widget>
-     <widget class="QRadioButton" name="radioButton">
+     <widget class="QRadioButton" name="radioButton_Polos">
       <property name="geometry">
        <rect>
         <x>30</x>
@@ -1137,7 +1114,7 @@
        <string>Pólos</string>
       </property>
      </widget>
-     <widget class="QRadioButton" name="radioButton_2">
+     <widget class="QRadioButton" name="radioButton_matrizGanhos">
       <property name="geometry">
        <rect>
         <x>30</x>
@@ -1168,14 +1145,14 @@
         </widget>
        </item>
        <item>
-        <widget class="QDoubleSpinBox" name="doubleSpinBox_kp_7">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_L1">
          <property name="enabled">
           <bool>false</bool>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QDoubleSpinBox" name="doubleSpinBox_kp_5">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_L2">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -1183,16 +1160,16 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="layoutWidget">
+     <widget class="QWidget" name="">
       <property name="geometry">
        <rect>
-        <x>30</x>
+        <x>20</x>
         <y>100</y>
-        <width>95</width>
-        <height>60</height>
+        <width>175</width>
+        <height>55</height>
        </rect>
       </property>
-      <layout class="QFormLayout" name="formLayout">
+      <layout class="QGridLayout" name="gridLayout_11">
        <item row="0" column="0">
         <widget class="QLabel" name="label_24">
          <property name="text">
@@ -1201,7 +1178,21 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QDoubleSpinBox" name="doubleSpinBox_kp_6">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_p1_real">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QLabel" name="label_26">
+         <property name="text">
+          <string>+ i</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="3">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_p1_img">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -1215,7 +1206,21 @@
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QDoubleSpinBox" name="doubleSpinBox_kp_4">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_p2_real">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="QLabel" name="label_23">
+         <property name="text">
+          <string>+ i</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="3">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_p2_img">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -1225,16 +1230,105 @@
      </widget>
     </widget>
    </widget>
+   <widget class="QSplitter" name="splitter">
+    <property name="geometry">
+     <rect>
+      <x>280</x>
+      <y>490</y>
+      <width>191</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+    <widget class="QPushButton" name="pushButtonEnviar">
+     <property name="text">
+      <string>Enviar</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButtonCancel">
+     <property name="text">
+      <string>Cancelar</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="groupBox">
+    <property name="geometry">
+     <rect>
+      <x>270</x>
+      <y>350</y>
+      <width>191</width>
+      <height>121</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Cálculos da observação</string>
+    </property>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>58</width>
+       <height>14</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Pólos</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>70</y>
+       <width>58</width>
+       <height>14</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>L</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="labelPolos">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>50</y>
+       <width>141</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>(P1, P2)</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="labelL">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>90</y>
+       <width>141</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>[L1      L2]</string>
+     </property>
+    </widget>
+   </widget>
    <zorder>radioButtonMalhaAberta</zorder>
    <zorder>radioButtonMalhaFechada</zorder>
    <zorder>groupBoxSaida</zorder>
    <zorder>label_nomePrograma</zorder>
    <zorder>groupBoxEntrada</zorder>
    <zorder>plotS1</zorder>
-   <zorder>splitter</zorder>
    <zorder>groupBox_Resultados</zorder>
    <zorder>tabWidgetControle</zorder>
    <zorder>frame2</zorder>
+   <zorder>splitter</zorder>
+   <zorder>groupBox</zorder>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
  </widget>

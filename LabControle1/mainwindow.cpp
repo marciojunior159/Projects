@@ -357,6 +357,7 @@ auto now = std::chrono::high_resolution_clock::now();
 void MainWindow::Controle()
 {
     double tensaoCalculado, st= 0, pv, tensao; // dt= 0
+    Matriz L(2, 1);
     while(1)
     {
         int canal= ui->spinBoxCanal->value();
@@ -495,14 +496,40 @@ void MainWindow::Controle()
 
         if(ui->checkBox_observacao->isChecked())
         {
-            Matriz y(1,1), u(1,1), x(2,1);
-            u[0][0]= tensao;
-            y[0][0]= funcSensor(sensores[1]);
-            x= observador.Observa(y,u);
-            mutex_.lock();
-            ui->plotS1->graph(6)->addData(tempo, x[0][0]);
-            ui->plotS1->graph(7)->addData(tempo, x[1][0]);
-            mutex_.unlock();
+            if(ui->radioButton_Polos->isChecked()){
+                //calcula L com os polos
+                L = observador.Calcula_L(complex<double>(ui->doubleSpinBox_p1_real->value(), ui->doubleSpinBox_p1_img->value()), complex<double>(ui->doubleSpinBox_p2_real->value(), ui->doubleSpinBox_p2_img->value()));
+                ui->labelL->setText("["+ QString::number(L[0][0]) +"    "+ QString::number(L[0][1])+"]");
+                //mostra L
+                observador.setL(L);
+                Matriz y(1,1), u(1,1), x(2,1);
+                u[0][0]= tensao;
+                y[0][0]= funcSensor(sensores[1]);
+                x= observador.Observa(y,u);
+                mutex_.lock();
+                ui->plotS1->graph(6)->addData(tempo, x[0][0]);
+                ui->plotS1->graph(7)->addData(tempo, x[1][0]);
+                mutex_.unlock();
+            }else if(ui->radioButton_matrizGanhos){
+                //calcula os polos com L
+                L[0][0]=ui->doubleSpinBox_L1->value();
+                L[0][1]=ui->doubleSpinBox_L2->value();
+                vector<complex<double>> polos = observador.Calcula_Polos(L);
+
+                ui->labelPolos->setText("("+ QString::number(polos[0].real()) + "+i"+QString::number(polos[0].imag()) +", "+QString::number(polos[1].real()) + "+i"+QString::number(polos[1].imag())+")");
+                //mostra os polos
+                observador.setL(L);
+                Matriz y(1,1), u(1,1), x(2,1);
+                u[0][0]= tensao;
+                y[0][0]= funcSensor(sensores[1]);
+                x= observador.Observa(y,u);
+                mutex_.lock();
+                ui->plotS1->graph(6)->addData(tempo, x[0][0]);
+                ui->plotS1->graph(7)->addData(tempo, x[1][0]);
+                mutex_.unlock();
+
+            }
+
         }
 
         mutex_.lock();
@@ -813,7 +840,24 @@ void MainWindow::on_checkBox_observacao_clicked(bool checked)
 {
     if(checked == true){
         //desativar pid
+        ui->comboBoxSinalOrdem->setCurrentText("Segunda (1C)");
+        ui->doubleSpinBox_kp->setValue(ui->doubleSpinBox_kp_obs->value());
+
+        ui->doubleSpinBox_kp_obs->setEnabled(true);
+        ui->doubleSpinBox_p1_real->setEnabled(true);
+        ui->doubleSpinBox_p1_img->setEnabled(true);
+        ui->doubleSpinBox_p2_img->setEnabled(true);
+        ui->doubleSpinBox_p2_img->setEnabled(true);
+        ui->doubleSpinBox_L1->setEnabled(true);
+        ui->doubleSpinBox_L2->setEnabled(true);
+
     }else{
-        //tudo normal
+        ui->doubleSpinBox_kp_obs->setEnabled(false);
+        ui->doubleSpinBox_p1_real->setEnabled(false);
+        ui->doubleSpinBox_p1_img->setEnabled(false);
+        ui->doubleSpinBox_p2_img->setEnabled(false);
+        ui->doubleSpinBox_p2_img->setEnabled(false);
+        ui->doubleSpinBox_L1->setEnabled(false);
+        ui->doubleSpinBox_L2->setEnabled(false);
     }
 }

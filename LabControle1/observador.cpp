@@ -61,3 +61,8 @@ Matriz Observador::Observa(Matriz y, Matriz u)
         x[1][0]= 30;
     return x;
 }
+
+void Observador::setL(Matriz L){
+    this->L = L;
+}
+

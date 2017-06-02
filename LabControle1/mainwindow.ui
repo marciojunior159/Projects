@@ -1116,6 +1116,9 @@
       <property name="text">
        <string>Pólos</string>
       </property>
+      <property name="checked">
+       <bool>false</bool>
+      </property>
      </widget>
      <widget class="QRadioButton" name="radioButton_matrizGanhos">
       <property name="geometry">
@@ -1130,6 +1133,9 @@
        <string>Matriz de ganhos</string>
       </property>
       <property name="checked">
+       <bool>true</bool>
+      </property>
+      <property name="autoExclusive">
        <bool>true</bool>
       </property>
      </widget>

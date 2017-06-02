@@ -252,7 +252,7 @@ Lucas Costa Pereira Cavalcante.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=11cm]{fotosLab5/interfaceObs.png}
+\includegraphics[width=13cm]{fotosLab5/interfaceObs.png}
 \caption{Interface do software de controle}
 \label{interface}
 \end{figure}
@@ -340,63 +340,63 @@ double PID::Controle(double e, double y, double h)//Controlador PI-D
 \thispagestyle{main}
 
 \section{RESULTADOS}
-\hspace{4ex}Analisando o observador de estados para varios polos. Onde a curva em azul indica o nivel do tanque 1, a curva em verde o nivel do tanque 2 a cruva em preto o nivel observado do tanque 1 e a curva em cinza o nivel observado do tanque 2.
+\hspace{4ex}Nas figuras a seguir será apresentado os gráficos da interface do software, a qual mostrará o comportamento do observador de estados para vários pólos, onde a curva em azul indica o nível do tanque 1($L_1$), a curva em verde é o nível do tanque 2($L_2$), a curva em preto é o nível observado do tanque 1 e a curva em cinza é o nível observado do tanque 2.
 
-\hspace{4ex} Inicialmente colocando dois polos em 0, podemos ver que a curva do nivel do tanque 2 ficou em cima da curva original indicando que seus valores estão muito proximos. Já no tanque 1 podemos ver que o valor estimado do nivel se aproxima do valor real mas como o observador está muito rapido, devido aos polos na origem, acaba passando do seu valor.
+\hspace{4ex}Inicialmente foi inserido dois pólos em 0, logo, é possível observar que a curva do nível do tanque 2 ficou alinhada com a curva informada pelo sensor, isso indica que seus valores estão muito próximos, enquanto que no tanque 1, pode-se perceber que o valor estimado do nível se aproxima do valor real, mas o ultrapassa, pois  o observador está muito rápido devido aos pólos na origem.
 \begin{figure}[!h]
 \centering
-\includegraphics[width=14cm]{FotosObservador/PolosEm01}
+\includegraphics[width=13cm]{FotosObservador/PolosEm01}
 \caption{Observador com dois polos em 0}
 \label{img1}
 \end{figure}
 \begin{figure}[!h]
 \centering
-\includegraphics[width=14cm]{FotosObservador/PolosEm02}
-\caption{Observador com dois polos em 0}
+\includegraphics[width=13cm]{FotosObservador/PolosEm02}
+\caption{Observador com dois pólos em 0}
 \label{img2}
 \end{figure}
 
-\hspace{4ex} Agora com polos imaginarios em 0.7+0.7i e 0.7-0.7i. O valor observado do tanque 1 foi bastante oscilatorio como esperado e o valor do tanque 2 continuo acompanhando a curva.
+\hspace{4ex}Agora com pólos imaginários em 0.7+0.7i e 0.7-0.7i, o valor observado do tanque 1 foi bastante oscilatório, como esperado, e o valor do tanque 2 contínuo, ou seja, a curvado observável acompanhando a curva real do nível.
 \begin{figure}[!h]
 \centering
-\includegraphics[width=14cm]{FotosObservador/PoloImaginario2}
-\caption{Observador com polos imaginarios}
+\includegraphics[width=13cm]{FotosObservador/PoloImaginario2}
+\caption{Observador com pólos imaginários}
 \label{img3}
 \end{figure}
 \begin{figure}[!h]
 \centering
-\includegraphics[width=14cm]{FotosObservador/PoloImaginario1}
-\caption{Observador com polos imaginarios}
+\includegraphics[width=13cm]{FotosObservador/PoloImaginario1}
+\caption{Observador com pólos imaginários}
 \label{img4}
 \end{figure}
 
 \newpage
-\hspace{4ex} Agora  com dois polos reais distantes do centro da circuferencia em 0.99 e 0.99, podemos ver que até mesmo o nivel do tanque 2 demora para acompanhar o valor real da curva.
+\hspace{4ex}Depois disso, com dois pólos reais distantes do centro da circuferência, em 0.99 e 0.99, nota-se que até mesmo o nível do tanque 2 demora para acompanhar o valor real da curva.
 \begin{figure}[!h]
 \centering
-\includegraphics[width=14cm]{FotosObservador/PolosMuitoLentos1}
-\caption{Observador com polos distantes da origem}
+\includegraphics[width=13cm]{FotosObservador/PolosMuitoLentos1}
+\caption{Observador com pólos distantes da origem}
 \label{img5}
 \end{figure}
 \begin{figure}[!h]
 \centering
-\includegraphics[width=14cm]{FotosObservador/PolosMuitoLentos2}
-\caption{Observador com polos distantes da origem}
+\includegraphics[width=13cm]{FotosObservador/PolosMuitoLentos2}
+\caption{Observador com pólos distantes da origem}
 \label{img6}
 \end{figure}
 
 \newpage
-\hspace{4ex} Agora com polos reais um na origem e outro distante da origem em 0.99, nessa configuração ambos os valores estimados foram bons.
+\hspace{4ex}Por fim, com pólos reais, um na origem e outro distante da origem, em 0.99, nessa configuração ambos os valores estimados foram bons. Na figura \ref{img7}, o tempo de subida foi pequeno e, na figura \ref{img8}, o tempo de subida foi grande.
 \begin{figure}[!h]
 \centering
-\includegraphics[width=14cm]{FotosObservador/PoloRapidoELento2}
-\caption{Observador com um polo na origem e outro distante}
+\includegraphics[width=13cm]{FotosObservador/PoloRapidoELento2}
+\caption{Observador com um pólo na origem e outro distante}
 \label{img7}
 \end{figure}
 \begin{figure}[!h]
 \centering
-\includegraphics[width=14cm]{FotosObservador/PoloRapidoELento1}
-\caption{Observador com um polo na origem e outro distante}
+\includegraphics[width=13cm]{FotosObservador/PoloRapidoELento1}
+\caption{Observador com um pólo na origem e outro distante}
 \label{img8}
 \end{figure}
 

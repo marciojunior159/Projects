@@ -98,8 +98,8 @@ CURSO DE ENGENHARIA DE COMPUTAÇÃO
 
 \vspace{3.6cm}
 
-{\bf{\large RELATÓRIO DA 4ª EXPERIÊNCIA\\
-CONTROLE DE SISTEMAS DINÂMICOS: CONTROLE EM CASCATA\\
+{\bf{\large RELATÓRIO DA 5ª EXPERIÊNCIA\\
+CONTROLE NO ESPAÇO DE ESTADOS: OBSERVADORES DE ESTADO\\
 }}
 \vspace{1.5cm}
 {\large TURMA: 01 A\\
@@ -149,16 +149,16 @@ VITOR RAMOS GOMES DA SILVA: 20160154415\\
 \end{center}
 \vspace{3cm}
 
-{\bf{\large {\centering CONTROLE DE SISTEMAS DINÂMICOS: CONTROLE EM CASCATA\\}}}
+{\bf{\large {\centering CONTROLE NO ESPAÇO DE ESTADOS: OBSERVADORES DE ESTADO\\}}}
 
 \vspace{4cm}
 
 \begin{adjustwidth}{7.5cm}{0cm}
 
 {\normalsize
-Quarto Relatório apresentado à disciplina de
+Quinto relatório apresentado à disciplina de
 Laboratório de Sistemas de Controle, correspondente à
-avaliação da 2º unidade do semestre 2017.1 do 8º período
+avaliação da 3º unidade do semestre 2017.1 do 8º período
 do curso de Engenharia de Computação da
 Universidade Federal do Rio Grande do Norte, sob
 orientação do {\bf Prof. Fábio Meneghetti Ugulino de
@@ -196,13 +196,13 @@ Lucas Costa Pereira Cavalcante.
 
 \begin{flushleft}
 
-\hspace{4ex}O presente trabalho é a quarta etapa da construção de um aplicativo desktop para controle de sistema de tanques. O software utiliza a comunicação cliente/servidor no qual o sistema de tanques é o servidor. A planta antes utilizada da Quanser foi substituída por uma simulação feita em Java3D, o que eliminou o nível de ruído dos resultados. Nesta etapa do trabalho, o objetivo foi a implementação de controladores P, PI, PD, PID e PI-D de segunda ordem na configuração controle em cascata. A teoria acerca de controle em cascata é introduzida, após é apresentado os resultados dos testes de controle da planta. Por fim, chega-se a conclusão que o controle em cascata tem uma resposta mais rápida em relação às pequenas modificações de nível, mas não tendo a sintonização correta se perde as vantagens adquiridas. \\
+\hspace{4ex}O presente trabalho é a quinta etapa da construção de um aplicativo desktop para controle de sistema de tanques. O software utiliza a comunicação cliente/servidor no qual o sistema de tanques é o servidor. A planta antes utilizada da Quanser foi substituída por uma simulação feita em Java3D, o que eliminou o nível de ruído dos resultados. Nesta etapa do trabalho, o objetivo foi projetar e implementar um observador de estados para um controlador proporcional de segunda ordem. A teoria acerca do observador de estados é introduzida, após é apresentado os resultados dos testes de controle da planta. Por fim, chega-se a conclusão que o valor observado no tanque 2 é muito mais próximo da realidade do que o observado no tanque 1, além deste último apresentar instabilidade para polos imaginários. \\
 
 \end{flushleft}
 
 \vspace{1.5cm}
 
-\textbf{Palavras-chave:} sistema de tanques; sistema de controle; software; planta Quanser, controlador PID; controle em cascata.
+\textbf{Palavras-chave:} sistema de tanques; sistema de controle; software; planta Quanser, controlador PID; observação de estados, realimentação de estados.
 
 \newpage
 
@@ -233,7 +233,7 @@ Lucas Costa Pereira Cavalcante.
 \section{INTRODUÇÃO}
 
 %\begin{flushleft}
-\hspace{4ex}A prática de laboratório 04 tem como objetivo introduzir um sistema de controle em cascata na planta \textit{Quanser}, sendo a figura \ref{r2d2e} o simulador da planta:
+\hspace{4ex}A prática de laboratório 05 tem como objetivo introduzir o conceito de espaço de estados, nesse relatório será apresentado a implementação de um observador de estado para controlar o nível do tanque de baixo da planta \textit{Quanser}, sendo a figura \ref{r2d2e} a representação do simulador da planta:
 
 \begin{figure}[H]
 \centering
@@ -242,40 +242,24 @@ Lucas Costa Pereira Cavalcante.
 \label{r2d2e}
 \end{figure}
 
-\hspace{4ex}Pretende-se controlar o nível de água de ambos os tanques da planta, para isso, foi implementado os controladores Proporcional (P), Proporcional Integrativo (PI), Proporcional Derivativo (PD), Proporcional Integrativo Derivativo (PID) e Proporcional Integrativo Derivativo em controle de ação baseado no sinal do processo (PI-D). Quem irá escolher qual controle será usado é o usuário, através da interface do programa desenvolvido, como mostrado na figura \ref{interface}:
+\hspace{4ex}Essa planta é controlada através de um software desenvolvido, o qual disponibiliza opção de controle em malha aberta e malha fechada. Em malha aberta, o usuário informa a tensão que quer enviar para bomba que encherá o tanque, enquanto que em malha fechada, o valor informado será o nível do tanque. Além disso, em malha fechada, também deverá ser informado a ordem do sistema, ou seja, se o objetivo é controlar apenas o tanque de cima($L_1$) ou se o desejado é o controle do tanque de baixo($L_2$), onde nesse último caso é usado o controle em cascata. Com isso, há as opções de controle utilizando os controladores Proporcional (P), Proporcional Integrativo (PI), Proporcional Derivativo (PD), Proporcional Integrativo Derivativo (PID) e Proporcional Integrativo Derivativo em controle de ação baseado no sinal do processo (PI-D).
+
+\hspace{4ex}E nesse laboratório, foi adicionado mais uma opção de controle, o usuário poderá escolher realizar a observação de estados, o qual será utilizado o sistema de segunda ordem em malha fechada com apenas a ação proporcional. 
+
+\hspace{4ex}Com relação a essa última opção, na implementação do controle, foi encontrado uma representação em espaço de estados onde o nível do tanque de cima e o nível do tanque de baixo são os estados do modelo. Depois disso, a equação de estado foi discretizada utilizando o período de amostram 0,1 s.
+
+\hspace{4ex}Na interface do software desenvolvido, o usuário deverá informar quais serão os valores dos pólos ou informar a matriz de ganhos do observador.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=11cm]{ImagensLab4/interface-versao4.png}
+\includegraphics[width=13cm]{fotosLab5/interfaceObs.png}
 \caption{Interface do software de controle}
 \label{interface}
 \end{figure}
 
-\hspace{4ex}Além dessas opções, o usuário também deve escolher os ganhos dos controladores Kp, Ki e ou Kd, ou $\tau_i$ e $\tau_d$, os quais são necessários para o controlador, como também, o  sinal de referência a ser enviado, o offset, a análise da resposta do sistema para o tempo de subida (t$_r$), por exemplo, de 5\% à 95\%, e o tempo de acomodação (t$_s$), para as faixas de 2\%, 5\% e 10\% do degrau. Ademais, é possível saber os valores do  t$_r$, t$_s$, tempo de pico (t$_p$) e o sobressinal (Mp) do sistema de segunda ordem.
+\hspace{4ex}Também é possível que o usuário opte por visualizar as curvas da estimativa para cada estado e para a saída calculada a partir dos estados estimados e, assim, consiga comparar os resultados.
 
-\hspace{4ex}O controle da planta se dará de duas formas: utilizando apenas uma malha de controle, como também, o controle em cascata. A configuração da planta mostrada na figura \ref{r2d2e} fazendo uso do controle de uma malha será da seguinte maneira:
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=11cm]{ImagensLab4/umamalha.png}
-\caption{Configuração da planta utilizando uma malha de controle.}
-\label{umamalha}
-\end{figure}
-
-\hspace{4ex}No caso mostrado acima, na figura \ref{umamalha}, a tensão enviada para a bomba está sendo manipulada para o tanque de baixo da planta alcançar o nível desejado pelo usuário, isso é possível por causa da relação entre os dois tanques: a vazão de saída do tanque de cima é a vazão de entrada do tanque de baixo. Através do cálculo do erro do sinal de referência e a medição do segundo tanque será fornecida uma tensão que deixe o tanque de cima com um nível de água a qual levará o tanque de baixo para o valor desejado.
-
-\hspace{4ex}Com a configuração de duas malhas de controle, ou seja, utilizando o controle em cascata, teremos a seguinte configuração:
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=11cm]{ImagensLab4/duasmalhas.png}
-\caption{Configuração da planta utilizando o controle em cascata.}
-\label{duasmalha}
-\end{figure}
-
-\hspace{4ex}Nesse caso, além de controlar o nível do tanque de baixo, pode-se controlar o nível do tanque de cima. Nessa configuração, denominamos o controlador mais externo de controlador mestre, o qual controla o nível do tanque de baixo da mesma forma que ocorre no controle com uma malha, e o controlador da malha interna é o controlador escravo, que a partir do erro entre o nível desejado do tanque de cima e seu nível real, irá determinar a tensão enviada para a bomba.
-
-\hspace{4ex}No relatório é apresentado a metodologia utilizada nessa experiência, os resultados obtidos através de testes e as conclusões a partir da comparação do comportamento do sistema com uma e com duas malhas.
+\hspace{4ex}Mais à frente, será abordado no relatório em que os cálculos foram baseados para a obtenção do observador de estados, a metodologia utilizada no trabalho, como também será apresentado o comportamento do observador para diferentes conjuntos de pólos e, por conseguinte, a conclusão a cerca desse controle.
 
 %\end{flushleft}
 
@@ -287,66 +271,166 @@ Lucas Costa Pereira Cavalcante.
 
 \section{REFERENCIAL TEÓRICO}
 
-\subsection{CONTROLE EM CASCATA}
-\hspace{4ex}O controle em cascata é uma estratégia de controle que utiliza dois controladores aninhados de modo que a identificação de pequenos distúrbios aconteça de forma mais rápida e, consequentemente, a correção seja feita antes de o sistema sofrer grandes alterações. De forma genérica, o controle em cascata pode ser representando pelo diagrama da figura \ref{cascata}. Pode-se perceber que é necessário medir duas variáveis de processos, o da malha interna (chamada de malha escrava) e o da malha externa (chamada de malha mestre). Essas medidas, feitas através de uso de sensores, é comparada com a referência de cada malha. Sendo que a referência da malha externa, ou set point, é uma entrada do sistema. Já na malha interna, quem determina qual vai ser o "nível" a ser alcaçado é o controlador da malha externa. Então a malha do processo secundário recebe o erro, é feito o cálculo do nível para aquele processo que é enviado através de uma sinal de controle para o atuador, modificando o processo da malha interna.     
+\subsection{DISCRETIZAÇÃO}
+\hspace{4ex}Para que um computador ou microcontrolador possa controlar um sistema, estes devem ser capaz de entender as informações obtidas pelo sistema no “mundo real” de forma a trabalhar estas informações digitalmente. Mas enquanto as variáveis podem ser sinais analógicos, a máquina entende somente sinais digitais. Há, portanto, a necessidade de uma transformação nas informações recebidas pelo sistema, para que estas sejam lidas pelo controlador digital – a este processo de transformação é dado o nome de {\bf discretização}.
 
-\begin{figure}[h]
-\centering
-\includegraphics[width=17cm]{ImagensLab4/controle-em-cascata.png}
-\caption{Diagrama de bloco do controle em cascata}
-\label{cascata}
-\end{figure}
-
-Esse tipo de configuração é eficiente devido a dependência entre o processo primário e o secundário. Por exemplo, numa planta onde o gás que passa por um cano é resposável pelo aquecimento da água de um tanque, a atuação é feita controlando a quantidade de vazão do gás no cano. Há uma relação nesse processo em que quanto maior a vazão, mais quente ficará a água. Então a malha mestre seria o tanque com a água, e a malha escrava, a tubulação com gás. 
-
-Outro aspecto importante a ser levado em consideração é a velocidade de cada processo. O processo primário tem que ser mais lento que o processo secundário. Como a temperatura varia de forma mais lenta que a vazão de um gás por uma tubulação, então não haveria conflito entre os sinais de controle. 
-
-A questão de utilizar dois controladores vem dessa diferença de velocidades entre os processos, visto que uma diferença pequena de temperatura geraria um pequeno sinal de erro, logo, se tivesse apenas um controlador, o sinal enviado para controlar a vazão seria pequeno, o que não surtiria muito efeito na temperatura, quase não alteraria ou demoraria muito tempo. Já dois controladores conseguem mapear a relaçao entre o processo lento e um processo mais rápido. 
-
-Uma das desvantagens de se utilizar o controle em cascata é que, ao adicionar mais um controlador, aumenta a complexidade de controle, pois é necessário sintonizar um quantidade dobrada de ganhos, gerando uma quantidade maior de combinações entre tipos de controle e ganhos possíveis. 
-
-
-
-
-\newpage
-
-%%%%%%%%%% METODOLOGIA %%%%%%%%%%%%%%%
-
-\thispagestyle{main}
-
-\section{METODOLOGIA}
-
-\hspace{4ex}Utilizando o simulador R2D2E, foram feitos testes com o controlador mestre e o escravo, como também, com apenas um controlador para alcançar determinados níveis dos tanques da planta, os quais serão expostos nos resultados.
-
-\hspace{4ex}Para isso, foi implementado uma classe controlador a qual é determinada de acordo com as escolhas do usuário, ou seja, se é P, PI, PD, PID ou PI-D. Por exemplo, se o usuário escolhe o controlador PD, ele fornecerá apenas os valores de Kp e Kd, ou Kp e $\tau_d$, e a partir desses valores a classe assumirá que Ki ou $\tau_i$ não existe, ou seja, o valor da integral será zero. O mesmo acontece se for escolhido o PI, nesse caso, o valor da derivada do erro será zero.
-
-\hspace{4ex}Observe os métodos abaixo, o primeiro é para os casos em que o usuário escolher os controladores P, PI, PD ou PID, enquanto que o segundo método foi criado para o caso em que se quer usar o PI-D, pois utiliza o sinal do processo (y) ao invés de usar o erro.
-\begin{lstlisting}
-double PID::Controle(double e, double h)//Controladores P, PI, PD e PID
-{
-    I= I+Ki*e*h; //Simpsons (e+e_ant)*h/2 - integral do erro
-    D= Kd*(e-e_ant)/h; //Derivada do erro
-    e_ant= e; //Erro
-    return Kp*e+I+D; //Sinal de controle
-}
-
-double PID::Controle(double e, double y, double h)//Controlador PI-D
-{
-    I= I+Ki*e*h; //Integral do erro
-    D= Kd*(y-e_ant)/h; //Derivada do sinal do processo
-    e_ant= y; //Sinal do processo
-    return Kp*e+I+D; //Sinal de controle
-}
-\end{lstlisting}
-\hspace{4ex}No software desenvolvido, esses valores podem ser escolhidos como mostrado na figura \ref{controladores}.
+Em controle de estados, o comportamento do sistema será determinado por matrizes (A, B, C, D) que deverão ser modificadas uma vez que os sinais contínuos sejam discretizados, de tal forma que o comportamento do sistema discreto seja o mais próximo possível do sistema contínuo. Para encontrar as novas matrizes do sistema (G e H), aplica-se a relação entre as variáveis contínua e discreta na equação de sistemas discretos.
 
 \begin{figure}[H]
      \centering
-     \subfloat[][Controlador Mestre]{\includegraphics[width=4cm]{ImagensLab4/controlador1}\label{<figureP1>}}\hspace{4ex}
-     \subfloat[][Controlador Escravo]{\includegraphics[width=4cm]{ImagensLab4/controlador2}\label{<figureP2>}}\\
-     \caption{Interface para a escolha dos controladores}
-     \label{fig:controladores}
+     \subfloat[]{\includegraphics[width=5cm]{fotosLab5/sistema_discreto.png}\label{sistdiscreto}}
+\hspace{1cm}
+     \subfloat[]{\includegraphics[width=7cm]{fotosLab5/relacao.png}\label{relacao}}
+\hspace{1cm}
+     \subfloat[]{\includegraphics[width=5cm]{fotosLab5/G_H.png}\label{g_h}}
+\hspace{1cm}
+     \caption{G e H, matrizes do observador de tempo discreto}
+     \label{fig:G_H}
 \end{figure}
+
+\subsection{OBSERVADOR DE ESTADOS}
+
+\hspace{4ex}O observador de estados é um algoritmo que surgiu da necessidade de se medir os estados de um sistema de controle. Em função dos altos custos e às vezes da impossibilidade de se conseguir medir estes estados, o observador de estados funciona como alternativa à medição, estimando o valor das variáveis de estado através dos valores de entrada e saída.
+
+\vspace{0.7cm}
+\hspace{6ex}{\bf 1. Caso contínuo}
+
+Supondo um sistema contínuo observável formado pelas equações:
+\newpage
+\begin{figure}[H]
+\centering
+\includegraphics[width=5cm]{fotosLab5/sistema_continuo.png}
+\caption{Sistema de controle contínuo}
+\label{continuo}
+\end{figure}
+
+Sendo A, B, C e D conhecidos, e sendo y(t) e u(y) medidos pelo sistema, o observador de estados será definido por:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=8cm]{fotosLab5/observador_continuo.png}
+\caption{Observador de estados contínuo}
+\label{continuo}
+\end{figure}
+
+\vspace{0.7cm}
+\hspace{6ex}{\bf 2. Caso discreto}
+
+Supondo um sistema discreto observável, de ordem n, formado por:
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=6cm]{fotosLab5/sistema_discreto.png}
+\caption{Sistema de controle discreto}
+\label{sist_discreto}
+\end{figure}
+
+Sendo G, H, C e D conhecidos e sendo x(k) e u(k) obtidos pelo sistema, o observador de estados discreto será definido por:
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=10cm]{fotosLab5/observador_discreto.png}
+\caption{Observador de estados discreto}
+\label{ob_discreto}
+\end{figure}
+
+\subsubsection{ERRO DE ESTIMAÇÃO}
+Erro de estimação é como é conhecida a diferença entre x e $\hat{x}$. Sabendo os valores das derivadas de x e $\hat{x}$ é possível calcular $\dot{\mathbf{e}}$:
+
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=10cm]{fotosLab5/erro_continuo.png}
+\caption{Erro de estimação (tempo contínuo)}
+\label{erro_continuo}
+\end{figure}
+
+Para o caso discreto, obtém-se pelo mesmo método a derivada do erro:
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=10cm]{fotosLab5/erro_discreto.png}
+\caption{Erro de estimação (tempo discreto)}
+\label{erro_discreto}
+\end{figure}
+
+\subsubsection{FÓRMULA DE ACKERMANN}
+
+\hspace{4ex}A fórmula de Ackermann permite determinar através de variáveis conhecidas o vetor de ganhos do sistema.
+
+O vetor de ganhos terá o formato:
+
+\hspace{4ex}{\bf L=[L1,L2,…,Ln]}
+
+Os elementos dos vetores serão encontrados pela fórmula de Ackermann. Para o caso discreto, teremos:
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=5cm]{fotosLab5/ackermann.png}
+\caption{Fórmula de Ackermann}
+\label{ackermann}
+\end{figure}
+
+
+\newpage
+%%%%%%%%%% METODOLOGIA %%%%%%%%%%%%%%%
+
+
+
+\section{METODOLOGIA}
+
+\hspace{4ex}Para se fazer a observação de estados da planta, foi necessário obter as matrizes G e H. A partir do modelo oferecido na descrição do experimento, pode-se calcular com as estratégias citadas anteriormente, na seção Referencial Teórico. Além de obter essas matrizes, foi verificado se o sistema é observável, e foi obtido um resultado positivo. Juntamente com esse cálculo, de forma análoga, observou que o sistema não é controlável.
+
+\hspace{4ex}Uma vez com as informações importantes do sistema, a implementação da observação de estados se transforma em algoritmos de cálculo de pólos e cálculo da matriz de ganhos L. Feitas nos seguintes métodos.
+
+\begin{lstlisting}
+
+vector<complex<double>> Observador::Calcula_Polos(Matriz ll)
+{
+    complex<double> a00(G[0][0],0), a01(G[0][1],0), 
+    		a10(G[1][0],0), a11(G[1][1],0);
+    complex<double> l1(ll[0][0],0), l2(ll[1][0],0);
+    vector<complex<double>> polos;
+    complex<double> p1= -(-a00-a11+l2+
+    	sqrt(pow(l2,2)+(2.0*a00-2*a11)*l2-4.0*a10*l1+
+    	pow(a11,2.0)-2.0*a00*a11+
+    	4.0*a01*a10+pow(a00,2)))/2.0;
+    complex<double> p2=  (a00+a11-l2+
+    	sqrt(pow(l2,2)+(2.0*a00-2.0*a11)*l2-4.0*a10*l1+
+    	pow(a11,2)-2.0*a00*a11+4.0*a01*a10+pow(a00,2)))/2.0;
+    polos.push_back(p1);
+    polos.push_back(p2);
+    return polos;
+}
+Matriz Observador::Calcula_L(complex<double> p1, complex<double> p2)
+{
+    Matriz I= Matriz::Identidade(2), aux(2,1);
+    aux[0][0]= 0;
+    aux[1][0]= 1;
+    double c[2]= {(-p1-p2).real(), (p1*p2).real()};
+    Matriz Ackerman= (G^2)+(c[0]*G)+(c[1]*I);
+    L= (Ackerman*W_inv)*aux;
+    return L;
+}
+
+
+\end{lstlisting}
+\hspace{4ex}Os métodos acima, são algoritmos que representam os cálculos citados no referencial teórico. Já no método para encontrar os pólos, foi feito uma manipulação algébrica a partir das equações para encontrar a matriz L.
+
+\hspace{4ex}Tais cálculos são feitos devido o programa ter como entrada os pólos e a matriz de ganhos, como mostrado na figura a seguir. Quando o usuário escolhe inserir o pólos, é feita a chamada do método Calcula\_L, para então observar o sistema.
+
+\begin{figure}[H]
+     \centering
+     \includegraphics[width=4cm]{fotosLab5/observador-interface}}
+     \caption{Interface referente as entradas da observação}
+     \label{fig:obs-inter}
+\end{figure}
+
+\hspace{4ex}Caso contrário, ou seja, caso a entrada seja a matriz L, é encontrado os pólos e apresentado ao usuário na interface os respectivos pólos.
+
+\hspace{4ex}Por fim, utilizando o simulador R2D2E, foram feitos testes de controle fixado no tipo proporcional para o sistema de segunda ordem com apenas um controlador, alternando entre as opções dadas ao usuário, ora tendo como entrada os pólos, ora a matriz L. Sendo que o foco foi o teste com vários pólos, pois desejava-se encontrar os pólos mais adequados para o sistema. 
+
+
 
 
 \newpage
@@ -356,211 +440,64 @@ double PID::Controle(double e, double y, double h)//Controlador PI-D
 \thispagestyle{main}
 
 \section{RESULTADOS}
+\hspace{4ex}Nas figuras a seguir será apresentado os gráficos da interface do software, a qual mostrará o comportamento do observador de estados para vários pólos, onde a curva em azul indica o nível do tanque 1($L_1$), a curva em verde é o nível do tanque 2($L_2$), a curva em preto é o nível observado do tanque 1 e a curva em cinza é o nível observado do tanque 2.
 
-\hspace{4ex}A análise do projeto desenvolvido foi realizada através da verificação das alterações do sistema quando testados diferentes valores e diferentes tipos de controladores.
-Para o teste inicial, foram testados os controladores ambos com PIs de kp = 1 e ki = 0,03. Como pode ser observado na imagem a seguir (figura \ref{img1}), os níveis dos tanques (L1 e L2) ficaram bem abaixo do valor de finido de 10 cm e enquanto o nível no tanque 1 teve um tempo de subida inferior a 1s, o nível no tanque 2 teve um tempo de subida de quase 5s.
-%img1
-
+\hspace{4ex}Inicialmente, como mostrado nas figuras \ref{img1} e \ref{img2}, foi inserido dois pólos em 0, logo, é possível observar que a curva do nível do tanque 2 ficou alinhada com a curva informada pelo sensor, isso indica que seus valores estão muito próximos, enquanto que no tanque 1, pode-se perceber que o valor estimado do nível se aproxima do valor real, mas o ultrapassa, pois  o observador está muito rápido devido aos pólos na origem.
 \begin{figure}[!h]
 \centering
-\includegraphics[width=11cm]{ImagensLab4/1.png}
-\caption{Controle PI no mestre e no escravo}
+\includegraphics[width=13cm]{FotosObservador/PolosEm01}
+\caption{Observador com dois polos em 0}
 \label{img1}
 \end{figure}
-
-
-No segundo teste foi aumentado o kp do controlador 1, de 1 para 3. O resultado percebido por essa alteração foi um nível em ambos os tanques mais próximo do esperado, um maior sobressinal para o tanque 1 e um tempo de subida consideravelmente mais alto para o tanque 2.
-%[img0]
-\newpage
 \begin{figure}[!h]
 \centering
-\includegraphics[width=11cm]{ImagensLab4/0.png}
-\caption{Controle PI no mestre e no escravo com kp maior}
-\label{img1}
+\includegraphics[width=13cm]{FotosObservador/PolosEm02}
+\caption{Observador com dois pólos em 0}
+\label{img2}
 \end{figure}
 
-No terceiro teste, o kp do controlador 2 foi aumentado para 3. Esta mudança causou uma alta instabilidade no sistema, principalmente do tanque 1, cujo nível variou bastante entre 5 e 10 cm. A instabilidade causada pelo kp2 foi verificada novamente ao testar o sistema com dois PIs de variáveis kp=2, ki=0,05.
-%[img9][img4]
-
-\begin{figure}[H]
-     \centering
-     \subfloat[]{\includegraphics[width=7cm]{ImagensLab4/9.png}\label{img9}}    
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7cm]{ImagensLab4/4.png}\label{img4}}
-     
-     \caption{Aumento do kp}
-     \label{fig:ControlePI}
+\hspace{4ex}Agora com pólos imaginários em 0.7+0.7i e 0.7-0.7i, o valor observado do tanque 1 foi bastante oscilatório, como esperado, e o valor do tanque 2 contínuo, ou seja, a curvado observável acompanhando a curva real do nível, verifique as figuras \ref{img3} e \ref{img4}.
+\begin{figure}[!h]
+\centering
+\includegraphics[width=13cm]{FotosObservador/PoloImaginario2}
+\caption{Observador com pólos imaginários}
+\label{img3}
 \end{figure}
-
-Trocando o controlador 1 do segundo teste por um controlador PD (kp=3, kd=0,003), foi possível observar uma leve baixa do nível do tanque, com alterações pouco perceptíveis na fase transitória.
-%[img10][img0]
-\begin{figure}[H]
-     \centering
-     \subfloat[]{\includegraphics[width=7cm]{ImagensLab4/10.png}\label{img10}}    
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7cm]{ImagensLab4/0.png}\label{img00}}
-     
-     \caption{Comparação entre Controle PD no escravo e PI no mestre e PI/PI}
-     \label{fig:ControlePIPD}
-\end{figure}
-
-Em seguida, foi realizado um teste com uma dupla de controladores PID com kp=1, ki=0,01 e kd=0,001. Ao comparar com a dupla de PIs do primeiro teste, percebe-se um overshoot bem menor, com tempo de subida próximos e um nível mais baixo para a dupla de PIDs.
-%[img5][img1]
-
-\begin{figure}[H]
-     \centering
-     \subfloat[]{\includegraphics[width=7cm]{ImagensLab4/5.png}\label{img5}}    
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7cm]{ImagensLab4/1.png}\label{img1}}
-     
-     \caption{Controle PID no escravo e PID no mestre}
-     \label{fig:ControlePIDPID}
-\end{figure}
-Ao testar uma combinação P-PD, P com kp=3 e PD com kp=1 e kd=0,001, obtivemos um valor de nível bem mais próximo do desejado, com o sistema apresentando uma forma menos ondulatória do que nos testes anteriores. Ao trocar o PD por um PID, obtivemos uma fase transitória um pouco reduzida e uma queda considerável no nível do tanque.
-%[img17][img8]
-
-\begin{figure}[H]
-     \centering
-     \subfloat[]{\includegraphics[width=7cm]{ImagensLab4/17.png}\label{img10}}    
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7cm]{ImagensLab4/8.png}\label{img00}}
-     
-     \caption{Controle P no escravo e PD no mestre}
-     \label{fig:ControleP-PD}
-\end{figure}
-
-Como último teste, foram realizadas combinações PI-PID, usando um PI similar ao controlador 1 do segundo teste e um PID com kp=1, ki=0,01 e kd=0,005, foram obtidos curvas menos ondulatórias que no segundo teste, com nível mais próximo do esperado e fase transitória de duração praticamente igual.
-%[img3][img0]
-\begin{figure}[H]
-     \centering
-     \subfloat[]{\includegraphics[width=7cm]{ImagensLab4/3.png}\label{img3}}    
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7cm]{ImagensLab4/0.png}\label{img000}}
-     
-     \caption{Controle PI no escravo e PID no mestre}
-     \label{fig:ControlePI}
-\end{figure}
-
-\hspace{4ex}Foram realizados posteriormente testes com propósito de comparar os resultados obtidos com um controlador de segunda ordem com os resultados obtidos com dois controladores. Inicialmente, com um controlador PID (kp = 1; ki = 0,05; kd = 0,005), foi obtido um sinal com um alto sobressinal (60,37\%), e tempos de acomodação e subida, respectivamente de 9,2 e 0,9 segundos. Ao adicionar um segundo controlador ao sistema, o sobressinal é praticamente eliminado. Foram utilizados como segundos controladores PI, PD e PID, para os três casos, os tempos de acomodação e subida ficaram, respectivamente, próximos a 90 e 60 segundos. 
-
-%Imagens (2)
-
-\begin{figure}[H]
-     \centering
-     \subfloat[]{\includegraphics[width=11cm]{ImagensLab4/testes/2.png}\label{img2}}    
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/2-1.png}\label{img2-1}}
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/2-1-1.png}\label{img2-1-1}}
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/2-2.png}\label{img2-2}}
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/2-2-1.png}\label{img2-2-1}}
-\caption{Controle PID com kp=1, ki=0,05 e kd=0,005}
-     \label{fig:ControlePID11}
-\end{figure}
-\begin{figure}[H]
-     \centering
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/2-3.png}\label{img2-3}}
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/2-3-1.png}\label{img2-3-1}}     
-     \caption{Controle PID com kp=1, ki=0,05 e kd=0,005}
-     \label{fig:ControlePID12}
-\end{figure}
-
-
-Foi feito para um controlador PI (kp=1; ki=0,05) o mesmo que o feito com o controlador PID, unindo-o a três controladores diferentes PI, PD e PID - um por vez. O resultado obtido foi parecido com o do teste anterior, com o alto sobressinal do PI (58,91\%) sendo eliminado, e os tempos de subida e acomodação sofrendo grande aumento. Neste exemplo, a diferença nos tempos de subida e acomodação foi um pouco mais visível, com a combinação PI-PI sendo mais rápida que a PI-PID em aproximadamente 3 segundos para tr (tempo de subida) e 4 segundos para ts (tempo de acomodação). A combinação PI-PID por sua vez foi mais rápida que a PI-PD aproximadamente pela mesma diferença – 3s para tr e 4s para ts.
-\\
-%Imagens (3)
-
-
-\begin{figure}[H]
-     \centering
-     \subfloat[]{\includegraphics[width=11cm]{ImagensLab4/testes/3.png}\label{img3}}    
-\caption{Controle PI com kp=1 e ki=0,05}
-     \label{fig:ControlePI}
-\end{figure}
-\begin{figure}[H]
-     \centering
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/3-2.png}\label{img3-1}}
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/3-2-1.png}\label{img3-1-1}}
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/3-3.png}\label{img3-2}}
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/3-3-1.png}\label{img3-2-1}}
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/3-4.png}\label{img3-3}}
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=8cm]{ImagensLab4/testes/3-4-1.png}\label{img3-3-1}}     
-     \caption{Controle PI com kp=1 e ki=0,05}
-     \label{fig:ControlePI}
-\end{figure}
-
-
-
-No terceiro teste foi usado um PID com kp duas vezes maior que o do primeiro teste, obtendo um sistema de um controlador menos estável. Quando aplicados controladores secundários semelhantes aqueles dos testes anteriores, é possível perceber um maior nível do tanque no curto prazo, com o mesmo chegando a atingir 17cm após 1s. Porém, se por um lado, o nível dos tanques está maior nos primeiros 5s, a velocidade de subida de nível é menor que em kp=1, fazendo com que o tempo de acomodação suba em todos os casos. O tempo de subida também foi alterado, apresentando inclusive uma redução para o caso PID-PID, mas também apresentando aumento para PI e para PD.
-
-%Imagens (4) – menos 4-2
-
-
-\begin{figure}[H]
-     \centering
-     \subfloat[]{\includegraphics[width=11cm]{ImagensLab4/testes/4.png}\label{img4}}    
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/4-1.png}\label{img4-1}}
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/4-1-1.png}\label{img4-1-1}}
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/4-3.png}\label{img4-2}}
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/4-3-1.png}\label{img4-2-1}}
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/4-4.png}\label{img4-3}}
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/4-4-1.png}\label{img4-3-1}}     
-     \caption{PID com kp=2,  ki=0,05 e kd=0,005}
-     \label{fig:ControlePID2}
+\begin{figure}[!h]
+\centering
+\includegraphics[width=13cm]{FotosObservador/PoloImaginario1}
+\caption{Observador com pólos imaginários}
+\label{img4}
 \end{figure}
 
 \newpage
-Um pequeno teste para C2 com kp=2 mostrou uma grande instabilidade do sistema para o aumento de kp no controlador secundário.
-\hspace{1cm}
-%Imagem 4-2
-
+\hspace{4ex}Depois disso, com dois pólos reais distantes do centro da circuferência, em 0.99 e 0.99, nota-se que até mesmo o nível do tanque 2 demora para acompanhar o valor real da curva, observe as figuras \ref{img5} e \ref{img6}.
 \begin{figure}[!h]
 \centering
-\includegraphics[width=11cm]{ImagensLab4/testes/4-2.png}
-\caption{PID escravo com kp=2}
-\label{img4-4}
+\includegraphics[width=13cm]{FotosObservador/PolosMuitoLentos1}
+\caption{Observador com pólos distantes da origem}
+\label{img5}
+\end{figure}
+\begin{figure}[!h]
+\centering
+\includegraphics[width=13cm]{FotosObservador/PolosMuitoLentos2}
+\caption{Observador com pólos distantes da origem}
+\label{img6}
 \end{figure}
 
-Como teste final, foram feitas alterações em ki e kd em um controlador primário PID de kp=2. O controlador secundário foi para todos os casos um PI com kp=1 e ki=0,05. As alterações em ki alteraram largamente os tempos de subida e acomodação, se para ki=0,05, no teste passado, foi obtido ts = 107,8s, para ki=0,03 tivemos ts = 186,2s – 72,7\% de aumento – e para ki=0,01 tivemos ts = 560,9s – 420,3\% de aumento em relação a ki=0,05 – com os tempos de subida seguindo percentuais de aumento próximos. A alteração de kd, de 0,005 para 0,001 teve efeito menor nos tempos ts e tr, com aumento de pouco mais de 3 segundos para ambos.
-
-%Imagens (5)
-
-
-\begin{figure}[H]
-     \centering
-     \subfloat[]{\includegraphics[width=11cm]{ImagensLab4/testes/5.png}\label{img5}}    
-\caption{Controle PID com kp=2 e valores variáveis para ki e kd}
-     \label{fig:ControlePID2 com variação de ki e kd}
+\newpage
+\hspace{4ex}Por fim, foi utilizado pólos reais, um na origem e outro distante da origem, em 0.99, nessa configuração ambos os valores estimados foram bons. Na figura \ref{img7}, o tempo de subida foi pequeno e, na figura \ref{img8}, o tempo de subida foi grande.
+\begin{figure}[!h]
+\centering
+\includegraphics[width=13cm]{FotosObservador/PoloRapidoELento2}
+\caption{Observador com um pólo na origem e outro distante}
+\label{img7}
 \end{figure}
-\begin{figure}[H]
-     \centering
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/5-1.png}\label{img5-1}}
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/5-1-1.png}\label{img5-1-1}}
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/5-0-1.png}\label{img5-2}}
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/5-0-1-1.png}\label{img5-2-1}}
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/5-0-2.png}\label{img5-3}}
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/5-0-2-1.png}\label{img5-3-1}}     
-     \caption{Controle PID com kp=2 e valores variáveis para ki e kd}
-     
+\begin{figure}[!h]
+\centering
+\includegraphics[width=13cm]{FotosObservador/PoloRapidoELento1}
+\caption{Observador com um pólo na origem e outro distante}
+\label{img8}
 \end{figure}
 
 \newpage
@@ -571,7 +508,7 @@ Como teste final, foram feitas alterações em ki e kd em um controlador primár
 
 \section{CONCLUSÃO}
 
-\hspace{4ex}Os testes realizados mostram que ao utilizar um controlador em cascata aumenta a estabilidade do sistema diminuindo a sua oscilação do tanque 1 e melhorandado o resultado em geral, mas aumenta a complexidade do projeto pois é necessario sintonizar dois controladores.
+\hspace{4ex}A partir dos testes realizados com os pólos em zero, pólos imaginários e pólos reais, pode-se concluir que o observador de estados mostrou que o valor observado do tanque 2 será semelhante e, muitas vezes, igual ao valor real do nível, enquanto que o valor observável do tanque 1 foi uma aproximação. Além disso, no caso dos pólos imaginários em particular, o nível observável do tanque 1 se mostrou muito oscilatório com relação ao seu valor real.
 
 \newpage
 %%%%%%%% REFERÊNCIAS %%%%%%%%%%%%%%%%%

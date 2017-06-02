@@ -1,13 +1,10 @@
 #include "funcoes.h"
 
-#include <iostream>
 #include <math.h>
 #include <time.h>
 #include <cstdlib>
 
-using namespace std;
-
-#define PI 3.1415
+#define PI 3.141592
 
 double periodoAle = 0;
 double amplitudeAle = 0;

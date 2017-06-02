@@ -91,6 +91,17 @@ vector<double>& Matriz::operator[](int p)
     return data[p];
 }
 
+ostream & operator <<(ostream& out, Matriz& x)
+{
+    for(uint i=0; i<x.l; i++)
+    {
+        for(uint j=0; j<x.c; j++)
+            out << x[i][j] << " ";
+        out << std::endl;
+    }
+    return out;
+}
+
 Matriz Matriz::Identidade(uint ord)
 {
     Matriz res(ord, ord);

@@ -53,3 +53,8 @@ Matriz Observador::Observa(Matriz y, Matriz u)
     x= G*x+L*(y-(C*x))+H*u;
     return x;
 }
+
+void Observador::setL(Matriz L){
+    this->L = L;
+}
+

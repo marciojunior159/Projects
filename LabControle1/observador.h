@@ -18,6 +18,8 @@ public:
     vector<complex<double>> Calcula_Polos(Matriz ll);
     Matriz Calcula_L(complex<double> p1, complex<double> p2);
     Matriz Observa(Matriz y, Matriz u);
+    void setL(Matriz L);
+    //void setPolos(complex<double> p1, complex<double> p2);
 private:
     Matriz G, H, C, L, x;
     Matriz W_inv;

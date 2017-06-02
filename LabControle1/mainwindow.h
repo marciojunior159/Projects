@@ -40,6 +40,16 @@ private slots:
     void on_radioButtonTempo_2_clicked(bool checked);
     void on_checkBox_observacao_clicked(bool checked);
 
+    void AtulizaObservador(bool polos);
+    void on_radioButton_Polos_clicked(bool checked);
+    void on_radioButton_matrizGanhos_clicked(bool checked);
+    void on_doubleSpinBox_L1_editingFinished();
+    void on_doubleSpinBox_L2_editingFinished();
+    void on_doubleSpinBox_p1_real_editingFinished();
+    void on_doubleSpinBox_p1_img_editingFinished();
+    void on_doubleSpinBox_p2_real_editingFinished();
+    void on_doubleSpinBox_p2_img_editingFinished();
+
 private:
     Quanser* quanser;
     Ui::MainWindow *ui;

@@ -342,7 +342,7 @@ double PID::Controle(double e, double y, double h)//Controlador PI-D
 \section{RESULTADOS}
 \hspace{4ex}Nas figuras a seguir será apresentado os gráficos da interface do software, a qual mostrará o comportamento do observador de estados para vários pólos, onde a curva em azul indica o nível do tanque 1($L_1$), a curva em verde é o nível do tanque 2($L_2$), a curva em preto é o nível observado do tanque 1 e a curva em cinza é o nível observado do tanque 2.
 
-\hspace{4ex}Inicialmente foi inserido dois pólos em 0, logo, é possível observar que a curva do nível do tanque 2 ficou alinhada com a curva informada pelo sensor, isso indica que seus valores estão muito próximos, enquanto que no tanque 1, pode-se perceber que o valor estimado do nível se aproxima do valor real, mas o ultrapassa, pois  o observador está muito rápido devido aos pólos na origem.
+\hspace{4ex}Inicialmente, como mostrado nas figuras \ref{img1} e \ref{img2}, foi inserido dois pólos em 0, logo, é possível observar que a curva do nível do tanque 2 ficou alinhada com a curva informada pelo sensor, isso indica que seus valores estão muito próximos, enquanto que no tanque 1, pode-se perceber que o valor estimado do nível se aproxima do valor real, mas o ultrapassa, pois  o observador está muito rápido devido aos pólos na origem.
 \begin{figure}[!h]
 \centering
 \includegraphics[width=13cm]{FotosObservador/PolosEm01}
@@ -356,7 +356,7 @@ double PID::Controle(double e, double y, double h)//Controlador PI-D
 \label{img2}
 \end{figure}
 
-\hspace{4ex}Agora com pólos imaginários em 0.7+0.7i e 0.7-0.7i, o valor observado do tanque 1 foi bastante oscilatório, como esperado, e o valor do tanque 2 contínuo, ou seja, a curvado observável acompanhando a curva real do nível.
+\hspace{4ex}Agora com pólos imaginários em 0.7+0.7i e 0.7-0.7i, o valor observado do tanque 1 foi bastante oscilatório, como esperado, e o valor do tanque 2 contínuo, ou seja, a curvado observável acompanhando a curva real do nível, verifique as figuras \ref{img3} e \ref{img4}.
 \begin{figure}[!h]
 \centering
 \includegraphics[width=13cm]{FotosObservador/PoloImaginario2}
@@ -371,7 +371,7 @@ double PID::Controle(double e, double y, double h)//Controlador PI-D
 \end{figure}
 
 \newpage
-\hspace{4ex}Depois disso, com dois pólos reais distantes do centro da circuferência, em 0.99 e 0.99, nota-se que até mesmo o nível do tanque 2 demora para acompanhar o valor real da curva.
+\hspace{4ex}Depois disso, com dois pólos reais distantes do centro da circuferência, em 0.99 e 0.99, nota-se que até mesmo o nível do tanque 2 demora para acompanhar o valor real da curva, observe as figuras \ref{img5} e \ref{img6}.
 \begin{figure}[!h]
 \centering
 \includegraphics[width=13cm]{FotosObservador/PolosMuitoLentos1}
@@ -386,7 +386,7 @@ double PID::Controle(double e, double y, double h)//Controlador PI-D
 \end{figure}
 
 \newpage
-\hspace{4ex}Por fim, com pólos reais, um na origem e outro distante da origem, em 0.99, nessa configuração ambos os valores estimados foram bons. Na figura \ref{img7}, o tempo de subida foi pequeno e, na figura \ref{img8}, o tempo de subida foi grande.
+\hspace{4ex}Por fim, foi utilizado pólos reais, um na origem e outro distante da origem, em 0.99, nessa configuração ambos os valores estimados foram bons. Na figura \ref{img7}, o tempo de subida foi pequeno e, na figura \ref{img8}, o tempo de subida foi grande.
 \begin{figure}[!h]
 \centering
 \includegraphics[width=13cm]{FotosObservador/PoloRapidoELento2}

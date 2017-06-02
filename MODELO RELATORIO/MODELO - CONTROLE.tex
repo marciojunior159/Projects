@@ -196,13 +196,13 @@ Lucas Costa Pereira Cavalcante.
 
 \begin{flushleft}
 
-\hspace{4ex}O presente trabalho é a quarta etapa da construção de um aplicativo desktop para controle de sistema de tanques. O software utiliza a comunicação cliente/servidor no qual o sistema de tanques é o servidor. A planta antes utilizada da Quanser foi substituída por uma simulação feita em Java3D, o que eliminou o nível de ruído dos resultados. Nesta etapa do trabalho, o objetivo foi a implementação de controladores P, PI, PD, PID e PI-D de segunda ordem na configuração controle em cascata. A teoria acerca de controle em cascata é introduzida, após é apresentado os resultados dos testes de controle da planta. Por fim, chega-se a conclusão que o controle em cascata tem uma resposta mais rápida em relação às pequenas modificações de nível, mas não tendo a sintonização correta se perde as vantagens adquiridas. \\
+\hspace{4ex}O presente trabalho é a quinta etapa da construção de um aplicativo desktop para controle de sistema de tanques. O software utiliza a comunicação cliente/servidor no qual o sistema de tanques é o servidor. A planta antes utilizada da Quanser foi substituída por uma simulação feita em Java3D, o que eliminou o nível de ruído dos resultados. Nesta etapa do trabalho, o objetivo foi projetar e implementar um observador de estados para um controlador proporcional de segunda ordem. A teoria acerca do observador de estados é introduzida, após é apresentado os resultados dos testes de controle da planta. Por fim, chega-se a conclusão que o valor observado no tanque 2 é muito mais próximo da realidade do que o observado no tanque 1, além deste último apresentar instabilidade para polos imaginários. \\
 
 \end{flushleft}
 
 \vspace{1.5cm}
 
-\textbf{Palavras-chave:} sistema de tanques; sistema de controle; software; planta Quanser, controlador PID; controle em cascata.
+\textbf{Palavras-chave:} sistema de tanques; sistema de controle; software; planta Quanser, controlador PID; observação de estados, realimentação de estados.
 
 \newpage
 
@@ -271,66 +271,166 @@ Lucas Costa Pereira Cavalcante.
 
 \section{REFERENCIAL TEÓRICO}
 
-\subsection{CONTROLE EM CASCATA}
-\hspace{4ex}O controle em cascata é uma estratégia de controle que utiliza dois controladores aninhados de modo que a identificação de pequenos distúrbios aconteça de forma mais rápida e, consequentemente, a correção seja feita antes de o sistema sofrer grandes alterações. De forma genérica, o controle em cascata pode ser representando pelo diagrama da figura \ref{cascata}. Pode-se perceber que é necessário medir duas variáveis de processos, o da malha interna (chamada de malha escrava) e o da malha externa (chamada de malha mestre). Essas medidas, feitas através de uso de sensores, é comparada com a referência de cada malha. Sendo que a referência da malha externa, ou set point, é uma entrada do sistema. Já na malha interna, quem determina qual vai ser o "nível" a ser alcaçado é o controlador da malha externa. Então a malha do processo secundário recebe o erro, é feito o cálculo do nível para aquele processo que é enviado através de uma sinal de controle para o atuador, modificando o processo da malha interna.     
+\subsection{DISCRETIZAÇÃO}
+\hspace{4ex}Para que um computador ou microcontrolador possa controlar um sistema, estes devem ser capaz de entender as informações obtidas pelo sistema no “mundo real” de forma a trabalhar estas informações digitalmente. Mas enquanto as variáveis podem ser sinais analógicos, a máquina entende somente sinais digitais. Há, portanto, a necessidade de uma transformação nas informações recebidas pelo sistema, para que estas sejam lidas pelo controlador digital – a este processo de transformação é dado o nome de {\bf discretização}.
 
-\begin{figure}[h]
-\centering
-\includegraphics[width=17cm]{ImagensLab4/controle-em-cascata.png}
-\caption{Diagrama de bloco do controle em cascata}
-\label{cascata}
-\end{figure}
-
-Esse tipo de configuração é eficiente devido a dependência entre o processo primário e o secundário. Por exemplo, numa planta onde o gás que passa por um cano é resposável pelo aquecimento da água de um tanque, a atuação é feita controlando a quantidade de vazão do gás no cano. Há uma relação nesse processo em que quanto maior a vazão, mais quente ficará a água. Então a malha mestre seria o tanque com a água, e a malha escrava, a tubulação com gás. 
-
-Outro aspecto importante a ser levado em consideração é a velocidade de cada processo. O processo primário tem que ser mais lento que o processo secundário. Como a temperatura varia de forma mais lenta que a vazão de um gás por uma tubulação, então não haveria conflito entre os sinais de controle. 
-
-A questão de utilizar dois controladores vem dessa diferença de velocidades entre os processos, visto que uma diferença pequena de temperatura geraria um pequeno sinal de erro, logo, se tivesse apenas um controlador, o sinal enviado para controlar a vazão seria pequeno, o que não surtiria muito efeito na temperatura, quase não alteraria ou demoraria muito tempo. Já dois controladores conseguem mapear a relaçao entre o processo lento e um processo mais rápido. 
-
-Uma das desvantagens de se utilizar o controle em cascata é que, ao adicionar mais um controlador, aumenta a complexidade de controle, pois é necessário sintonizar um quantidade dobrada de ganhos, gerando uma quantidade maior de combinações entre tipos de controle e ganhos possíveis. 
-
-
-
-
-\newpage
-
-%%%%%%%%%% METODOLOGIA %%%%%%%%%%%%%%%
-
-\thispagestyle{main}
-
-\section{METODOLOGIA}
-
-\hspace{4ex}Utilizando o simulador R2D2E, foram feitos testes com o controlador mestre e o escravo, como também, com apenas um controlador para alcançar determinados níveis dos tanques da planta, os quais serão expostos nos resultados.
-
-\hspace{4ex}Para isso, foi implementado uma classe controlador a qual é determinada de acordo com as escolhas do usuário, ou seja, se é P, PI, PD, PID ou PI-D. Por exemplo, se o usuário escolhe o controlador PD, ele fornecerá apenas os valores de Kp e Kd, ou Kp e $\tau_d$, e a partir desses valores a classe assumirá que Ki ou $\tau_i$ não existe, ou seja, o valor da integral será zero. O mesmo acontece se for escolhido o PI, nesse caso, o valor da derivada do erro será zero.
-
-\hspace{4ex}Observe os métodos abaixo, o primeiro é para os casos em que o usuário escolher os controladores P, PI, PD ou PID, enquanto que o segundo método foi criado para o caso em que se quer usar o PI-D, pois utiliza o sinal do processo (y) ao invés de usar o erro.
-\begin{lstlisting}
-double PID::Controle(double e, double h)//Controladores P, PI, PD e PID
-{
-    I= I+Ki*e*h; //Simpsons (e+e_ant)*h/2 - integral do erro
-    D= Kd*(e-e_ant)/h; //Derivada do erro
-    e_ant= e; //Erro
-    return Kp*e+I+D; //Sinal de controle
-}
-
-double PID::Controle(double e, double y, double h)//Controlador PI-D
-{
-    I= I+Ki*e*h; //Integral do erro
-    D= Kd*(y-e_ant)/h; //Derivada do sinal do processo
-    e_ant= y; //Sinal do processo
-    return Kp*e+I+D; //Sinal de controle
-}
-\end{lstlisting}
-\hspace{4ex}No software desenvolvido, esses valores podem ser escolhidos como mostrado na figura \ref{controladores}.
+Em controle de estados, o comportamento do sistema será determinado por matrizes (A, B, C, D) que deverão ser modificadas uma vez que os sinais contínuos sejam discretizados, de tal forma que o comportamento do sistema discreto seja o mais próximo possível do sistema contínuo. Para encontrar as novas matrizes do sistema (G e H), aplica-se a relação entre as variáveis contínua e discreta na equação de sistemas discretos.
 
 \begin{figure}[H]
      \centering
-     \subfloat[][Controlador Mestre]{\includegraphics[width=4cm]{ImagensLab4/controlador1}\label{<figureP1>}}\hspace{4ex}
-     \subfloat[][Controlador Escravo]{\includegraphics[width=4cm]{ImagensLab4/controlador2}\label{<figureP2>}}\\
-     \caption{Interface para a escolha dos controladores}
-     \label{fig:controladores}
+     \subfloat[]{\includegraphics[width=5cm]{fotosLab5/sistema_discreto.png}\label{sistdiscreto}}
+\hspace{1cm}
+     \subfloat[]{\includegraphics[width=7cm]{fotosLab5/relacao.png}\label{relacao}}
+\hspace{1cm}
+     \subfloat[]{\includegraphics[width=5cm]{fotosLab5/G_H.png}\label{g_h}}
+\hspace{1cm}
+     \caption{G e H, matrizes do observador de tempo discreto}
+     \label{fig:G_H}
 \end{figure}
+
+\subsection{OBSERVADOR DE ESTADOS}
+
+\hspace{4ex}O observador de estados é um algoritmo que surgiu da necessidade de se medir os estados de um sistema de controle. Em função dos altos custos e às vezes da impossibilidade de se conseguir medir estes estados, o observador de estados funciona como alternativa à medição, estimando o valor das variáveis de estado através dos valores de entrada e saída.
+
+\vspace{0.7cm}
+\hspace{6ex}{\bf 1. Caso contínuo}
+
+Supondo um sistema contínuo observável formado pelas equações:
+\newpage
+\begin{figure}[H]
+\centering
+\includegraphics[width=5cm]{fotosLab5/sistema_continuo.png}
+\caption{Sistema de controle contínuo}
+\label{continuo}
+\end{figure}
+
+Sendo A, B, C e D conhecidos, e sendo y(t) e u(y) medidos pelo sistema, o observador de estados será definido por:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=8cm]{fotosLab5/observador_continuo.png}
+\caption{Observador de estados contínuo}
+\label{continuo}
+\end{figure}
+
+\vspace{0.7cm}
+\hspace{6ex}{\bf 2. Caso discreto}
+
+Supondo um sistema discreto observável, de ordem n, formado por:
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=6cm]{fotosLab5/sistema_discreto.png}
+\caption{Sistema de controle discreto}
+\label{sist_discreto}
+\end{figure}
+
+Sendo G, H, C e D conhecidos e sendo x(k) e u(k) obtidos pelo sistema, o observador de estados discreto será definido por:
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=10cm]{fotosLab5/observador_discreto.png}
+\caption{Observador de estados discreto}
+\label{ob_discreto}
+\end{figure}
+
+\subsubsection{ERRO DE ESTIMAÇÃO}
+Erro de estimação é como é conhecida a diferença entre x e $\hat{x}$. Sabendo os valores das derivadas de x e $\hat{x}$ é possível calcular $\dot{\mathbf{e}}$:
+
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=10cm]{fotosLab5/erro_continuo.png}
+\caption{Erro de estimação (tempo contínuo)}
+\label{erro_continuo}
+\end{figure}
+
+Para o caso discreto, obtém-se pelo mesmo método a derivada do erro:
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=10cm]{fotosLab5/erro_discreto.png}
+\caption{Erro de estimação (tempo discreto)}
+\label{erro_discreto}
+\end{figure}
+
+\subsubsection{FÓRMULA DE ACKERMANN}
+
+\hspace{4ex}A fórmula de Ackermann permite determinar através de variáveis conhecidas o vetor de ganhos do sistema.
+
+O vetor de ganhos terá o formato:
+
+\hspace{4ex}{\bf L=[L1,L2,…,Ln]}
+
+Os elementos dos vetores serão encontrados pela fórmula de Ackermann. Para o caso discreto, teremos:
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=5cm]{fotosLab5/ackermann.png}
+\caption{Fórmula de Ackermann}
+\label{ackermann}
+\end{figure}
+
+
+\newpage
+%%%%%%%%%% METODOLOGIA %%%%%%%%%%%%%%%
+
+
+
+\section{METODOLOGIA}
+
+\hspace{4ex}Para se fazer a observação de estados da planta, foi necessário obter as matrizes G e H. A partir do modelo oferecido na descrição do experimento, pode-se calcular com as estratégias citadas anteriormente, na seção Referencial Teórico. Além de obter essas matrizes, foi verificado se o sistema é observável, e foi obtido um resultado positivo. Juntamente com esse cálculo, de forma análoga, observou que o sistema não é controlável.
+
+\hspace{4ex}Uma vez com as informações importantes do sistema, a implementação da observação de estados se transforma em algoritmos de cálculo de pólos e cálculo da matriz de ganhos L. Feitas nos seguintes métodos.
+
+\begin{lstlisting}
+
+vector<complex<double>> Observador::Calcula_Polos(Matriz ll)
+{
+    complex<double> a00(G[0][0],0), a01(G[0][1],0), 
+    		a10(G[1][0],0), a11(G[1][1],0);
+    complex<double> l1(ll[0][0],0), l2(ll[1][0],0);
+    vector<complex<double>> polos;
+    complex<double> p1= -(-a00-a11+l2+
+    	sqrt(pow(l2,2)+(2.0*a00-2*a11)*l2-4.0*a10*l1+
+    	pow(a11,2.0)-2.0*a00*a11+
+    	4.0*a01*a10+pow(a00,2)))/2.0;
+    complex<double> p2=  (a00+a11-l2+
+    	sqrt(pow(l2,2)+(2.0*a00-2.0*a11)*l2-4.0*a10*l1+
+    	pow(a11,2)-2.0*a00*a11+4.0*a01*a10+pow(a00,2)))/2.0;
+    polos.push_back(p1);
+    polos.push_back(p2);
+    return polos;
+}
+Matriz Observador::Calcula_L(complex<double> p1, complex<double> p2)
+{
+    Matriz I= Matriz::Identidade(2), aux(2,1);
+    aux[0][0]= 0;
+    aux[1][0]= 1;
+    double c[2]= {(-p1-p2).real(), (p1*p2).real()};
+    Matriz Ackerman= (G^2)+(c[0]*G)+(c[1]*I);
+    L= (Ackerman*W_inv)*aux;
+    return L;
+}
+
+
+\end{lstlisting}
+\hspace{4ex}Os métodos acima, são algoritmos que representam os cálculos citados no referencial teórico. Já no método para encontrar os pólos, foi feito uma manipulação algébrica a partir das equações para encontrar a matriz L.
+
+\hspace{4ex}Tais cálculos são feitos devido o programa ter como entrada os pólos e a matriz de ganhos, como mostrado na figura a seguir. Quando o usuário escolhe inserir o pólos, é feita a chamada do método Calcula\_L, para então observar o sistema.
+
+\begin{figure}[H]
+     \centering
+     \includegraphics[width=4cm]{fotosLab5/observador-interface}}
+     \caption{Interface referente as entradas da observação}
+     \label{fig:obs-inter}
+\end{figure}
+
+\hspace{4ex}Caso contrário, ou seja, caso a entrada seja a matriz L, é encontrado os pólos e apresentado ao usuário na interface os respectivos pólos.
+
+\hspace{4ex}Por fim, utilizando o simulador R2D2E, foram feitos testes de controle fixado no tipo proporcional para o sistema de segunda ordem com apenas um controlador, alternando entre as opções dadas ao usuário, ora tendo como entrada os pólos, ora a matriz L. Sendo que o foco foi o teste com vários pólos, pois desejava-se encontrar os pólos mais adequados para o sistema. 
+
+
 
 
 \newpage

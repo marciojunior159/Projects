@@ -14,8 +14,8 @@ MainWindow::MainWindow(QWidget *parent) :
     //Matriz L=observador.Calcula_L(complex<double>(0.8,0.0), complex<double>(0.0,0.0));
 
     //quanser= new Quanser("10.13.99.69", 20081);
-    quanser= new Quanser("127.0.0.1", 20074);
-    //quanser= new Quanser("192.168.0.33", 20081);
+    //quanser= new Quanser("127.0.0.1", 20074);
+    quanser= new Quanser("192.168.0.33", 20081);
     //quanser= new Quanser("192.168.0.13", 20081);
     //quanser= new Quanser("192.168.0.7", 20081);
     //quanser= new Quanser("192.168.0.5", 20081);
@@ -869,11 +869,6 @@ void MainWindow::on_radioButton_matrizGanhos_clicked(bool checked)
     }
 }
 
-double Modulo(complex<double> c)
-{
-    return sqrt(c.real()*c.real()+c.imag()*c.imag());
-}
-
 bool VerificaPolos(complex<double>& p1, complex<double>& p2)
 {
     bool precisa= false;
@@ -884,8 +879,8 @@ bool VerificaPolos(complex<double>& p1, complex<double>& p2)
     }
     if(abs(p1) > 1)
     {
-        p1= p1/abs(p1)*0.9;
-        p2= p2/abs(p2)*0.9;
+        p1= p1/abs(p1);
+        p2= p2/abs(p2);
         precisa= true;
     }
     return precisa;

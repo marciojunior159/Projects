@@ -242,11 +242,11 @@ Lucas Costa Pereira Cavalcante.
 \label{r2d2e}
 \end{figure}
 
-\hspace{4ex}Essa planta é controlada através de um software desenvolvido, o qual disponibiliza opção de controle em malha aberta e malha fechada. Em malha aberta, o usuário informa a tensão que quer enviar para bomba que encherá o tanque, enquanto que em malha fechada, o valor informado será o nível do tanque. Além disso, em malha fechada, também deverá ser informado a ordem do sistema, ou seja, se o objetivo é controlar apenas o tanque de cima ou se o desejado é o controle do tanque de baixo, onde nesse último caso é usado o controle em cascata. Com isso, há as opções de controle utilizando os controladores Proporcional (P), Proporcional Integrativo (PI), Proporcional Derivativo (PD), Proporcional Integrativo Derivativo (PID) e Proporcional Integrativo Derivativo em controle de ação baseado no sinal do processo (PI-D).
+\hspace{4ex}Essa planta é controlada através de um software desenvolvido, o qual disponibiliza opção de controle em malha aberta e malha fechada. Em malha aberta, o usuário informa a tensão que quer enviar para bomba que encherá o tanque, enquanto que em malha fechada, o valor informado será o nível do tanque. Além disso, em malha fechada, também deverá ser informado a ordem do sistema, ou seja, se o objetivo é controlar apenas o tanque de cima($L_1$) ou se o desejado é o controle do tanque de baixo($L_2$), onde nesse último caso é usado o controle em cascata. Com isso, há as opções de controle utilizando os controladores Proporcional (P), Proporcional Integrativo (PI), Proporcional Derivativo (PD), Proporcional Integrativo Derivativo (PID) e Proporcional Integrativo Derivativo em controle de ação baseado no sinal do processo (PI-D).
 
 \hspace{4ex}E nesse laboratório, foi adicionado mais uma opção de controle, o usuário poderá escolher realizar a observação de estados, o qual será utilizado o sistema de segunda ordem em malha fechada com apenas a ação proporcional. 
 
-\hspace{4ex}Com relação a essa última opção, na implementação do controle, foi encontrado uma representação em espaço de estados onde o nível do tanque de cima(L1) e o nível do tanque de baixo(L2) são os estados do modelo. Depois disso, a equação de estado foi discretizada utilizando o período de amostram 0,1 s.
+\hspace{4ex}Com relação a essa última opção, na implementação do controle, foi encontrado uma representação em espaço de estados onde o nível do tanque de cima e o nível do tanque de baixo são os estados do modelo. Depois disso, a equação de estado foi discretizada utilizando o período de amostram 0,1 s.
 
 \hspace{4ex}Na interface do software desenvolvido, o usuário deverá informar quais serão os valores dos pólos ou informar a matriz de ganhos do observador.
 

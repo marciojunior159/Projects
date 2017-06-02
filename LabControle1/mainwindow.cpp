@@ -487,7 +487,7 @@ void MainWindow::Controle()
             if(ui->radioButton_Polos->isChecked()){
                 //calcula L com os polos
                 L = observador.Calcula_L(complex<double>(ui->doubleSpinBox_p1_real->value(), ui->doubleSpinBox_p1_img->value()), complex<double>(ui->doubleSpinBox_p2_real->value(), ui->doubleSpinBox_p2_img->value()));
-                ui->labelL->setText("["+ QString::number(L[0][0]) +"    "+ QString::number(L[0][1])+"]");
+                ui->labelL->setText("["+ QString::number(L[0][0]) +"    "+ QString::number(L[1][0])+"]");
                 //mostra L
                 observador.setL(L);
                 Matriz y(1,1), u(1,1), x(2,1);
@@ -501,7 +501,7 @@ void MainWindow::Controle()
             }else if(ui->radioButton_matrizGanhos){
                 //calcula os polos com L
                 L[0][0]=ui->doubleSpinBox_L1->value();
-                L[0][1]=ui->doubleSpinBox_L2->value();
+                L[1][0]=ui->doubleSpinBox_L2->value();
                 vector<complex<double>> polos = observador.Calcula_Polos(L);
 
                 ui->labelPolos->setText("("+ QString::number(polos[0].real()) + "+i"+QString::number(polos[0].imag()) +", "+QString::number(polos[1].real()) + "+i"+QString::number(polos[1].imag())+")");
@@ -834,7 +834,7 @@ void MainWindow::on_checkBox_observacao_clicked(bool checked)
         ui->doubleSpinBox_kp_obs->setEnabled(true);
         ui->doubleSpinBox_p1_real->setEnabled(true);
         ui->doubleSpinBox_p1_img->setEnabled(true);
-        ui->doubleSpinBox_p2_img->setEnabled(true);
+        ui->doubleSpinBox_p2_real->setEnabled(true);
         ui->doubleSpinBox_p2_img->setEnabled(true);
         ui->doubleSpinBox_L1->setEnabled(true);
         ui->doubleSpinBox_L2->setEnabled(true);
@@ -843,7 +843,7 @@ void MainWindow::on_checkBox_observacao_clicked(bool checked)
         ui->doubleSpinBox_kp_obs->setEnabled(false);
         ui->doubleSpinBox_p1_real->setEnabled(false);
         ui->doubleSpinBox_p1_img->setEnabled(false);
-        ui->doubleSpinBox_p2_img->setEnabled(false);
+        ui->doubleSpinBox_p2_real->setEnabled(false);
         ui->doubleSpinBox_p2_img->setEnabled(false);
         ui->doubleSpinBox_L1->setEnabled(false);
         ui->doubleSpinBox_L2->setEnabled(false);

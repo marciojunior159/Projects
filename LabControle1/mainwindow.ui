@@ -780,7 +780,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="tab_3">
      <attribute name="title">
@@ -1093,6 +1093,9 @@
       </property>
       <property name="text">
        <string>Observação de estados</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
       </property>
      </widget>
      <widget class="QDoubleSpinBox" name="doubleSpinBox_kp_3">

@@ -10,7 +10,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     pid1(0,0,0), pid2(0,0,0)
 {
-    Matriz L=observador.Calcula_L(complex<double>(0.97,0.0), complex<double>(0.0,0.0));
+    //Matriz L=observador.Calcula_L(complex<double>(0.97,0.0), complex<double>(0.0,0.0));
+    Matriz L=observador.Calcula_L(complex<double>(0.8,0.0), complex<double>(0.0,0.0));
 
     //quanser= new Quanser("10.13.99.69", 20081);
     quanser= new Quanser("127.0.0.1", 20074);
@@ -51,7 +52,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->plotS1->graph(4)->setPen(QPen(Qt::magenta));
     ui->plotS1->graph(5)->setPen(QPen(Qt::cyan));
     ui->plotS1->graph(6)->setPen(QPen(Qt::black));
-    ui->plotS1->graph(7)->setPen(QPen(Qt::black));
+    ui->plotS1->graph(7)->setPen(QPen(Qt::gray));
 
     ui->plotS1->xAxis->setLabel("tempo(ms)");
     ui->plotS1->yAxis->setAutoTickStep(false);
@@ -338,6 +339,17 @@ void MainWindow::timerEvent(QTimerEvent *t)
     }else{
         ui->plotS2->graph(2)->setVisible(0);
     }
+
+    if(ui->checkBox_Observador->isChecked())
+    {
+        ui->plotS1->graph(6)->setVisible(1);
+        ui->plotS1->graph(7)->setVisible(1);
+    }
+    else
+    {
+        ui->plotS1->graph(6)->setVisible(0);
+        ui->plotS1->graph(7)->setVisible(0);
+    }
 }
 
 auto now = std::chrono::high_resolution_clock::now();
@@ -481,7 +493,7 @@ void MainWindow::Controle()
             quanser->writeDA(canal, tensao);
         }
 
-        if(ui->checkBox_Observador->isChecked())
+        if(ui->checkBox_observacao->isChecked())
         {
             Matriz y(1,1), u(1,1), x(2,1);
             u[0][0]= tensao;

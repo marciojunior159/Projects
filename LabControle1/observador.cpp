@@ -51,5 +51,13 @@ Matriz Observador::Calcula_L(complex<double> p1, complex<double> p2)
 Matriz Observador::Observa(Matriz y, Matriz u)
 {
     x= G*x+L*(y-(C*x))+H*u;
+    if(x[0][0] < 0)
+        x[0][0]= 0;
+    if(x[0][0] > 30)
+        x[0][0]= 30;
+    if(x[1][0] < 0)
+        x[1][0]= 0;
+    if(x[1][0] > 30)
+        x[1][0]= 30;
     return x;
 }

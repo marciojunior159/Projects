@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
     pid1(0,0,0), pid2(0,0,0)
 {
     //Matriz L=observador.Calcula_L(complex<double>(0.97,0.0), complex<double>(0.0,0.0));
-    Matriz L=observador.Calcula_L(complex<double>(0.8,0.0), complex<double>(0.0,0.0));
+    //Matriz L=observador.Calcula_L(complex<double>(0.8,0.0), complex<double>(0.0,0.0));
 
     //quanser= new Quanser("10.13.99.69", 20081);
     quanser= new Quanser("127.0.0.1", 20074);
@@ -23,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
     fucao= "";
     tempo= 0;
     ui->setupUi(this);
+    AtulizaObservador(true);
     ui->comboBoxSinal->addItem("Degrau");
     ui->comboBoxSinal->addItem("Senoidal");
     ui->comboBoxSinal->addItem("Onda quadrada");
@@ -868,21 +869,55 @@ void MainWindow::on_radioButton_matrizGanhos_clicked(bool checked)
     }
 }
 
+double Modulo(complex<double> c)
+{
+    return sqrt(c.real()*c.real()+c.imag()*c.imag());
+}
+
+bool VerificaPolos(complex<double>& p1, complex<double>& p2)
+{
+    bool precisa= false;
+    if(p1.imag() != 0 || p2.imag() != 0)
+    {
+        p2= conj(p1);
+        precisa= true;
+    }
+    if(abs(p1) > 1)
+    {
+        p1= p1/abs(p1)*0.9;
+        p2= p2/abs(p2)*0.9;
+        precisa= true;
+    }
+    return precisa;
+}
+
 void MainWindow::AtulizaObservador(bool polos)
 {
     Matriz L(2,1);
-    if(polos)
+    if(!polos)
     {
         //calcula os polos com L
         L[0][0]=ui->doubleSpinBox_L1->value();
         L[1][0]=ui->doubleSpinBox_L2->value();
         vector<complex<double>> polos = observador.Calcula_Polos(L);
+        if(VerificaPolos(polos[0], polos[1]))
+        {
+            ui->doubleSpinBox_p1_real->setValue(real(polos[0]));
+            ui->doubleSpinBox_p1_img->setValue(imag(polos[0]));
+            ui->doubleSpinBox_p2_real->setValue(real(polos[1]));
+            ui->doubleSpinBox_p2_img->setValue(imag(polos[1]));
+            L = observador.Calcula_L(polos[0],polos[1]);
+
+            ui->doubleSpinBox_L1->setValue(L[0][0]);
+            ui->doubleSpinBox_L2->setValue(L[1][0]);
+        }
+
         ui->doubleSpinBox_p1_real->setValue(polos[0].real());
         ui->doubleSpinBox_p1_img->setValue(polos[0].imag());
         ui->doubleSpinBox_p2_real->setValue(polos[1].real());
         ui->doubleSpinBox_p2_img->setValue(polos[1].imag());
-        ui->labelPolos->setText("("+ QString::number(polos[0].real()) + "+i"+QString::number(polos[0].imag())+", "+
-                                     QString::number(polos[1].real()) + "+i"+QString::number(polos[1].imag())+")");
+        ui->labelPolos->setText("("+ QString::number(polos[0].real(),'g',2) + "+i"+QString::number(polos[0].imag(),'g',2)+", "+
+                                     QString::number(polos[1].real(),'g',2) + "+i"+QString::number(polos[1].imag(),'g',2)+")");
         ui->labelL->setText("["+ QString::number(L[0][0]) +"    "+ QString::number(L[1][0])+"]");
         //mostra os polos
         observador.setL(L);
@@ -890,15 +925,24 @@ void MainWindow::AtulizaObservador(bool polos)
     else
     {
         //calcula L com os polos
-        L = observador.Calcula_L(complex<double>(ui->doubleSpinBox_p1_real->value(), ui->doubleSpinBox_p1_img->value()),
-                                 complex<double>(ui->doubleSpinBox_p2_real->value(), ui->doubleSpinBox_p2_img->value()));
+        complex<double> p1(ui->doubleSpinBox_p1_real->value(), ui->doubleSpinBox_p1_img->value());
+        complex<double> p2(ui->doubleSpinBox_p2_real->value(), ui->doubleSpinBox_p2_img->value());
+        if(VerificaPolos(p1, p2))
+        {
+            ui->doubleSpinBox_p1_real->setValue(real(p1));
+            ui->doubleSpinBox_p1_img->setValue(imag(p1));
+            ui->doubleSpinBox_p2_real->setValue(real(p2));
+            ui->doubleSpinBox_p2_img->setValue(imag(p2));
+        }
+
+        L = observador.Calcula_L(p1,p2);
         ui->doubleSpinBox_L1->setValue(L[0][0]);
         ui->doubleSpinBox_L2->setValue(L[1][0]);
 
         vector<complex<double>> polos = observador.Calcula_Polos(L);
         ui->labelL->setText("["+ QString::number(L[0][0]) +"    "+ QString::number(L[1][0])+"]");
-        ui->labelPolos->setText("("+ QString::number(polos[0].real()) + "+i"+QString::number(polos[0].imag())+", "+
-                                     QString::number(polos[1].real()) + "+i"+QString::number(polos[1].imag())+")");
+        ui->labelPolos->setText("("+ QString::number(polos[0].real(),'g',2) + "+i"+QString::number(polos[0].imag(),'g',2)+", "+
+                                     QString::number(polos[1].real(),'g',2) + "+i"+QString::number(polos[1].imag(),'g',2)+")");
         //mostra L
         observador.setL(L);
     }
@@ -906,30 +950,30 @@ void MainWindow::AtulizaObservador(bool polos)
 
 void MainWindow::on_doubleSpinBox_L1_editingFinished()
 {
-    AtulizaObservador(true);
+    AtulizaObservador(false);
 }
 
 void MainWindow::on_doubleSpinBox_L2_editingFinished()
 {
-    AtulizaObservador(true);
+    AtulizaObservador(false);
 }
 
 void MainWindow::on_doubleSpinBox_p1_real_editingFinished()
 {
-    AtulizaObservador(false);
+    AtulizaObservador(true);
 }
 
 void MainWindow::on_doubleSpinBox_p1_img_editingFinished()
 {
-    AtulizaObservador(false);
+    AtulizaObservador(true);
 }
 
 void MainWindow::on_doubleSpinBox_p2_real_editingFinished()
 {
-    AtulizaObservador(false);
+    AtulizaObservador(true);
 }
 
 void MainWindow::on_doubleSpinBox_p2_img_editingFinished()
 {
-    AtulizaObservador(false);
+    AtulizaObservador(true);
 }

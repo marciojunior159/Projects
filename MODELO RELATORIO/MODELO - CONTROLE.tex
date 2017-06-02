@@ -337,211 +337,64 @@ double PID::Controle(double e, double y, double h)//Controlador PI-D
 \thispagestyle{main}
 
 \section{RESULTADOS}
+\hspace{4ex}Analisando o observador de estados para varios polos. Onde a curva em azul indica o nivel do tanque 1, a curva em verde o nivel do tanque 2 a cruva em preto o nivel observado do tanque 1 e a curva em cinza o nivel observado do tanque 2.
 
-\hspace{4ex}A análise do projeto desenvolvido foi realizada através da verificação das alterações do sistema quando testados diferentes valores e diferentes tipos de controladores.
-Para o teste inicial, foram testados os controladores ambos com PIs de kp = 1 e ki = 0,03. Como pode ser observado na imagem a seguir (figura \ref{img1}), os níveis dos tanques (L1 e L2) ficaram bem abaixo do valor de finido de 10 cm e enquanto o nível no tanque 1 teve um tempo de subida inferior a 1s, o nível no tanque 2 teve um tempo de subida de quase 5s.
-%img1
-
+\hspace{4ex} Inicialmente colocando dois polos em 0, podemos ver que a curva do nivel do tanque 2 ficou em cima da curva original indicando que seus valores estão muito proximos. Já no tanque 1 podemos ver que o valor estimado do nivel se aproxima do valor real mas como o observador está muito rapido, devido aos polos na origem, acaba passando do seu valor.
 \begin{figure}[!h]
 \centering
-\includegraphics[width=11cm]{ImagensLab4/1.png}
-\caption{Controle PI no mestre e no escravo}
+\includegraphics[width=14cm]{FotosObservador/PolosEm01}
+\caption{Observador com dois polos em 0}
 \label{img1}
 \end{figure}
-
-
-No segundo teste foi aumentado o kp do controlador 1, de 1 para 3. O resultado percebido por essa alteração foi um nível em ambos os tanques mais próximo do esperado, um maior sobressinal para o tanque 1 e um tempo de subida consideravelmente mais alto para o tanque 2.
-%[img0]
-\newpage
 \begin{figure}[!h]
 \centering
-\includegraphics[width=11cm]{ImagensLab4/0.png}
-\caption{Controle PI no mestre e no escravo com kp maior}
-\label{img1}
+\includegraphics[width=14cm]{FotosObservador/PolosEm02}
+\caption{Observador com dois polos em 0}
+\label{img2}
 \end{figure}
 
-No terceiro teste, o kp do controlador 2 foi aumentado para 3. Esta mudança causou uma alta instabilidade no sistema, principalmente do tanque 1, cujo nível variou bastante entre 5 e 10 cm. A instabilidade causada pelo kp2 foi verificada novamente ao testar o sistema com dois PIs de variáveis kp=2, ki=0,05.
-%[img9][img4]
-
-\begin{figure}[H]
-     \centering
-     \subfloat[]{\includegraphics[width=7cm]{ImagensLab4/9.png}\label{img9}}    
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7cm]{ImagensLab4/4.png}\label{img4}}
-     
-     \caption{Aumento do kp}
-     \label{fig:ControlePI}
+\hspace{4ex} Agora com polos imaginarios em 0.7+0.7i e 0.7-0.7i. O valor observado do tanque 1 foi bastante oscilatorio como esperado e o valor do tanque 2 continuo acompanhando a curva.
+\begin{figure}[!h]
+\centering
+\includegraphics[width=14cm]{FotosObservador/PoloImaginario2}
+\caption{Observador com polos imaginarios}
+\label{img3}
 \end{figure}
-
-Trocando o controlador 1 do segundo teste por um controlador PD (kp=3, kd=0,003), foi possível observar uma leve baixa do nível do tanque, com alterações pouco perceptíveis na fase transitória.
-%[img10][img0]
-\begin{figure}[H]
-     \centering
-     \subfloat[]{\includegraphics[width=7cm]{ImagensLab4/10.png}\label{img10}}    
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7cm]{ImagensLab4/0.png}\label{img00}}
-     
-     \caption{Comparação entre Controle PD no escravo e PI no mestre e PI/PI}
-     \label{fig:ControlePIPD}
-\end{figure}
-
-Em seguida, foi realizado um teste com uma dupla de controladores PID com kp=1, ki=0,01 e kd=0,001. Ao comparar com a dupla de PIs do primeiro teste, percebe-se um overshoot bem menor, com tempo de subida próximos e um nível mais baixo para a dupla de PIDs.
-%[img5][img1]
-
-\begin{figure}[H]
-     \centering
-     \subfloat[]{\includegraphics[width=7cm]{ImagensLab4/5.png}\label{img5}}    
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7cm]{ImagensLab4/1.png}\label{img1}}
-     
-     \caption{Controle PID no escravo e PID no mestre}
-     \label{fig:ControlePIDPID}
-\end{figure}
-Ao testar uma combinação P-PD, P com kp=3 e PD com kp=1 e kd=0,001, obtivemos um valor de nível bem mais próximo do desejado, com o sistema apresentando uma forma menos ondulatória do que nos testes anteriores. Ao trocar o PD por um PID, obtivemos uma fase transitória um pouco reduzida e uma queda considerável no nível do tanque.
-%[img17][img8]
-
-\begin{figure}[H]
-     \centering
-     \subfloat[]{\includegraphics[width=7cm]{ImagensLab4/17.png}\label{img10}}    
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7cm]{ImagensLab4/8.png}\label{img00}}
-     
-     \caption{Controle P no escravo e PD no mestre}
-     \label{fig:ControleP-PD}
-\end{figure}
-
-Como último teste, foram realizadas combinações PI-PID, usando um PI similar ao controlador 1 do segundo teste e um PID com kp=1, ki=0,01 e kd=0,005, foram obtidos curvas menos ondulatórias que no segundo teste, com nível mais próximo do esperado e fase transitória de duração praticamente igual.
-%[img3][img0]
-\begin{figure}[H]
-     \centering
-     \subfloat[]{\includegraphics[width=7cm]{ImagensLab4/3.png}\label{img3}}    
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7cm]{ImagensLab4/0.png}\label{img000}}
-     
-     \caption{Controle PI no escravo e PID no mestre}
-     \label{fig:ControlePI}
-\end{figure}
-
-\hspace{4ex}Foram realizados posteriormente testes com propósito de comparar os resultados obtidos com um controlador de segunda ordem com os resultados obtidos com dois controladores. Inicialmente, com um controlador PID (kp = 1; ki = 0,05; kd = 0,005), foi obtido um sinal com um alto sobressinal (60,37\%), e tempos de acomodação e subida, respectivamente de 9,2 e 0,9 segundos. Ao adicionar um segundo controlador ao sistema, o sobressinal é praticamente eliminado. Foram utilizados como segundos controladores PI, PD e PID, para os três casos, os tempos de acomodação e subida ficaram, respectivamente, próximos a 90 e 60 segundos. 
-
-%Imagens (2)
-
-\begin{figure}[H]
-     \centering
-     \subfloat[]{\includegraphics[width=11cm]{ImagensLab4/testes/2.png}\label{img2}}    
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/2-1.png}\label{img2-1}}
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/2-1-1.png}\label{img2-1-1}}
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/2-2.png}\label{img2-2}}
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/2-2-1.png}\label{img2-2-1}}
-\caption{Controle PID com kp=1, ki=0,05 e kd=0,005}
-     \label{fig:ControlePID11}
-\end{figure}
-\begin{figure}[H]
-     \centering
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/2-3.png}\label{img2-3}}
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/2-3-1.png}\label{img2-3-1}}     
-     \caption{Controle PID com kp=1, ki=0,05 e kd=0,005}
-     \label{fig:ControlePID12}
-\end{figure}
-
-
-Foi feito para um controlador PI (kp=1; ki=0,05) o mesmo que o feito com o controlador PID, unindo-o a três controladores diferentes PI, PD e PID - um por vez. O resultado obtido foi parecido com o do teste anterior, com o alto sobressinal do PI (58,91\%) sendo eliminado, e os tempos de subida e acomodação sofrendo grande aumento. Neste exemplo, a diferença nos tempos de subida e acomodação foi um pouco mais visível, com a combinação PI-PI sendo mais rápida que a PI-PID em aproximadamente 3 segundos para tr (tempo de subida) e 4 segundos para ts (tempo de acomodação). A combinação PI-PID por sua vez foi mais rápida que a PI-PD aproximadamente pela mesma diferença – 3s para tr e 4s para ts.
-\\
-%Imagens (3)
-
-
-\begin{figure}[H]
-     \centering
-     \subfloat[]{\includegraphics[width=11cm]{ImagensLab4/testes/3.png}\label{img3}}    
-\caption{Controle PI com kp=1 e ki=0,05}
-     \label{fig:ControlePI}
-\end{figure}
-\begin{figure}[H]
-     \centering
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/3-2.png}\label{img3-1}}
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/3-2-1.png}\label{img3-1-1}}
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/3-3.png}\label{img3-2}}
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/3-3-1.png}\label{img3-2-1}}
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/3-4.png}\label{img3-3}}
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=8cm]{ImagensLab4/testes/3-4-1.png}\label{img3-3-1}}     
-     \caption{Controle PI com kp=1 e ki=0,05}
-     \label{fig:ControlePI}
-\end{figure}
-
-
-
-No terceiro teste foi usado um PID com kp duas vezes maior que o do primeiro teste, obtendo um sistema de um controlador menos estável. Quando aplicados controladores secundários semelhantes aqueles dos testes anteriores, é possível perceber um maior nível do tanque no curto prazo, com o mesmo chegando a atingir 17cm após 1s. Porém, se por um lado, o nível dos tanques está maior nos primeiros 5s, a velocidade de subida de nível é menor que em kp=1, fazendo com que o tempo de acomodação suba em todos os casos. O tempo de subida também foi alterado, apresentando inclusive uma redução para o caso PID-PID, mas também apresentando aumento para PI e para PD.
-
-%Imagens (4) – menos 4-2
-
-
-\begin{figure}[H]
-     \centering
-     \subfloat[]{\includegraphics[width=11cm]{ImagensLab4/testes/4.png}\label{img4}}    
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/4-1.png}\label{img4-1}}
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/4-1-1.png}\label{img4-1-1}}
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/4-3.png}\label{img4-2}}
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/4-3-1.png}\label{img4-2-1}}
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/4-4.png}\label{img4-3}}
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/4-4-1.png}\label{img4-3-1}}     
-     \caption{PID com kp=2,  ki=0,05 e kd=0,005}
-     \label{fig:ControlePID2}
+\begin{figure}[!h]
+\centering
+\includegraphics[width=14cm]{FotosObservador/PoloImaginario1}
+\caption{Observador com polos imaginarios}
+\label{img4}
 \end{figure}
 
 \newpage
-Um pequeno teste para C2 com kp=2 mostrou uma grande instabilidade do sistema para o aumento de kp no controlador secundário.
-\hspace{1cm}
-%Imagem 4-2
-
+\hspace{4ex} Agora  com dois polos reais distantes do centro da circuferencia em 0.99 e 0.99, podemos ver que até mesmo o nivel do tanque 2 demora para acompanhar o valor real da curva.
 \begin{figure}[!h]
 \centering
-\includegraphics[width=11cm]{ImagensLab4/testes/4-2.png}
-\caption{PID escravo com kp=2}
-\label{img4-4}
+\includegraphics[width=14cm]{FotosObservador/PolosMuitoLentos1}
+\caption{Observador com polos distantes da origem}
+\label{img5}
+\end{figure}
+\begin{figure}[!h]
+\centering
+\includegraphics[width=14cm]{FotosObservador/PolosMuitoLentos2}
+\caption{Observador com polos distantes da origem}
+\label{img6}
 \end{figure}
 
-Como teste final, foram feitas alterações em ki e kd em um controlador primário PID de kp=2. O controlador secundário foi para todos os casos um PI com kp=1 e ki=0,05. As alterações em ki alteraram largamente os tempos de subida e acomodação, se para ki=0,05, no teste passado, foi obtido ts = 107,8s, para ki=0,03 tivemos ts = 186,2s – 72,7\% de aumento – e para ki=0,01 tivemos ts = 560,9s – 420,3\% de aumento em relação a ki=0,05 – com os tempos de subida seguindo percentuais de aumento próximos. A alteração de kd, de 0,005 para 0,001 teve efeito menor nos tempos ts e tr, com aumento de pouco mais de 3 segundos para ambos.
-
-%Imagens (5)
-
-
-\begin{figure}[H]
-     \centering
-     \subfloat[]{\includegraphics[width=11cm]{ImagensLab4/testes/5.png}\label{img5}}    
-\caption{Controle PID com kp=2 e valores variáveis para ki e kd}
-     \label{fig:ControlePID2 com variação de ki e kd}
+\newpage
+\hspace{4ex} Agora com polos reais um na origem e outro distante da origem em 0.99, nessa configuração ambos os valores estimados foram bons.
+\begin{figure}[!h]
+\centering
+\includegraphics[width=14cm]{FotosObservador/PoloRapidoELento2}
+\caption{Observador com um polo na origem e outro distante}
+\label{img7}
 \end{figure}
-\begin{figure}[H]
-     \centering
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/5-1.png}\label{img5-1}}
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/5-1-1.png}\label{img5-1-1}}
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/5-0-1.png}\label{img5-2}}
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/5-0-1-1.png}\label{img5-2-1}}
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/5-0-2.png}\label{img5-3}}
-\hspace{1cm}
-     \subfloat[]{\includegraphics[width=7.4cm]{ImagensLab4/testes/5-0-2-1.png}\label{img5-3-1}}     
-     \caption{Controle PID com kp=2 e valores variáveis para ki e kd}
-     
+\begin{figure}[!h]
+\centering
+\includegraphics[width=14cm]{FotosObservador/PoloRapidoELento1}
+\caption{Observador com um polo na origem e outro distante}
+\label{img8}
 \end{figure}
 
 \newpage

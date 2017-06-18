@@ -7,25 +7,24 @@ complex<double> operator *(double k, complex<double> c)
 
 Observador::Observador(): G(2,2), H(2,1), C(1,2), L(2,1), x(2,1), W_inv(2,2)
 {
-    G[0][0]= 0.9934570177803322;   G[0][1]= 0;
-    G[1][0]= 0.006521530073323866; G[1][1]= 0.9934570177803322;
+    G={ {0.9934570177803322, 0},
+        {0.006521530073323866, 0.9934570177803322} };
+
     // calcular
-    H[0][0]= 0.0295461;
-    H[1][0]= 0.0000968713;
+    H= vector<vector<double>>{{0.0295461},
+                              {0.0000968713}};
 
-    C[0][0]= 0; C[0][1]= 1;
+    C= { {0, 1} };
 
-    L[0][0]= 0.0;
-    L[1][0]= 0.0;
+    L= vector<vector<double>>{{0.0},
+                              {0.0}};
 
-    x[0][0]= 0;
-    x[1][0]= 0;
+    x= vector<vector<double>>{{0.0},
+                             {0.0}};
     // usando o sensor do tanque 2
-    //W_inv[0]= C[0];
-    //W_inv[1]= (C*G)[0];
 
-    W_inv[0][0]= -152.3349592213091; W_inv[0][1]= 153.3382486558594;
-    W_inv[1][0]= 1; W_inv[1][1]= 0;
+    W_inv= { {-152.3349592213091, 153.3382486558594},
+             {1, 0}};
 }
 vector<complex<double>> Observador::Calcula_Polos(Matriz ll)
 {
@@ -41,8 +40,8 @@ vector<complex<double>> Observador::Calcula_Polos(Matriz ll)
 Matriz Observador::Calcula_L(complex<double> p1, complex<double> p2)
 {
     Matriz I= Matriz::Identidade(2), aux(2,1);
-    aux[0][0]= 0;
-    aux[1][0]= 1;
+    aux= vector<vector<double>>{{0.0},
+                                {1.0}};
     double c[2]= {(-p1-p2).real(), (p1*p2).real()};
     Matriz Ackerman= (G^2)+(c[0]*G)+(c[1]*I);
     L= (Ackerman*W_inv)*aux;

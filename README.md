@@ -1,3 +1,3 @@
 # LabControle
-Lab de controle - Versão 05
+Lab de controle - Versão 06
 

@@ -24,11 +24,15 @@ public:
     vector<double>& operator[](int p);
     friend Matriz operator *(double k, Matriz x);
 public:
-    Matriz& operator =(Matriz&& x);
-    Matriz& operator =(const Matriz& x);
     Matriz(const Matriz& x);
     Matriz(const Matriz&& x);
+
+    Matriz& operator =(Matriz&& x);
+    Matriz& operator =(const Matriz& x);
+    Matriz operator =(vector<vector<double>> x);
+
     friend ostream & operator <<(ostream& out, Matriz& x);
+
     static Matriz Identidade(uint ord);
     const uint l, c;
 private:

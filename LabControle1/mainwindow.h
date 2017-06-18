@@ -8,6 +8,7 @@
 #include <QTime>
 #include <pid.h>
 #include <observador.h>
+#include <seguidor.h>
 
 namespace Ui {
 class MainWindow;
@@ -57,6 +58,7 @@ private:
 
     PID pid1, pid2;
     Observador observador;
+    Seguidor seguidor;
     std::thread* controle, *recebe;
 
     string fucao;

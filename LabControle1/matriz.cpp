@@ -2,7 +2,7 @@
 
 using std::move;
 
-Matriz::Matriz(unsigned int linhas, unsigned int colunas) : l(linhas), c(colunas)
+Matriz::Matriz(uint linhas, uint colunas) : l(linhas), c(colunas)
 {
     data.resize(l);
     for(uint i=0; i<l; i++)
@@ -32,6 +32,16 @@ Matriz& Matriz::operator =(const Matriz& x) // Copy assignment operator
     if(l != x.l && c != x.c)
         throw "Erro de dimensao";
     this->data= x.data;
+    return (*this);
+}
+Matriz Matriz::operator =(vector<vector<double>> x)
+{
+    if(l != x.size())
+        throw "Erro de dimensao";
+    for(uint i=0; i<x.size(); i++)
+        if(c != x[i].size())
+            throw "Erro de dimensao";
+    this->data= x;
     return (*this);
 }
 Matriz Matriz::operator +(Matriz x)
@@ -74,10 +84,11 @@ Matriz operator *(double k, Matriz x)
 }
 Matriz Matriz::operator *(double k)
 {
+    Matriz res(l, c);
     for(uint i=0; i<l; i++)
         for(uint j=0; j<c; j++)
-            data[i][j]*=k;
-    return (*this);
+            res[i][j]= data[i][j]*k;
+    return res;
 }
 Matriz Matriz::operator ^(uint k)
 {
@@ -90,7 +101,6 @@ vector<double>& Matriz::operator[](int p)
 {
     return data[p];
 }
-
 ostream & operator <<(ostream& out, Matriz& x)
 {
     for(uint i=0; i<x.l; i++)
@@ -101,7 +111,6 @@ ostream & operator <<(ostream& out, Matriz& x)
     }
     return out;
 }
-
 Matriz Matriz::Identidade(uint ord)
 {
     Matriz res(ord, ord);

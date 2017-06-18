@@ -4,18 +4,18 @@
 
 #include <QMessageBox>
 #include <chrono>
+#include <seguidor.h>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     pid1(0,0,0), pid2(0,0,0)
 {
-    //Matriz L=observador.Calcula_L(complex<double>(0.97,0.0), complex<double>(0.0,0.0));
-    //Matriz L=observador.Calcula_L(complex<double>(0.8,0.0), complex<double>(0.0,0.0));
+    seguidor.Calcula_K(complex<double>(0.8,0.0),complex<double>(0.90,0.0),complex<double>(0.99,0));
 
     //quanser= new Quanser("10.13.99.69", 20081);
-    //quanser= new Quanser("127.0.0.1", 20074);
-    quanser= new Quanser("192.168.0.33", 20081);
+    quanser= new Quanser("127.0.0.1", 20074);
+    //quanser= new Quanser("192.168.0.33", 20081);
     //quanser= new Quanser("192.168.0.13", 20081);
     //quanser= new Quanser("192.168.0.7", 20081);
     //quanser= new Quanser("192.168.0.5", 20081);
@@ -423,6 +423,7 @@ void MainWindow::Controle()
 
                 mutex_.lock();
                 ui->plotS1->graph(1)->addData(tempo, st);
+                ui->plotS1->graph(4)->addData(tempo, erro1);
                 ui->plotS2->graph(3)->addData(tempo, pid1.getP());
                 ui->plotS2->graph(4)->addData(tempo, pid1.getI());
                 ui->plotS2->graph(5)->addData(tempo, pid1.getD());
@@ -492,7 +493,13 @@ void MainWindow::Controle()
             pid1.antWindUP(tensaoCalculado, tensao);
             pid2.antWindUP(tensaoCalculado, tensao);
 
-            quanser->writeDA(canal, tensao);
+            Matriz x(2,1), r(1,1);
+            x= vector<vector<double>>({ {funcSensor(sensores[0])}, {funcSensor(sensores[1])} });
+            r= { {st} };
+//            tensaoCalculado= seguidor.Seguir(x,r);
+//            tensao = trava(tensaoCalculado, pv1);
+
+            quanser->writeDA(canal,  tensao);
         }
 
         if(ui->checkBox_observacao->isChecked())

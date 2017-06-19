@@ -233,7 +233,7 @@ Lucas Costa Pereira Cavalcante.
 \section{INTRODUÇÃO}
 
 %\begin{flushleft}
-\hspace{4ex}A prática de laboratório 05 tem como objetivo introduzir o conceito de espaço de estados, nesse relatório será apresentado a implementação de um observador de estado para controlar o nível do tanque de baixo da planta \textit{Quanser}, sendo a figura \ref{r2d2e} a representação do simulador da planta:
+\hspace{4ex}A prática de laboratório 06 tem como objetivo introduzir o conceito de seguidor de referência, nesse relatório será apresentado a implementação de um seguidor de referência discreto para controlar o nível do tanque de baixo da planta \textit{Quanser}, sendo a figura \ref{r2d2e} a representação do simulador da planta:
 
 \begin{figure}[H]
 \centering
@@ -242,14 +242,12 @@ Lucas Costa Pereira Cavalcante.
 \label{r2d2e}
 \end{figure}
 
-\hspace{4ex}Essa planta é controlada através de um software desenvolvido, o qual disponibiliza opção de controle em malha aberta e malha fechada. Em malha aberta, o usuário informa a tensão que quer enviar para bomba que encherá o tanque, enquanto que em malha fechada, o valor informado será o nível do tanque. Além disso, em malha fechada, também deverá ser informado a ordem do sistema, ou seja, se o objetivo é controlar apenas o tanque de cima($L_1$) ou se o desejado é o controle do tanque de baixo($L_2$), onde nesse último caso é usado o controle em cascata. Com isso, há as opções de controle utilizando os controladores Proporcional (P), Proporcional Integrativo (PI), Proporcional Derivativo (PD), Proporcional Integrativo Derivativo (PID) e Proporcional Integrativo Derivativo em controle de ação baseado no sinal do processo (PI-D).
+\hspace{4ex}Essa planta é controlada através de um software desenvolvido, o qual disponibiliza opção de controle em malha aberta e malha fechada. Em malha aberta, o usuário informa a tensão que quer enviar para bomba que encherá o tanque, enquanto que em malha fechada, o valor informado será o nível do tanque. Além disso, em malha fechada, também deverá ser informado a ordem do sistema, ou seja, se o objetivo é controlar apenas o tanque de cima($L_1$) ou se o desejado é o controle do tanque de baixo($L_2$), onde nesse último caso é usado o controle em cascata. Com isso, há as opções de controle utilizando os controladores Proporcional (P), Proporcional Integrativo (PI), Proporcional Derivativo (PD), Proporcional Integrativo Derivativo (PID) e Proporcional Integrativo Derivativo em controle de ação baseado no sinal do processo (PI-D). Uma outra opção disponível é o observador de estados, sendo necessário informar a matriz de ganhos ou os pólos desejados para o observador.
 
-\hspace{4ex}E nesse laboratório, foi adicionado mais uma opção de controle, o usuário poderá escolher realizar a observação de estados, o qual será utilizado o sistema de segunda ordem em malha fechada com apenas a ação proporcional. 
+\hspace{4ex}Nesse laboratório, foi adicionado mais uma opção de controle: o usuário poderá controlar o sistema, o qual será utilizado o sistema de segunda ordem em malha fechada, usando um seguidor de referência para entradas do tipo degrau.
 
-\hspace{4ex}Com relação a essa última opção, na implementação do controle, foi encontrado uma representação em espaço de estados onde o nível do tanque de cima e o nível do tanque de baixo são os estados do modelo. Depois disso, a equação de estado foi discretizada utilizando o período de amostram 0,1 s.
-
-\hspace{4ex}Na interface do software desenvolvido, o usuário deverá informar quais serão os valores dos pólos ou informar a matriz de ganhos do observador.
-
+\hspace{4ex}Na interface do software desenvolvido, o usuário deverá informar quais serão os valores dos pólos ou informar os ganhos do seguidor de referência.
+MUDAR A FOTO ABAIXO
 \begin{figure}[H]
 \centering
 \includegraphics[width=13cm]{fotosLab5/interfaceObs.png}
@@ -257,9 +255,9 @@ Lucas Costa Pereira Cavalcante.
 \label{interface}
 \end{figure}
 
-\hspace{4ex}Também é possível que o usuário opte por visualizar as curvas da estimativa para cada estado e para a saída calculada a partir dos estados estimados e, assim, consiga comparar os resultados.
+\hspace{4ex}Também é possível que o usuário opte por visualizar as curvas ...
 
-\hspace{4ex}Mais à frente, será abordado no relatório em que os cálculos foram baseados para a obtenção do observador de estados, a metodologia utilizada no trabalho, como também será apresentado o comportamento do observador para diferentes conjuntos de pólos e, por conseguinte, a conclusão a cerca desse controle.
+\hspace{4ex}Mais à frente, será abordado no relatório em que os cálculos foram baseados para a obtenção do seguidor de referência, a metodologia utilizada no trabalho, como também será apresentado o comportamento do controlador para diferentes conjuntos de pólos e, por conseguinte, a conclusão a cerca desse controle.
 
 %\end{flushleft}
 

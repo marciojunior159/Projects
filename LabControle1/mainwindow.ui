@@ -753,7 +753,7 @@
       <x>250</x>
       <y>80</y>
       <width>221</width>
-      <height>261</height>
+      <height>271</height>
      </rect>
     </property>
     <property name="currentIndex">
@@ -1057,7 +1057,7 @@
     </widget>
     <widget class="QWidget" name="tab">
      <attribute name="title">
-      <string>Observação</string>
+      <string>Estados</string>
      </attribute>
      <widget class="QCheckBox" name="checkBox_observacao">
       <property name="enabled">
@@ -1065,14 +1065,14 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>20</x>
+        <x>10</x>
         <y>10</y>
-        <width>166</width>
+        <width>101</width>
         <height>21</height>
        </rect>
       </property>
       <property name="text">
-       <string>Observação de estados</string>
+       <string>Observação</string>
       </property>
       <property name="checked">
        <bool>false</bool>
@@ -1084,7 +1084,7 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>112</x>
+        <x>100</x>
         <y>40</y>
         <width>77</width>
         <height>24</height>
@@ -1094,8 +1094,8 @@
      <widget class="QLabel" name="label_21">
       <property name="geometry">
        <rect>
-        <x>30</x>
-        <y>40</y>
+        <x>10</x>
+        <y>30</y>
         <width>77</width>
         <height>24</height>
        </rect>
@@ -1107,8 +1107,8 @@
      <widget class="QRadioButton" name="radioButton_Polos">
       <property name="geometry">
        <rect>
-        <x>30</x>
-        <y>70</y>
+        <x>10</x>
+        <y>60</y>
         <width>62</width>
         <height>21</height>
        </rect>
@@ -1123,8 +1123,8 @@
      <widget class="QRadioButton" name="radioButton_matrizGanhos">
       <property name="geometry">
        <rect>
-        <x>30</x>
-        <y>160</y>
+        <x>10</x>
+        <y>180</y>
         <width>131</width>
         <height>21</height>
        </rect>
@@ -1142,8 +1142,8 @@
      <widget class="QWidget" name="layoutWidget9">
       <property name="geometry">
        <rect>
-        <x>30</x>
-        <y>190</y>
+        <x>10</x>
+        <y>200</y>
         <width>186</width>
         <height>28</height>
        </rect>
@@ -1187,10 +1187,10 @@
      <widget class="QWidget" name="layoutWidget11">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>100</y>
+        <x>10</x>
+        <y>80</y>
         <width>192</width>
-        <height>60</height>
+        <height>92</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_11">
@@ -1274,15 +1274,71 @@
          </property>
         </widget>
        </item>
+       <item row="2" column="1">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_p3_real">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="minimum">
+          <double>-1.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_27">
+         <property name="text">
+          <string>P3</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2">
+        <widget class="QLabel" name="label_28">
+         <property name="text">
+          <string>+ i</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="3">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_p3_img">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="minimum">
+          <double>-1.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1.000000000000000</double>
+         </property>
+        </widget>
+       </item>
       </layout>
+     </widget>
+     <widget class="QCheckBox" name="checkBox_controle">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>10</y>
+        <width>81</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Controle</string>
+      </property>
+      <property name="checked">
+       <bool>false</bool>
+      </property>
      </widget>
     </widget>
    </widget>
    <widget class="QSplitter" name="splitter">
     <property name="geometry">
      <rect>
-      <x>280</x>
-      <y>490</y>
+      <x>290</x>
+      <y>500</y>
       <width>191</width>
       <height>27</height>
      </rect>
@@ -1304,8 +1360,8 @@
    <widget class="QGroupBox" name="groupBox">
     <property name="geometry">
      <rect>
-      <x>270</x>
-      <y>350</y>
+      <x>280</x>
+      <y>370</y>
       <width>201</width>
       <height>121</height>
      </rect>

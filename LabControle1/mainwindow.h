@@ -51,6 +51,9 @@ private slots:
     void on_doubleSpinBox_p2_real_editingFinished();
     void on_doubleSpinBox_p2_img_editingFinished();
 
+    void on_checkBox_controle_clicked(bool checked);
+
+    void AtualizaSeguidor(bool polos);
 private:
     Quanser* quanser;
     Ui::MainWindow *ui;

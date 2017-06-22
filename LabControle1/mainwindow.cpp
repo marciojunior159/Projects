@@ -11,8 +11,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     pid1(0,0,0), pid2(0,0,0)
 {
-    seguidor.Calcula_K(complex<double>(0.9948,0.0),complex<double>(0.9920,0.0),complex<double>(0.9,0));
-
     //quanser= new Quanser("10.13.99.69", 20081);
     quanser= new Quanser("127.0.0.1", 20074);
 //    quanser= new Quanser("192.168.0.33", 20081);
@@ -487,18 +485,18 @@ void MainWindow::Controle()
                 ui->plotS2->graph(5)->addData(tempo, pid1.getD());
                 mutex_.unlock();
             }
+            if(ui->checkBox_controle->isChecked()){
+                Matriz x(2,1), r(1,1);
+                pv= funcSensor(sensores[1]);
+                x= vector<vector<double>>({ {funcSensor(sensores[0])}, {funcSensor(sensores[1])} });
+                r= { {st} };
+                tensao = seguidor.Seguir(x,r);
+            }
 
             tensaoCalculado = tensao;
             tensao = trava(tensao, pv1);
             pid1.antWindUP(tensaoCalculado, tensao);
             pid2.antWindUP(tensaoCalculado, tensao);
-
-            pv= funcSensor(sensores[1]);
-            Matriz x(2,1), r(1,1);
-            x= vector<vector<double>>({ {funcSensor(sensores[0])}, {funcSensor(sensores[1])} });
-            r= { {st} };
-            tensaoCalculado= seguidor.Seguir(x,r);
-            tensao = trava(tensaoCalculado, pv1);
 
             quanser->writeDA(canal,  tensao);
         }
@@ -598,10 +596,6 @@ void MainWindow::on_pushButtonEnviar_clicked()
     ui->lcdNumber_tp->display(0);
     ui->lcdNumber_ts->display(0);
 
-    if(ui->checkBox_observacao->isChecked())
-    {
-        ui->doubleSpinBox_kp->setValue(ui->doubleSpinBox_kp_obs->value());
-    }
 
     if(ui->radioButtonGanho->isChecked()){
         pid1.setConstantes(ui->doubleSpinBox_kp->isEnabled()?ui->doubleSpinBox_kp->value():0,
@@ -821,46 +815,47 @@ void MainWindow::on_checkBox_observacao_clicked(bool checked)
 {
     if(checked == true){
         //desativar pid
+        ui->label_Estados->setText("L");
         ui->radioButtonMalhaFechada->setChecked(true);
         on_radioButtonMalhaFechada_clicked();
         ui->comboBoxSinalOrdem->setCurrentText("Segunda (1C)");
-        ui->doubleSpinBox_kp->setValue(ui->doubleSpinBox_kp_obs->value());
 
-        ui->doubleSpinBox_kp_obs->setEnabled(true);
-//        ui->doubleSpinBox_p1_real->setEnabled(true);
-//        ui->doubleSpinBox_p1_img->setEnabled(true);
-//        ui->doubleSpinBox_p2_real->setEnabled(true);
-//        ui->doubleSpinBox_p2_img->setEnabled(true);
         ui->doubleSpinBox_L1->setEnabled(true);
         ui->doubleSpinBox_L2->setEnabled(true);
+        ui->checkBox_controle->setEnabled(false);
 
     }else{
-        ui->doubleSpinBox_kp_obs->setEnabled(false);
         ui->doubleSpinBox_p1_real->setEnabled(false);
         ui->doubleSpinBox_p1_img->setEnabled(false);
         ui->doubleSpinBox_p2_real->setEnabled(false);
         ui->doubleSpinBox_p2_img->setEnabled(false);
         ui->doubleSpinBox_L1->setEnabled(false);
         ui->doubleSpinBox_L2->setEnabled(false);
+        ui->checkBox_controle->setEnabled(true);
     }
 }
 
 void MainWindow::on_radioButton_Polos_clicked(bool checked)
 {
-    if(checked && ui->checkBox_observacao->isChecked())
+    if(checked && (ui->checkBox_observacao->isChecked() || ui->checkBox_controle->isChecked()))
     {
         ui->doubleSpinBox_L1->setEnabled(false);
         ui->doubleSpinBox_L2->setEnabled(false);
+        ui->doubleSpinBox_L3->setEnabled(false);
         ui->doubleSpinBox_p1_real->setEnabled(true);
         ui->doubleSpinBox_p1_img->setEnabled(true);
         ui->doubleSpinBox_p2_real->setEnabled(true);
         ui->doubleSpinBox_p2_img->setEnabled(true);
     }
+    if(ui->checkBox_controle->isChecked()){
+        ui->doubleSpinBox_p3_real->setEnabled(true);
+        ui->doubleSpinBox_p3_img->setEnabled(true);
+    }
 }
 
 void MainWindow::on_radioButton_matrizGanhos_clicked(bool checked)
 {
-    if(checked && ui->checkBox_observacao->isChecked())
+    if(checked && (ui->checkBox_observacao->isChecked() || ui->checkBox_controle->isChecked()))
     {
         ui->doubleSpinBox_L1->setEnabled(true);
         ui->doubleSpinBox_L2->setEnabled(true);
@@ -868,6 +863,12 @@ void MainWindow::on_radioButton_matrizGanhos_clicked(bool checked)
         ui->doubleSpinBox_p1_img->setEnabled(false);
         ui->doubleSpinBox_p2_real->setEnabled(false);
         ui->doubleSpinBox_p2_img->setEnabled(false);
+        ui->doubleSpinBox_p3_real->setEnabled(false);
+        ui->doubleSpinBox_p3_img->setEnabled(false);
+    }
+    if(ui->checkBox_controle->isChecked())
+    {
+        ui->doubleSpinBox_L3->setEnabled(true);
     }
 }
 
@@ -899,12 +900,7 @@ void MainWindow::AtulizaObservador(bool polos)
         vector<complex<double>> polos = observador.Calcula_Polos(L);
         if(VerificaPolos(polos[0], polos[1]))
         {
-            ui->doubleSpinBox_p1_real->setValue(real(polos[0]));
-            ui->doubleSpinBox_p1_img->setValue(imag(polos[0]));
-            ui->doubleSpinBox_p2_real->setValue(real(polos[1]));
-            ui->doubleSpinBox_p2_img->setValue(imag(polos[1]));
             L = observador.Calcula_L(polos[0],polos[1]);
-
             ui->doubleSpinBox_L1->setValue(L[0][0]);
             ui->doubleSpinBox_L2->setValue(L[1][0]);
         }
@@ -947,30 +943,113 @@ void MainWindow::AtulizaObservador(bool polos)
 
 void MainWindow::on_doubleSpinBox_L1_editingFinished()
 {
-    AtulizaObservador(false);
+    if(ui->checkBox_controle->isChecked())
+        AtualizaSeguidor(false);
+    else
+        AtulizaObservador(false);
 }
 
 void MainWindow::on_doubleSpinBox_L2_editingFinished()
 {
-    AtulizaObservador(false);
+    if(ui->checkBox_controle->isChecked())
+        AtualizaSeguidor(false);
+    else
+        AtulizaObservador(false);
+}
+
+void MainWindow::on_doubleSpinBox_L3_editingFinished()
+{
+    if(ui->checkBox_controle->isChecked())
+        AtualizaSeguidor(false);
+    else
+        AtulizaObservador(false);
 }
 
 void MainWindow::on_doubleSpinBox_p1_real_editingFinished()
 {
-    AtulizaObservador(true);
+    if(ui->checkBox_controle->isChecked())
+        AtualizaSeguidor(true);
+    else
+        AtulizaObservador(true);
 }
 
 void MainWindow::on_doubleSpinBox_p1_img_editingFinished()
 {
-    AtulizaObservador(true);
+    if(ui->checkBox_controle->isChecked())
+        AtualizaSeguidor(true);
+    else
+        AtulizaObservador(true);
 }
 
 void MainWindow::on_doubleSpinBox_p2_real_editingFinished()
 {
-    AtulizaObservador(true);
+    if(ui->checkBox_controle->isChecked())
+        AtualizaSeguidor(true);
+    else
+        AtulizaObservador(true);
 }
 
 void MainWindow::on_doubleSpinBox_p2_img_editingFinished()
 {
-    AtulizaObservador(true);
+    if(ui->checkBox_controle->isChecked())
+        AtualizaSeguidor(true);
+    else
+        AtulizaObservador(true);
 }
+
+void MainWindow::on_checkBox_controle_clicked(bool checked)
+{
+    if(checked == true){
+        //desativar pid
+        ui->label_Estados->setText("K");
+        ui->radioButtonMalhaFechada->setChecked(true);
+        on_radioButtonMalhaFechada_clicked();
+
+        ui->comboBoxSinalOrdem->setDisabled(true);
+        ui->doubleSpinBox_L1->setEnabled(true);
+        ui->doubleSpinBox_L2->setEnabled(true);
+        ui->doubleSpinBox_L3->setEnabled(true);
+        ui->checkBox_observacao->setEnabled(false);
+
+    }else{
+        ui->comboBoxSinalOrdem->setEnabled(true);
+        ui->doubleSpinBox_p1_real->setEnabled(false);
+        ui->doubleSpinBox_p1_img->setEnabled(false);
+        ui->doubleSpinBox_p2_real->setEnabled(false);
+        ui->doubleSpinBox_p2_img->setEnabled(false);
+        ui->doubleSpinBox_L1->setEnabled(false);
+        ui->doubleSpinBox_L2->setEnabled(false);
+        ui->doubleSpinBox_L3->setEnabled(false);
+        ui->checkBox_observacao->setEnabled(true);
+        ui->doubleSpinBox_p3_real->setEnabled(false);
+        ui->doubleSpinBox_p3_img->setEnabled(false);
+
+    }
+}
+
+void MainWindow::AtualizaSeguidor(bool polos)
+{
+    Matriz K(1,3);
+    if(!polos)
+    {
+        K= { {ui->doubleSpinBox_L1->value(), ui->doubleSpinBox_L2->value(), ui->doubleSpinBox_L3->value()} };
+        seguidor.setK(K);
+    }
+    else
+    {
+        //calcula L com os polos
+        complex<double> p1(ui->doubleSpinBox_p1_real->value(), ui->doubleSpinBox_p1_img->value());
+        complex<double> p2(ui->doubleSpinBox_p2_real->value(), ui->doubleSpinBox_p2_img->value());
+        complex<double> p3(ui->doubleSpinBox_p3_real->value(), ui->doubleSpinBox_p3_img->value());
+
+        K = seguidor.Calcula_K(p1,p2,p3);
+
+        ui->doubleSpinBox_L1->setValue(K[0][0]);
+        ui->doubleSpinBox_L2->setValue(K[0][1]);
+        ui->doubleSpinBox_L3->setValue(K[0][2]);
+
+        ui->label_2->setText("K");
+        ui->labelL->setText("["+ QString::number(K[0][0]) +", "+ QString::number(K[0][1])+", "+ QString::number(K[0][2])+"]");
+    }
+}
+

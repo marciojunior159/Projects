@@ -11,11 +11,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     pid1(0,0,0), pid2(0,0,0)
 {
-    seguidor.Calcula_K(complex<double>(0.8,0.0),complex<double>(0.90,0.0),complex<double>(0.99,0));
+    seguidor.Calcula_K(complex<double>(0.9948,0.0),complex<double>(0.9920,0.0),complex<double>(0.9,0));
 
     //quanser= new Quanser("10.13.99.69", 20081);
     quanser= new Quanser("127.0.0.1", 20074);
-    //quanser= new Quanser("192.168.0.33", 20081);
+//    quanser= new Quanser("192.168.0.33", 20081);
     //quanser= new Quanser("192.168.0.13", 20081);
     //quanser= new Quanser("192.168.0.7", 20081);
     //quanser= new Quanser("192.168.0.5", 20081);
@@ -493,11 +493,12 @@ void MainWindow::Controle()
             pid1.antWindUP(tensaoCalculado, tensao);
             pid2.antWindUP(tensaoCalculado, tensao);
 
+            pv= funcSensor(sensores[1]);
             Matriz x(2,1), r(1,1);
             x= vector<vector<double>>({ {funcSensor(sensores[0])}, {funcSensor(sensores[1])} });
             r= { {st} };
-//            tensaoCalculado= seguidor.Seguir(x,r);
-//            tensao = trava(tensaoCalculado, pv1);
+            tensaoCalculado= seguidor.Seguir(x,r);
+            tensao = trava(tensaoCalculado, pv1);
 
             quanser->writeDA(canal,  tensao);
         }
@@ -524,7 +525,6 @@ void MainWindow::Controle()
             tempoInicial = tempo;
             flag_tr = true;
         }
-
         if( fabs(pv-st_ant) >= fabs((1-faixa_tr)*(st-st_ant)) && flag_tr == true){
             trs = tempo - tempoInicial;
             ui->lcdNumber_tr->display(trs);
@@ -583,20 +583,15 @@ void MainWindow::Recebe()
 
 void MainWindow::on_pushButtonEnviar_clicked()
 {
+    st_ant= Amplitude;
+    max_mp=trs=mp=tp=contFaixa=0;
+    flag_mp=flag_tp=false;
+    tempoInicialAcom= tempo;
+
     fucao= ui->comboBoxSinal->currentText().toStdString();
     Amplitude = ui->SpinBoxTensaoNivel->value();
     Periodo = ui->SpinBoxPeriodo->value();
     offset=ui->SpinBoxPeriodoOffset->value();
-
-    st_ant = Amplitude;
-    max_mp= 0;
-    trs = 0;
-    mp = 0;
-    tp = 0;
-    contFaixa = 0;
-    flag_mp = false;
-    flag_tp = false;
-    tempoInicialAcom = tempo;
 
     ui->lcdNumber_tr->display(0);
     ui->lcdNumber_mp->display(0);

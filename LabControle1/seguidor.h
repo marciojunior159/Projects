@@ -6,10 +6,6 @@
 
 using std::complex;
 
-#include <iostream>
-
-using namespace std;
-
 class Seguidor
 {
 public:

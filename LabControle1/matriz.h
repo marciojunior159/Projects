@@ -5,6 +5,7 @@
 
 #include <vector>
 #include <ostream>
+#include <initializer_list>
 
 using std::ostream;
 using std::vector;
@@ -29,7 +30,7 @@ public:
 
     Matriz& operator =(Matriz&& x);
     Matriz& operator =(const Matriz& x);
-    Matriz operator =(vector<vector<double>> x);
+    Matriz  operator =(vector<vector<double>> x);
 
     friend ostream & operator <<(ostream& out, Matriz& x);
 

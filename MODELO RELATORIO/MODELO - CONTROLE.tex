@@ -411,18 +411,13 @@ Matriz Observador::Calcula_L(complex<double> p1, complex<double> p2)
     return L;
 }
 
-
 \end{lstlisting}
+
 \hspace{4ex}Os métodos acima, são algoritmos que representam os cálculos citados no referencial teórico. Já no método para encontrar os pólos, foi feito uma manipulação algébrica a partir das equações para encontrar a matriz L.
 
 \hspace{4ex}Tais cálculos são feitos devido o programa ter como entrada os pólos e a matriz de ganhos, como mostrado na figura a seguir. Quando o usuário escolhe inserir o pólos, é feita a chamada do método Calcula\_L, para então observar o sistema.
 
-\begin{figure}[H]
-     \centering
-     \includegraphics[width=4cm]{fotosLab5/observador-interface}}
-     \caption{Interface referente as entradas da observação}
-     \label{fig:obs-inter}
-\end{figure}
+
 
 \hspace{4ex}Caso contrário, ou seja, caso a entrada seja a matriz L, é encontrado os pólos e apresentado ao usuário na interface os respectivos pólos.
 
@@ -438,64 +433,45 @@ Matriz Observador::Calcula_L(complex<double> p1, complex<double> p2)
 \thispagestyle{main}
 
 \section{RESULTADOS}
-\hspace{4ex}Nas figuras a seguir será apresentado os gráficos da interface do software, a qual mostrará o comportamento do observador de estados para vários pólos, onde a curva em azul indica o nível do tanque 1($L_1$), a curva em verde é o nível do tanque 2($L_2$), a curva em preto é o nível observado do tanque 1 e a curva em cinza é o nível observado do tanque 2.
+\hspace{4ex}Nas figuras a seguir será apresentado os gráficos da interface do software, a qual mostrará o comportamento do seguidor de referencia para entradas do tipo degrau com vários pólos, onde a curva em azul indica o nível do tanque 1($L_1$), a curva em verde é o nível do tanque 2($L_2$).
 
-\hspace{4ex}Inicialmente, como mostrado nas figuras \ref{img1} e \ref{img2}, foi inserido dois pólos em 0, logo, é possível observar que a curva do nível do tanque 2 ficou alinhada com a curva informada pelo sensor, isso indica que seus valores estão muito próximos, enquanto que no tanque 1, pode-se perceber que o valor estimado do nível se aproxima do valor real, mas o ultrapassa, pois  o observador está muito rápido devido aos pólos na origem.
-\begin{figure}[!h]
+\hspace{4ex}Inicialmente, como mostrado nas figuras \ref{img1}, foram iseridos os polos 0,9048; 0,9920; 0,9980, para esses polos os sistema foi bastante lento demorando mais de 200 segundos para chegar em uma faixa de 2\% do valor da referencia.
+\begin{figure}[H]
 \centering
-\includegraphics[width=13cm]{FotosObservador/PolosEm01}
-\caption{Observador com dois polos em 0}
+\includegraphics[width=13cm]{FotosSeguidor/PolosDados.png}
+\caption{Seguidor}
 \label{img1}
 \end{figure}
-\begin{figure}[!h]
-\centering
-\includegraphics[width=13cm]{FotosObservador/PolosEm02}
-\caption{Observador com dois pólos em 0}
-\label{img2}
-\end{figure}
 
-\hspace{4ex}Agora com pólos imaginários em 0.7+0.7i e 0.7-0.7i, o valor observado do tanque 1 foi bastante oscilatório, como esperado, e o valor do tanque 2 contínuo, ou seja, a curvado observável acompanhando a curva real do nível, verifique as figuras \ref{img3} e \ref{img4}.
+\hspace{4ex}Agora com os polos 0,9000; 0,9000; 0,9900 podemos ver na figura \ref{img3} que ele chegou na referencia mais rapidamente.
 \begin{figure}[!h]
 \centering
-\includegraphics[width=13cm]{FotosObservador/PoloImaginario2}
-\caption{Observador com pólos imaginários}
+\includegraphics[width=13cm]{FotosSeguidor/Bom}
+\caption{Seguidor}
 \label{img3}
 \end{figure}
+
+\hspace{4ex}Com os polos 0,9000; 0,9000; 0,9800 a resposta foi ainda mais rapida como visto na figura \ref{img4}.
 \begin{figure}[!h]
 \centering
-\includegraphics[width=13cm]{FotosObservador/PoloImaginario1}
-\caption{Observador com pólos imaginários}
+\includegraphics[width=13cm]{FotosSeguidor/MuitoBom}
+\caption{Seguidor}
 \label{img4}
 \end{figure}
 
-\newpage
-\hspace{4ex}Depois disso, com dois pólos reais distantes do centro da circuferência, em 0.99 e 0.99, nota-se que até mesmo o nível do tanque 2 demora para acompanhar o valor real da curva, observe as figuras \ref{img5} e \ref{img6}.
+
+\hspace{4ex}Para os polos imaginarios, foi observado que o controlador fica bastante agressivo e logo fica instavel, por isso foram utilizados valores pequenos para as partes imaginarias como pode ser visto nas figuras \ref{img5} e \ref{img6}.
 \begin{figure}[!h]
 \centering
-\includegraphics[width=13cm]{FotosObservador/PolosMuitoLentos1}
-\caption{Observador com pólos distantes da origem}
+\includegraphics[width=13cm]{FotosSeguidor/PolosComplexos}
+\caption{Seguidor}
 \label{img5}
 \end{figure}
 \begin{figure}[!h]
 \centering
-\includegraphics[width=13cm]{FotosObservador/PolosMuitoLentos2}
-\caption{Observador com pólos distantes da origem}
+\includegraphics[width=13cm]{FotosSeguidor/PolosComplexos2}
+\caption{Seguidor}
 \label{img6}
-\end{figure}
-
-\newpage
-\hspace{4ex}Por fim, foi utilizado pólos reais, um na origem e outro distante da origem, em 0.99, nessa configuração ambos os valores estimados foram bons. Na figura \ref{img7}, o tempo de subida foi pequeno e, na figura \ref{img8}, o tempo de subida foi grande.
-\begin{figure}[!h]
-\centering
-\includegraphics[width=13cm]{FotosObservador/PoloRapidoELento2}
-\caption{Observador com um pólo na origem e outro distante}
-\label{img7}
-\end{figure}
-\begin{figure}[!h]
-\centering
-\includegraphics[width=13cm]{FotosObservador/PoloRapidoELento1}
-\caption{Observador com um pólo na origem e outro distante}
-\label{img8}
 \end{figure}
 
 \newpage

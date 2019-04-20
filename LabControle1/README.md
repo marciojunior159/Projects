@@ -1,2 +1,0 @@
-# LabControle
-Lab de controle
